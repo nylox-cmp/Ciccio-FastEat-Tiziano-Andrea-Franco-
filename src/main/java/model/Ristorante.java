@@ -1,6 +1,6 @@
 package model;
 
-import exception.Error;
+import exception.*;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ public class Ristorante {
     private String nome;
     private String indirizzo;
     private String codice_autenticazione; //Unique ReadOnly
+    private ArrayList<Dipedente> dipedenti;
     private ArrayList<Menu> menu;
 
     private ArrayList<Dipedente> dipendenti;
@@ -26,18 +27,20 @@ public class Ristorante {
     }
 
     //________________________________________________________________________________________________________________________________________________
+    // Override
+
+    @Override
+    public String toString(){
+        String identificativo = get_nome() + " " + get_indirizzo();
+        return identificativo;
+    }
+
+    //________________________________________________________________________________________________________________________________________________
     //Gestione Menu
 
-    public Error crea_menu(String nomeMenu){
-        for(Menu m : menu) {
-            if(m.get_nome().equalsIgnoreCase(nomeMenu)){
-                return Error.INPUT_NON_UNIVOCO;
-            }
-        }
-
-        Menu nuovoMenu = new Menu(nomeMenu);
-        this.menu.add(nuovoMenu);
-        return Error.NESSUN_ERRORE;
+    public void crea_menu(String nome){
+        Menu menu = new Menu(nome);
+        this.menu.add(menu);
     }
 
     public void cancella_menu(Menu menu_eliminiare){

@@ -1,9 +1,13 @@
 package model;
 
+import exception.ErrorType;
+
+import java.util.ArrayList;
+
 public class Utente {
-    private String email; //Unique (sul database)
+    private String email;
     private String password;
-    private String nickname; //Unique (sul database)
+    private String nickname;
     private String nome;
     private String cognome;
 
@@ -14,8 +18,6 @@ public class Utente {
         this.nome = nome;
         this.cognome = cognome;
     }
-
-    public Utente(){}
 
     //________________________________________________________________________________________________________________________________________________
     //Override
@@ -34,39 +36,6 @@ public class Utente {
         return this.nickname;
     }
 
-    //________________________________________________________________________________________________________________________________________________
-    //Gestione Utente
-
-    public void login(String email,String password){
-        this.email = email;
-        this.password = password;
-    }
-
-    public void sign_in(String email,String password,String nickname,String nome,String cognome){
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
-        this.nome = nome;
-        this.cognome = cognome;
-    }
-
-    //________________________________________________________________________________________________________________________________________________
-    //
-
-    public void richiedi_assunzione_ristorante(Utente utente,Ristorante ristorante,String codice_autenticazione){
-        if(ristorante.get_codice_autenticazione().equals(codice_autenticazione))
-            ristorante.richieste_assunzione.add(utente);
-    }
-
-    public Rider diventa_rider(String mezzo_trasporto){
-        Rider rider = new Rider();
-        rider.mezzo_trasporto = mezzo_trasporto;
-        return rider;
-    }
-
-    public Ristorante registra_ristorante(String nome,String indirizzo){
-        return new Ristorante(nome,indirizzo);
-    }
 
     //________________________________________________________________________________________________________________________________________________
     //Get and Set

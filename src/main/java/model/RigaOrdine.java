@@ -1,5 +1,7 @@
 package model;
 
+import exception.ErrorType;
+
 public class RigaOrdine {
     private Prodotto prodotto;
     private int quantita;
@@ -11,10 +13,11 @@ public class RigaOrdine {
         this.prezzo_totale = prodotto.get_prezzo_unitario() * quantita;
     }
 
-    public void calcola_prezzo_totale(){
-        if (this.prodotto != null) {
-            this.prezzo_totale = this.prodotto.get_prezzo_unitario() * this.quantita;
-        }
+    //________________________________________________________________________________________________________________________________________________
+    // Gestione riga Ordine
+
+    protected void calcola_prezzo_totale(){
+        this.prezzo_totale = this.prodotto.get_prezzo_unitario() * this.quantita;
     }
 
     public void aumenta_quantita(){
@@ -22,11 +25,13 @@ public class RigaOrdine {
         calcola_prezzo_totale();
     }
 
-    public void diminuisci_quantita(){
+    public ErrorType diminuisci_quantita(){
         if (this.quantita > 1) {
             this.quantita -= 1;
             calcola_prezzo_totale();
+            return ErrorType.NESSUN_ERRORE;
         }
+        return ErrorType.INPUT_NON_VALIDO;
     }
 
     //________________________________________________________________________________________________________________________________________________

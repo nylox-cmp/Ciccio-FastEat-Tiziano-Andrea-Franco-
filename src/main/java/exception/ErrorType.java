@@ -1,19 +1,19 @@
 package exception;
 
-public enum Error{
+public enum ErrorType {
     NESSUN_ERRORE,
-    LOGIN_FALLITO,
+    CREDENZIALI_NON_VALIDE,
     INPUT_NON_VALIDO,
     INPUT_NON_UNIVOCO,
     PERMESSI_NON_SUFFICIENTI;
 
 
-    public String conver_error_to_message(Error error){
+    public static String converti_error_to_message(ErrorType error){
         String messaggio = "";
         switch (error){
             case NESSUN_ERRORE:
                 break;
-            case LOGIN_FALLITO:
+            case CREDENZIALI_NON_VALIDE:
                 messaggio = "email o password errata ";
                 break;
             case INPUT_NON_VALIDO:

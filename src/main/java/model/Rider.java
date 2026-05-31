@@ -4,17 +4,22 @@ package model;
 import java.util.ArrayList;
 
 public class Rider extends Utente{
-    public String mezzo_trasporto = "";
+    public String mezzo_trasporto;
     public ArrayList<Ordine> ordini;
 
-    public Rider(Utente utente) {
+    public Rider(Utente utente,String mezzo_trasporto) {
         super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
-        this.ordini = new ArrayList<>();
+        this.mezzo_trasporto = mezzo_trasporto;
+        this.ordini = ordini;
     }
 
-    public Rider() {
-        super();
-        this.ordini = new ArrayList<>();
+    //________________________________________________________________________________________________________________________________________________
+    // Override
+
+    @Override
+    public String toString() {
+        String identificativo = get_nickname() + " " + get_mezzo_trasporto();
+        return identificativo;
     }
 
     //________________________________________________________________________________________________________________________________________________

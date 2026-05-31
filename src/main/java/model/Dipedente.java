@@ -2,6 +2,7 @@ package model;
 
 
 import java.util.ArrayList;
+import exception.*;
 
 public class Dipedente extends Utente{
     private ArrayList<Dipedente> subordinati;
@@ -11,21 +12,14 @@ public class Dipedente extends Utente{
     private ArrayList<Ordine> ordini;
 
 
-    public Dipedente(Utente utente, Ruolo ruolo, Ristorante ristorante) {
+    public Dipedente(Utente utente, Ruolo ruolo,Ristorante ristorante) {
         super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
         this.ruolo = ruolo;
         this.ristorante = ristorante;
-        this.subordinati = new ArrayList<>();
-        this.superiori = new ArrayList<>();
-        this.ordini = new ArrayList<>();
     }
 
-    public Dipedente() {
-        super();
-        this.subordinati = new ArrayList<>();
-        this.superiori = new ArrayList<>();
-        this.ordini = new ArrayList<>();
-    }
+    //________________________________________________________________________________________________________________________________________________
+    // Override
 
     @Override
     public String toString(){
@@ -40,35 +34,49 @@ public class Dipedente extends Utente{
         return (ruolo.ordinal() <= ruolo_richiesto.ordinal());
     }
 
-    public Dipedente accetta_dipedente(Utente utente){
+    public ErrorType accetta_dipedente(Utente utente){
+        if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal())
+            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+
         if(ristorante.get_richieste_assunzioni().contains(utente)){
-            Dipedente nuovo_dipedente = new Dipedente();
+            Dipedente nuovo_dipedente = new Dipedente(utente,Ruolo.BASE,ristorante);
             subordinati.add(nuovo_dipedente);
-            return nuovo_dipedente;
         }
-        return null;
+        return ErrorType.NESSUN_ERRORE;
     }
 
-    public void rimuovi_dipedenti(Dipedente dipedente){
+    public ErrorType rimuovi_dipedenti(Dipedente dipedente){
+        if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal())
+            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+
         if((dipedente.equals(dipedente) == false) && (puo_eseguire(Ruolo.GESTIONALE))){
             if(subordinati.contains(dipedente))
                 subordinati.remove(dipedente);
         }
+        return ErrorType.NESSUN_ERRORE;
     }
 
-    public void modifica_ruolo_dipente(Dipedente dipedente,Ruolo ruolo){
+    public ErrorType modifica_ruolo_dipente(Dipedente dipedente,Ruolo ruolo){
+        if(ruolo.ordinal() < Ruolo.MANAGER.ordinal())
+            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+
         if((dipedente.equals(dipedente) == false) && (puo_eseguire(Ruolo.MANAGER))){
             if(subordinati.contains(dipedente))
                 dipedente.ruolo = ruolo;
         }
+        return ErrorType.NESSUN_ERRORE;
     }
 
     //________________________________________________________________________________________________________________________________________________
     //Gestione Ristorante
 
-    public void modica_risorante(String nome,String indirizzo,Ristorante ristorante){
+    public ErrorType modica_risorante(String nome,String indirizzo,Ristorante ristorante){
+        if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal())
+            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+
         ristorante.set_nome(nome);
         ristorante.set_inidirizzo(indirizzo);
+        return ErrorType.NESSUN_ERRORE;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -81,9 +89,18 @@ public class Dipedente extends Utente{
         }
     }
 
-    public void segnala_ordine_pronto_ritiro(Ordine ordine){
-        if((ordine.get_stato_ordine() == StatoOrdine.PREPARAZIONE) && (ordini.contains(ordine)))
-            ordine.set_stato_ordine(StatoOrdine.PRONTO_RITIRO);
+    public void rimuovi_rider_proposto(Ordine ordine,Rider rider){
+        if(ordini.contains(ordine)){
+            ordine.get_rider_proposti().remove(rider);
+        }
+    }
+
+    public ErrorType segnala_ordine_pronto_ritiro(Ordine ordine){
+        if((ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE) && (ordini.contains(ordine) == false))
+            return ErrorType.INPUT_NON_VALIDO;
+
+        ordine.set_stato_ordine(StatoOrdine.PRONTO_RITIRO);
+        return ErrorType.NESSUN_ERRORE;
     }
 
     public void cancella_ordine(Ordine ordine) {

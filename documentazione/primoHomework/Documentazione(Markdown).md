@@ -1,4 +1,6 @@
 
+## Documentazione(Markdown)
+
 Il dominio scelto è quello della **ristorazione e della consegna a domicilio**. L'applicazione si
 pone come intermediaria tra i ristoratori, i clienti finali e i rider incaricati della consegna,
 orchestrando l'intero ciclo di vita di un ordine — dalla consultazione del menù fino alla
@@ -46,6 +48,6 @@ gli utenti che si registranno come rider dovranno specificare il loro mezzo di t
 - un ordine può contenere prodotti appartenti ad unico ristorante
 - il codice di autenticazione di un ristorante deve essere univoco
 - il codice di un ordine deve essere univoco
-- si guadagna un punto fedeltà con gli ordini maggiori uguali di 20 euro 
+- si guadagna un punto fedeltà con gli ordini maggiori uguali di 20 euro , con un limite massimo dello sconto del 15%
 
 Documentazione by DE1000319 (tiziano)

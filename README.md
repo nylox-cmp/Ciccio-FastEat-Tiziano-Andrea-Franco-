@@ -7,4 +7,4 @@
 
 ---
 
-per saperne di più sul proggetto vai nella cartella "documentazione" troverai la spiegazione del proggetto per ogni fase di proggettazione richiesta dal docente
+per più informazioni sul proggetto vai nella cartella "documentazioni", in cui ci sara la documentazione su ogni fase del proggetto suddivisso in homework.

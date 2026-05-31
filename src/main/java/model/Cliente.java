@@ -25,7 +25,7 @@ public class Cliente extends Utente{
 
     public void annulla_ordine(Ordine ordine){
         if (!ordini.contains(ordine)) {
-            if (ordine.get_stato_ordine().ordinal() <= StatoOrdine.CONSEGNATO.ordinal())
+            if (ordine.get_stato_ordine() == StatoOrdine.PREPARAZIONE)
                 ordine.set_stato_ordine(StatoOrdine.ANNULATO);
         }
     }

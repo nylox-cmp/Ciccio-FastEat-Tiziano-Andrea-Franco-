@@ -34,7 +34,7 @@ public class Dipedente extends Utente{
         return (ruolo.ordinal() <= ruolo_richiesto.ordinal());
     }
 
-    public ErrorType accetta_dipedente(Utente utente){
+    public ErrorType accetta_richiesta_assunzione(Utente utente){
         if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal())
             return ErrorType.PERMESSI_NON_SUFFICIENTI;
 
@@ -45,7 +45,11 @@ public class Dipedente extends Utente{
         return ErrorType.NESSUN_ERRORE;
     }
 
-    public ErrorType rimuovi_dipedenti(Dipedente dipedente){
+    public ErrorType rimuovi_richiesta_assunzione(Utente utente){
+        return ErrorType.NESSUN_ERRORE;
+    }
+
+    public ErrorType licenzia_dipedenti(Dipedente dipedente){
         if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal())
             return ErrorType.PERMESSI_NON_SUFFICIENTI;
 
@@ -79,6 +83,10 @@ public class Dipedente extends Utente{
         return ErrorType.NESSUN_ERRORE;
     }
 
+    public ErrorType cancella_ristorante(String nome,Ristorante ristorante){
+        return ErrorType.NESSUN_ERRORE;
+    }
+
     //________________________________________________________________________________________________________________________________________________
     //Gestione Ordine
 
@@ -89,7 +97,7 @@ public class Dipedente extends Utente{
         }
     }
 
-    public void rimuovi_rider_proposto(Ordine ordine,Rider rider){
+    public void rimuovi_rider(Ordine ordine,Rider rider){
         if(ordini.contains(ordine)){
             ordine.get_rider_proposti().remove(rider);
         }

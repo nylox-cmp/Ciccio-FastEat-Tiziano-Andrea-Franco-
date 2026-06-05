@@ -34,7 +34,7 @@ public class Ordine {
 
     @Override
     public String toString(){
-        String identificativo = get_codice_ordine() + " " + get_costo() + " " + get_data() + " " + get_ristorante();
+        String identificativo = get_codice_ordine() + " " + get_costo() + " " + get_data() + " "+ get_stato_ordine() + " " + get_ristorante() + " rider: " + get_rider().get_nickname();
         return identificativo;
     }
 

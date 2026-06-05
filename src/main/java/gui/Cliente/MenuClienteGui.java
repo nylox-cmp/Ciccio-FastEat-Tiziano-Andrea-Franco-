@@ -15,10 +15,11 @@ import java.awt.event.ActionListener;
 public class MenuClienteGui extends JPanel {
     private JPanel mainPanel;
     private JPanel topPanelClienti;
-    private JButton tornaIndietroButton;
     private JLabel infoMenuLabel;
-    private JList<Prodotto> prodottiLista;
     private JPanel bottomPanel;
+
+    private JButton tornaIndietroButton;
+    private JList<Prodotto> prodottiLista;
 
     public MenuClienteGui(MainGui mainGui, Ristorante ristorante,Menu menu){
         setLayout(new BorderLayout());
@@ -41,7 +42,8 @@ public class MenuClienteGui extends JPanel {
             public void valueChanged(ListSelectionEvent e) {
                 if(e.getValueIsAdjusting()) return;
                 Prodotto prodotto = prodottiLista.getSelectedValue();
-                mainGui.set_pagina(new ProdottoClienteGui(mainGui,ristorante,menu,prodotto));
+                if(prodotto != null)
+                    mainGui.set_pagina(new ProdottoClienteGui(mainGui,ristorante,menu,prodotto));
             }
         });
     }

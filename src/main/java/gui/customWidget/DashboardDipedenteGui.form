@@ -7,28 +7,40 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="5e2f8" binding="dashboardPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-        <constraints border-constraint="North"/>
+      <grid id="c08fe" binding="dashboardPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="6ba6f" class="javax.swing.JLabel" binding="tittoloLabel">
+          <component id="2d415" class="javax.swing.JLabel" binding="tittoloLabel">
             <constraints/>
             <properties>
               <text value="gestione"/>
             </properties>
           </component>
-          <component id="dfebe" class="javax.swing.JComboBox" binding="areaGestioneComboBox">
+          <component id="2d072" class="javax.swing.JComboBox" binding="areaGestioneComboBox">
             <constraints/>
-            <properties/>
+            <properties>
+              <model>
+                <item value="Ordini"/>
+                <item value="Ristorante"/>
+                <item value="Dipedenti"/>
+              </model>
+            </properties>
+          </component>
+          <component id="e4a39" class="javax.swing.JButton" binding="tornaIndietroButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="torna indietro"/>
+            </properties>
+          </component>
+          <component id="3a14c" class="javax.swing.JButton" binding="apriButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="apri"/>
+            </properties>
           </component>
         </children>
-      </grid>
-      <grid id="5a1af" binding="placeholderPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="Center"/>
-        <properties/>
-        <border type="none"/>
-        <children/>
       </grid>
     </children>
   </grid>

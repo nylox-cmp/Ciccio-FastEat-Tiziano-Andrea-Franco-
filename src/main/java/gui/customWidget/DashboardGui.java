@@ -1,5 +1,6 @@
 package gui.customWidget;
 
+import exception.ErrorType;
 import gui.Autenticazione.LoginGui;
 import gui.Cliente.ClienteGui;
 import gui.Cliente.OrdiniClientiGui;
@@ -16,13 +17,12 @@ import java.awt.event.ActionListener;
 
 public class DashboardGui extends JPanel {
     private JPanel mainPanel;
-    private JPanel dashboardPanel;
     private JButton areaClientiButton;
     private JButton areaRiderButton;
     private JButton areaDipedentiButton;
     private JButton areaOrdiniButton;
     private JButton logoutButton;
-    protected JPanel placeholderPanel;
+    private JPanel dashboardPanel;
 
     public DashboardGui(MainGui mainGui){
         setLayout(new BorderLayout());
@@ -71,6 +71,10 @@ public class DashboardGui extends JPanel {
         areaOrdiniButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(mainGui.get_rider_controller().utente_is_rider() == false){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 mainGui.set_pagina(new OrdiniRiderGui(mainGui));
             }
         });
@@ -80,6 +84,10 @@ public class DashboardGui extends JPanel {
         areaOrdiniButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(mainGui.get_dipedente_controller().utente_is_dipedente() == false){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
             }
         });

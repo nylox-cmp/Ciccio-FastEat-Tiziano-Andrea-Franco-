@@ -2,13 +2,14 @@ package gui.Dipedente;
 
 import gui.MainGui;
 import gui.customWidget.DashboardGui;
+import model.Ristorante;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MenuDipedentiGui extends JPanel {
 
-    public MenuDipedentiGui(MainGui mainGui){
+    public MenuDipedentiGui(MainGui mainGui, Ristorante ristorante,Menu menu){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
         DashboardGui dashboardGui = new DashboardGui(mainGui);

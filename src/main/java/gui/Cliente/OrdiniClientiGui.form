@@ -7,26 +7,26 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="7f8b1" binding="BottomPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="7f8b1" binding="bottomPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="9d9ef" binding="OrdiniPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+          <grid id="9d9ef" binding="ordiniPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none" title="Ordini "/>
             <children>
-              <grid id="a26c7" binding="ButtonPanelCliente" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="a26c7" binding="buttonPanelCliente" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints border-constraint="South"/>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="53dfe" binding="ConsegnaPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                  <grid id="53dfe" binding="consegnaPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -47,7 +47,7 @@
                       </component>
                     </children>
                   </grid>
-                  <grid id="9ae61" binding="PuntiFedeltaPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                  <grid id="9ae61" binding="puntiFedeltaPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -57,28 +57,22 @@
                       <component id="9a483" class="javax.swing.JLabel" binding="puntiFedeltaLabel">
                         <constraints/>
                         <properties>
-                          <text value="Puniti fedelta posseduti : 0"/>
+                          <text value="Puniti fedelta posseduti : "/>
                         </properties>
                       </component>
-                      <component id="99aa8" class="javax.swing.JButton" binding="DiminuisciButton">
-                        <constraints/>
-                        <properties>
-                          <text value="-"/>
-                        </properties>
-                      </component>
-                      <component id="f6c4b" class="javax.swing.JLabel" binding="QuantitaLabel">
+                      <component id="f6c4b" class="javax.swing.JLabel" binding="quantitaLabel">
                         <constraints/>
                         <properties>
                           <text value="0"/>
                         </properties>
                       </component>
-                      <component id="5eaf2" class="javax.swing.JButton" binding="AggiungiButton">
+                      <component id="50ec9" class="javax.swing.JTextField" binding="puntiFedeltaTextField">
                         <constraints/>
                         <properties>
-                          <text value="+"/>
+                          <columns value="10"/>
                         </properties>
                       </component>
-                      <component id="2b4c6" class="javax.swing.JButton" binding="ApplicaScontoButton">
+                      <component id="2b4c6" class="javax.swing.JButton" binding="applicaScontoButton">
                         <constraints/>
                         <properties>
                           <text value="Applica sconto"/>
@@ -88,20 +82,20 @@
                   </grid>
                 </children>
               </grid>
-              <component id="a7e41" class="javax.swing.JList" binding="OrdiniClientiLista">
+              <component id="a7e41" class="javax.swing.JList" binding="ordiniLista">
                 <constraints border-constraint="Center"/>
                 <properties/>
               </component>
             </children>
           </grid>
-          <grid id="7f9c7" binding="ContenutoOrdinePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+          <grid id="7f9c7" binding="contenutoOrdinePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none" title="Cotenuto Ordine"/>
             <children>
-              <component id="73f25" class="javax.swing.JList" binding="ContenutoOrdineLista">
+              <component id="73f25" class="javax.swing.JList" binding="contenutoOrdineLista">
                 <constraints border-constraint="Center"/>
                 <properties/>
               </component>

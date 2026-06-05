@@ -7,48 +7,42 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="fec69" binding="dashboardPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-        <constraints border-constraint="North"/>
+      <grid id="3a976" binding="dashboardPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="e0be" class="javax.swing.JButton" binding="areaClientiButton" default-binding="true">
+          <component id="9d0ff" class="javax.swing.JButton" binding="areaClientiButton" default-binding="true">
             <constraints/>
             <properties>
               <text value="Area Clienti"/>
             </properties>
           </component>
-          <component id="37b59" class="javax.swing.JButton" binding="areaRiderButton" default-binding="true">
+          <component id="66281" class="javax.swing.JButton" binding="areaRiderButton" default-binding="true">
             <constraints/>
             <properties>
               <text value="Area Rider"/>
             </properties>
           </component>
-          <component id="26377" class="javax.swing.JButton" binding="areaDipedentiButton" default-binding="true">
+          <component id="1bb2f" class="javax.swing.JButton" binding="areaDipedentiButton" default-binding="true">
             <constraints/>
             <properties>
               <text value="Area Dipedenti"/>
             </properties>
           </component>
-          <component id="ce9bb" class="javax.swing.JButton" binding="areaOrdiniButton" default-binding="true">
+          <component id="c1c17" class="javax.swing.JButton" binding="areaOrdiniButton" default-binding="true">
             <constraints/>
             <properties>
               <text value="Area Ordini"/>
             </properties>
           </component>
-          <component id="6fe98" class="javax.swing.JButton" binding="logoutButton" default-binding="true">
+          <component id="80bfb" class="javax.swing.JButton" binding="logoutButton" default-binding="true">
             <constraints/>
             <properties>
               <text value="Logout"/>
             </properties>
           </component>
         </children>
-      </grid>
-      <grid id="dd86" binding="placeholderPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="Center"/>
-        <properties/>
-        <border type="none"/>
-        <children/>
       </grid>
     </children>
   </grid>

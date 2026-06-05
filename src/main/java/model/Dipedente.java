@@ -99,7 +99,7 @@ public class Dipedente extends Utente{
         }
     }
 
-    public void rimuovi_rider(Ordine ordine,Rider rider){
+    public void rifiuta_rider(Ordine ordine,Rider rider){
         if(ristorante.get_ordini().contains(ordine)){
             ordine.get_rider_proposti().remove(rider);
         }

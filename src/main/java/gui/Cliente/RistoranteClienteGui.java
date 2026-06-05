@@ -15,6 +15,7 @@ public class RistoranteClienteGui extends JPanel {
     private JPanel mainPanel;
     private JPanel BottomPanel;
     private JPanel topPanelClienti;
+
     private JButton tornaIndietroClientiButton;
     private JLabel infoRistoranteClienteLabel;
     private JList<Menu> menuClientiLista;
@@ -40,9 +41,9 @@ public class RistoranteClienteGui extends JPanel {
             public void valueChanged(ListSelectionEvent e) {
                 if(e.getValueIsAdjusting()) return;
                 Menu menu = menuClientiLista.getSelectedValue();
-                mainGui.set_pagina(new MenuClienteGui(mainGui,ristorante,menu));
+                if(menu != null)
+                    mainGui.set_pagina(new MenuClienteGui(mainGui,ristorante,menu));
             }
         });
-
     }
 }

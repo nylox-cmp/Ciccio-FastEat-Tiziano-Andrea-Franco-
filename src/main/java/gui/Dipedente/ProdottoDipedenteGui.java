@@ -2,6 +2,8 @@ package gui.Dipedente;
 
 import gui.MainGui;
 import gui.customWidget.DashboardGui;
+import model.Prodotto;
+import model.Ristorante;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +22,7 @@ public class ProdottoDipedenteGui extends JPanel {
     private JButton modificaButton;
     private JButton cancellaProdottoButton;
 
-    public ProdottoDipedenteGui(MainGui mainGui){
+    public ProdottoDipedenteGui(MainGui mainGui, Ristorante ristorante, Menu menu, Prodotto prodotto){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
         DashboardGui dashboardGui = new DashboardGui(mainGui);

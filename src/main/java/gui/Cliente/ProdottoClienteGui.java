@@ -1,6 +1,7 @@
 package gui.Cliente;
 
 import exception.ErrorType;
+import model.Ordine;
 import model.Prodotto;
 import gui.MainGui;
 import gui.customWidget.DashboardGui;
@@ -31,7 +32,7 @@ public class ProdottoClienteGui extends JPanel {
     private JLabel indirizzoLabel;
 
     private JTextField indirizzoTextField;
-    private JComboBox ordiniComboBox;
+    private JComboBox<Ordine> ordiniComboBox;
     private JButton rimuoviDalOrdineButton;
 
     public ProdottoClienteGui(MainGui mainGui, Ristorante ristorante, Menu menu, Prodotto prodotto){
@@ -40,6 +41,8 @@ public class ProdottoClienteGui extends JPanel {
         DashboardGui dashboardGui = new DashboardGui(mainGui);
         add(dashboardGui, BorderLayout.NORTH);
         dashboardGui.aggiungi_action_ordini_cliente(mainGui);
+
+        indirizzoLabel.setText(prodotto.toString());
 
         tornaIndietroClienteButton.addActionListener(new ActionListener() {
             @Override
@@ -80,7 +83,26 @@ public class ProdottoClienteGui extends JPanel {
         aggiungiAllOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Object obj = ordiniComboBox.getSelectedItem();
+                if(obj == null){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Ordine ordine = (Ordine) obj;
+                mainGui.get_ordine_controller().aggiungi_riga(ordine,prodotto);
+            }
+        });
 
+        rimuoviDalOrdineButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object obj = ordiniComboBox.getSelectedItem();
+                if(obj == null){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Ordine ordine = (Ordine) obj;
+                mainGui.get_ordine_controller().rimuovi_riga(ordine,riga_ordine);
             }
         });
     }

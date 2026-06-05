@@ -46,11 +46,16 @@ public class DipedenteController {
     public void accetta_rider(Ordine ordine,Rider rider){
         dipedente.accetta_rider(ordine,rider);
     }
+
+    public void rifiuta_rider(Ordine orine,Rider rider){
+        dipedente.rifiuta_rider(orine,rider);
+    }
+
     public ErrorType segnala_ordine_pronto_ritiro(Ordine ordine){
         return dipedente.segnala_ordine_pronto_ritiro(ordine);
     }
 
-    public void cancella_ordine(Ordine ordine){
+    public void anulla_ordine(Ordine ordine){
         dipedente.cancella_ordine(ordine);
     }
 

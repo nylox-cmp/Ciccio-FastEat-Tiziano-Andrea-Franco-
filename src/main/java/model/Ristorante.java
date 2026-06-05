@@ -9,9 +9,10 @@ import java.util.UUID;
 public class Ristorante {
     private String nome;
     private String indirizzo;
-    private String codice_autenticazione; //Unique ReadOnly
+    private String codice_autenticazione;
     private ArrayList<Dipedente> dipedenti;
     private ArrayList<Menu> menu;
+    private ArrayList<Ordine> ordini;
 
     private ArrayList<Dipedente> dipendenti;
     private ArrayList<Utente> richieste_assunzione;
@@ -67,11 +68,15 @@ public class Ristorante {
     public ArrayList<Menu> get_menu(){ return menu; }
     public void set_menu(ArrayList<Menu> menu){ this.menu = menu; }
 
+    public ArrayList<Ordine> get_ordini() { return ordini; }
+    public void set_ordini(ArrayList<Ordine> ordini) { this.ordini = ordini; }
+
     public ArrayList<Utente> get_richieste_assunzioni(){ return richieste_assunzione; }
     public void set_richieste_assunzioni(ArrayList<Utente> richieste_assunzione){ this.richieste_assunzione = richieste_assunzione; }
 
     public String get_codice_autenticazione(){
         return codice_autenticazione;
     }
+    public void set_codice_autenticazione(String codice_autenticazione){this.codice_autenticazione = codice_autenticazione;}
 
 }

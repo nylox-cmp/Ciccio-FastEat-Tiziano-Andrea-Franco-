@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.Cliente.ProdottoClienteGui">
+  <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="843" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="d441" binding="bottomPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="7c032" binding="topPanelClienti" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints border-constraint="North"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="52d77" class="javax.swing.JButton" binding="tornaIndietroClienteButton">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Torna Indietro"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="87fbe" class="javax.swing.JLabel" binding="infoPrdottoClienteLabel">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Nome + Prezzo "/>
+            </properties>
+          </component>
+          <grid id="e9984" binding="clientiButtonPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints border-constraint="South"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="33351" binding="quantitaButtonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="99c3" class="javax.swing.JButton" binding="diminuisciQuantitaButton">
+                    <constraints/>
+                    <properties>
+                      <text value="-"/>
+                    </properties>
+                  </component>
+                  <component id="4b41b" class="javax.swing.JLabel" binding="labelQuantita">
+                    <constraints/>
+                    <properties>
+                      <text value="0"/>
+                    </properties>
+                  </component>
+                  <component id="f213b" class="javax.swing.JButton" binding="aumentaQuantitaButton">
+                    <constraints/>
+                    <properties>
+                      <text value="+"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="4d528" binding="ordinmeButtonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="3797b" class="javax.swing.JLabel" binding="indirizzoLabel">
+                    <constraints/>
+                    <properties>
+                      <text value="indirizzo"/>
+                    </properties>
+                  </component>
+                  <component id="4687e" class="javax.swing.JTextField" binding="indirizzoTextField">
+                    <constraints/>
+                    <properties>
+                      <columns value="10"/>
+                    </properties>
+                  </component>
+                  <component id="17385" class="javax.swing.JButton" binding="creaOrdineButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <preferredSize width="105" height="34"/>
+                      <text value="crea ordine"/>
+                    </properties>
+                  </component>
+                  <component id="3fb72" class="javax.swing.JComboBox" binding="ordiniComboBox">
+                    <constraints/>
+                    <properties>
+                      <minimumSize width="300" height="30"/>
+                    </properties>
+                  </component>
+                  <component id="b60cc" class="javax.swing.JButton" binding="aggiungiAllOrdineButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <text value="Aggiungi all'ordine"/>
+                    </properties>
+                  </component>
+                  <component id="4158" class="javax.swing.JButton" binding="rimuoviDalOrdineButton">
+                    <constraints/>
+                    <properties>
+                      <text value="rimuovi dal ordine&#10;"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

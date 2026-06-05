@@ -22,7 +22,7 @@ public class UtenteController {
         return ErrorType.NESSUN_ERRORE;
     }
 
-    public ErrorType sing_in(String email,String password,String nickname,String nome,String cognome){
+    public ErrorType sign_in(String email,String password,String nickname,String nome,String cognome){
         this.utente = new Utente(email,password,nickname,nome,cognome);
         return ErrorType.NESSUN_ERRORE;
     }

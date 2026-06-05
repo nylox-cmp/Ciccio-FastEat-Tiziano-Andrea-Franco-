@@ -26,13 +26,18 @@ public class DipedenteController {
     //________________________________________________________________________________________________________________________________________________
     // Operazioni Dipedente
 
-    public ErrorType accetta_dipedente(Utente utente) {
-        return  dipedente.accetta_dipedente(utente);
+    public ErrorType accetta_richiesta_assunzione(Utente utente) {
+        return  dipedente.accetta_richiesta_assunzione(utente);
     }
 
-    public ErrorType rimuovi_dipedente(Dipedente dipedente){
-        return dipedente.rimuovi_dipedenti(dipedente);
+    public ErrorType licenzia_dipedente(Dipedente dipedente){
+        return dipedente.licenzia_dipedenti(dipedente);
     }
+
+    public ErrorType rimuovi_richiesta_assunzione(Utente utente){
+        return dipedente.rimuovi_richiesta_assunzione(utente);
+    }
+
 
     public ErrorType modifica_ruolo_dipedente(Dipedente dipedente,Ruolo ruolo){
         return dipedente.modifica_ruolo_dipente(dipedente,ruolo);

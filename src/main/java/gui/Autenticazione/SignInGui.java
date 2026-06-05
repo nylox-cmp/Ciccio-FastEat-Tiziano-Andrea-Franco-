@@ -1,0 +1,62 @@
+package gui.Autenticazione;
+
+import controller.UtenteController;
+import exception.*;
+import gui.Cliente.ClienteGui;
+import gui.MainGui;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class SignInGui extends JPanel{
+    private JPanel mainPanel;
+    private JPanel buttonPanel;
+    private JButton registratiButton;
+    private JPanel textFieldPanel;
+    private JLabel nomeLabel;
+    private JLabel cognomeLabel;
+    private JTextField nomeTextField;
+    private JLabel nicknameLabel;
+    private JLabel emailLabel;
+    private JLabel passwordLabel;
+    private JTextField cognomeTextField;
+    private JTextField nicknameTextField;
+    private JTextField emailTextField;
+    private JPasswordField passwordTextField;
+    private JLabel tittoloLabel;
+    private JButton accediButton;
+
+
+    public SignInGui(MainGui mainGui){
+        setLayout(new BorderLayout());
+        add(mainPanel,BorderLayout.CENTER);
+
+        registratiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nome = nomeTextField.getText();
+                String cognome = cognomeTextField.getText();
+                String nickname = nicknameTextField.getText();
+                String email = emailTextField.getText();
+                String password = passwordTextField.getText();
+
+                mainGui.set_utente_controller(new UtenteController());
+                ErrorType error = mainGui.get_utente_controller().sign_in(email,password,nickname,nome, cognome);
+                if(error != ErrorType.NESSUN_ERRORE) {
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                mainGui.set_pagina(new ClienteGui(mainGui));
+            }
+        });
+
+        accediButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainGui.set_pagina(new LoginGui(mainGui));
+            }
+        });
+    }
+}

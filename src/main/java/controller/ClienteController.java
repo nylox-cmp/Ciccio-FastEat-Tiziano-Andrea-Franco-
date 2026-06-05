@@ -13,8 +13,8 @@ public class ClienteController {
     //________________________________________________________________________________________________________________________________________________
     //
 
-    public void crea_ordine(String indirizzo){
-        Ordine ordine = cliente.crea_ordine(indirizzo);
+    public void crea_ordine(String indirizzo,Ristorante ristorante){
+        Ordine ordine = cliente.crea_ordine(indirizzo,ristorante);
     }
 
     public void annulla_ordine(Ordine ordine){

@@ -9,8 +9,6 @@ public class Dipedente extends Utente{
     private ArrayList<Dipedente> superiori;
     private Ruolo ruolo;
     private Ristorante ristorante;
-    private ArrayList<Ordine> ordini;
-
 
     public Dipedente(Utente utente, Ruolo ruolo,Ristorante ristorante) {
         super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
@@ -46,6 +44,8 @@ public class Dipedente extends Utente{
     }
 
     public ErrorType rimuovi_richiesta_assunzione(Utente utente){
+        if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal()) return ErrorType.PERMESSI_NON_SUFFICIENTI;
+        ristorante.get_richieste_assunzioni().remove(utente);
         return ErrorType.NESSUN_ERRORE;
     }
 
@@ -84,6 +84,8 @@ public class Dipedente extends Utente{
     }
 
     public ErrorType cancella_ristorante(String nome,Ristorante ristorante){
+        if(ruolo != Ruolo.MANAGER) return  ErrorType.PERMESSI_NON_SUFFICIENTI;
+
         return ErrorType.NESSUN_ERRORE;
     }
 
@@ -91,20 +93,20 @@ public class Dipedente extends Utente{
     //Gestione Ordine
 
     public void accetta_rider(Ordine ordine,Rider rider){
-        if(ordini.contains(ordine)){
+        if(ristorante.get_ordini().contains(ordine)){
             if(ordine.get_rider_proposti().contains(rider))
                 ordine.set_rider(rider);
         }
     }
 
     public void rimuovi_rider(Ordine ordine,Rider rider){
-        if(ordini.contains(ordine)){
+        if(ristorante.get_ordini().contains(ordine)){
             ordine.get_rider_proposti().remove(rider);
         }
     }
 
     public ErrorType segnala_ordine_pronto_ritiro(Ordine ordine){
-        if((ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE) && (ordini.contains(ordine) == false))
+        if((ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE) && (ristorante.get_ordini().contains(ordine) == false))
             return ErrorType.INPUT_NON_VALIDO;
 
         ordine.set_stato_ordine(StatoOrdine.PRONTO_RITIRO);
@@ -112,7 +114,7 @@ public class Dipedente extends Utente{
     }
 
     public void cancella_ordine(Ordine ordine) {
-        if (ordini.contains(ordine))
+        if (ristorante.get_ordini().contains(ordine))
             ordine.set_stato_ordine(StatoOrdine.ANNULATO);
     }
 
@@ -131,6 +133,5 @@ public class Dipedente extends Utente{
     public Ristorante get_ristorante() { return ristorante; }
     public void set_ristorante(Ristorante ristorante) { this.ristorante = ristorante; }
 
-    public ArrayList<Ordine> get_ordini() { return ordini; }
-    public void set_ordini(ArrayList<Ordine> ordini) { this.ordini = ordini; }
+
 }

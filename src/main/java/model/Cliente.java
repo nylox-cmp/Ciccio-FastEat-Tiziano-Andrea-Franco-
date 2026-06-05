@@ -16,8 +16,8 @@ public class Cliente extends Utente{
     //________________________________________________________________________________________________________________________________________________
     //Gestione Ordini
 
-    public Ordine crea_ordine(String indirizzo){
-        Ordine ordine = new Ordine(indirizzo);
+    public Ordine crea_ordine(String indirizzo,Ristorante ristorante){
+        Ordine ordine = new Ordine(indirizzo,ristorante);
         ordine.set_indirizzo(indirizzo);
         this.ordini.add(ordine);
         return ordine;

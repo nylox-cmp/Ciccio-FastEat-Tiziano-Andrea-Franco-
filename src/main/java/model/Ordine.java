@@ -5,27 +5,28 @@ import java.time.*;
 import java.util.ArrayList;
 
 public class Ordine {
-    private String codice_ordine; //Unique ReadOnly
+    private String codice_ordine;
     private double costo;
     private StatoOrdine stato_ordine;
     private String indirizzo;
-    private LocalDate data; //ReadOnly
+    private LocalDate data;
 
     private ArrayList<Rider> rider_proposti;
-    private Rider rider;
     private ArrayList<RigaOrdine> righe_ordine;
+    private Ristorante ristorante;
+    private Rider rider;
 
     public static final double MIN_COSTO_ORDINE_PER_PUNTI = 20.0;
     public static final int MAX_PUNTI_FEDELTA_SCONTO = 15;
 
-    public Ordine(String indirizzo){
+    public Ordine(String indirizzo,Ristorante ristorante){
         this.codice_ordine = Ristorante.genera_codice_univoco();
         this.data = LocalDate.now();
         this.stato_ordine = StatoOrdine.PREPARAZIONE;
         this.costo = 0.0;
         this.indirizzo = indirizzo;
-        this.rider_proposti = new ArrayList<>();
-        this.righe_ordine = new ArrayList<>();
+        this.rider_proposti = new ArrayList<Rider>();
+        this.righe_ordine = new ArrayList<RigaOrdine>();
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -33,7 +34,7 @@ public class Ordine {
 
     @Override
     public String toString(){
-        String identificativo = get_codice_ordine() + " " + get_costo() + " " + get_data();
+        String identificativo = get_codice_ordine() + " " + get_costo() + " " + get_data() + " " + get_ristorante();
         return identificativo;
     }
 
@@ -70,6 +71,14 @@ public class Ordine {
 
     //________________________________________________________________________________________________________________________________________________
     // Get and Set
+
+    public String get_codice_ordine() {
+        return codice_ordine;
+    }
+    public void set_codice_ordine(String codice_ordine){ this.codice_ordine = codice_ordine; }
+
+    public LocalDate get_data() { return data; }
+    public void set_data(LocalDate data){ this.data = data;}
 
     public double get_costo() {
         return costo;
@@ -114,10 +123,6 @@ public class Ordine {
         calcola_costo_ordine();
     }
 
-    public LocalDate get_data() {
-        return data;
-    }
-    public String get_codice_ordine() {
-        return codice_ordine;
-    }
+    public Ristorante get_ristorante(){ return ristorante; }
+    public void set_ristorante(Ristorante ristorante){ this.ristorante = ristorante;}
 }

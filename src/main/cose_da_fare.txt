@@ -1,0 +1,5 @@
+sistemare le classi model dipedente e di conseguenza il controller
+corregere gli errori grammaticali sparsi nel codice e rendere corente la scleta della lingua e rendere il codice stilistamente corente e ordinato , fare la dashboardDipedenti,
+
+collagare l'ordine al ristorante e non al dipedente
+creare dei costruttori che mi permettano di caricare i dati all'interno della classi model Ordine, RigaOrdine

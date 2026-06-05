@@ -92,4 +92,15 @@ public class DashboardDipedenteGui extends JPanel{
         });
     }
 
+    public void aggiungi_pulsanti_prodotto(MainGui mainGui,Ristorante ristorante,Menu menu){
+        tornaIndietroButton.setVisible(true);
+
+        tornaIndietroButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainGui.set_pagina(new MenuDipedentiGui(mainGui,ristorante,menu));
+            }
+        });
+    }
+
     }

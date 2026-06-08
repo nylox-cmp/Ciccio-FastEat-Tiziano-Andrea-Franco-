@@ -11,8 +11,8 @@ public class Ordine {
     private String indirizzo;
     private LocalDate data;
 
-    private ArrayList<Rider> rider_proposti;
-    private ArrayList<RigaOrdine> righe_ordine;
+    private ArrayList<Rider> rider_proposti = new ArrayList<Rider>();
+    private ArrayList<RigaOrdine> righe_ordine = new ArrayList<RigaOrdine>();
     private Ristorante ristorante;
     private Rider rider;
 

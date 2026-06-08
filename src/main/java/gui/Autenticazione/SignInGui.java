@@ -13,21 +13,26 @@ import java.awt.event.ActionListener;
 public class SignInGui extends JPanel{
     private JPanel mainPanel;
     private JPanel buttonPanel;
-    private JButton registratiButton;
-    private JPanel textFieldPanel;
-    private JLabel nomeLabel;
-    private JLabel cognomeLabel;
-    private JTextField nomeTextField;
-    private JLabel nicknameLabel;
+    private JPanel singInPanel;
+
+    private JLabel tittoloLabel;
     private JLabel emailLabel;
     private JLabel passwordLabel;
+    private JLabel nicknameLabel;
+    private JLabel nomeLabel;
+    private JLabel cognomeLabel;
+
+    private JTextField nomeTextField;
     private JTextField cognomeTextField;
     private JTextField nicknameTextField;
     private JTextField emailTextField;
     private JPasswordField passwordTextField;
-    private JLabel tittoloLabel;
-    private JButton accediButton;
 
+    private JButton accediButton;
+    private JButton registratiButton;
+
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
 
     public SignInGui(MainGui mainGui){
         setLayout(new BorderLayout());
@@ -41,6 +46,11 @@ public class SignInGui extends JPanel{
                 String nickname = nicknameTextField.getText();
                 String email = emailTextField.getText();
                 String password = passwordTextField.getText();
+
+                if( nome.isEmpty() || cognome.isEmpty() || nickname.isEmpty() || email.isEmpty() || password.isEmpty()){
+                    JOptionPane.showMessageDialog(mainPanel,ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),"Error",JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 mainGui.set_utente_controller(new UtenteController());
                 ErrorType error = mainGui.get_utente_controller().sign_in(email,password,nickname,nome, cognome);

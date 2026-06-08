@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Rider extends Utente{
     public String mezzo_trasporto;
-    public ArrayList<Ordine> ordini;
+    public ArrayList<Ordine> ordini = new ArrayList<Ordine>();
 
     public Rider(Utente utente,String mezzo_trasporto) {
         super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());

@@ -1,8 +1,0 @@
-sistemare le classi model dipedente e di conseguenza il controller
-corregere gli errori grammaticali sparsi nel codice e rendere corente la scleta della lingua e rendere il codice stilistamente corente e ordinato , fare la dashboardDipedenti,
-
-collagare l'ordine al ristorante e non al dipedente
-creare dei costruttori che mi permettano di caricare i dati all'interno della classi model Ordine, RigaOrdine
-
-scrivere in futuro i metodi di prodotto per caricare gli ordini del cliente nella combox, scrivere un metodo per poter prendere i punti fedelta negli ordini,
-metodo per caricare il cotenuto ordine cliente, mostrare contenuto ordine a OrdineRiderGui

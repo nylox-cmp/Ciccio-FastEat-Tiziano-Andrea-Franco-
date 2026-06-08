@@ -19,16 +19,19 @@ public class MenuClienteGui extends JPanel {
     private JPanel bottomPanel;
 
     private JButton tornaIndietroButton;
+    private DefaultListModel<Prodotto> prodottoListModel = new DefaultListModel<Prodotto>();
     private JList<Prodotto> prodottiLista;
+
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
 
     public MenuClienteGui(MainGui mainGui, Ristorante ristorante,Menu menu){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
-        DashboardGui dashboardGui = new DashboardGui(mainGui);
-        add(dashboardGui, BorderLayout.NORTH);
-        dashboardGui.aggiungi_action_ordini_cliente(mainGui);
+
 
         infoMenuLabel.setText(menu.toString());
+        prodottiLista.setModel(prodottoListModel);
 
         tornaIndietroButton.addActionListener(new ActionListener() {
             @Override
@@ -47,4 +50,8 @@ public class MenuClienteGui extends JPanel {
             }
         });
     }
+
+    //________________________________________________________________________________________________________________________________________________
+
+
 }

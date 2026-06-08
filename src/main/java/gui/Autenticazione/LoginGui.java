@@ -22,6 +22,9 @@ public class LoginGui extends JPanel {
     private JPasswordField passwordPasswordField;
     private JLabel tittoloLabel;
 
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
+
     public LoginGui(MainGui mainGui){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
@@ -31,6 +34,11 @@ public class LoginGui extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String email = emailTextField.getText();
                 String password = emailTextField.getText();
+
+                if(email.isEmpty() || password.isEmpty()){
+                    JOptionPane.showMessageDialog(mainPanel,ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),"Error",JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 mainGui.set_utente_controller(new UtenteController());
                 ErrorType error = mainGui.get_utente_controller().login(email, password);

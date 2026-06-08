@@ -14,18 +14,23 @@ import java.awt.*;
 
 public class ClienteGui extends JPanel {
     private JPanel mainPanel;
+
+    private DefaultListModel<Ristorante> ristoranteListModel = new DefaultListModel<Ristorante>();
     private JList<Ristorante> ristorantiLista;
+
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
 
     public ClienteGui(MainGui mainGui){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        DashboardGui dashboardGui = new DashboardGui(mainGui);
-        add(dashboardGui, BorderLayout.NORTH);
-        dashboardGui.aggiungi_action_ordini_cliente(mainGui);
-        mainGui.set_cliente_contrller(new ClienteController());
+        mainGui.mostra_dashboard();
+        mainGui.set_dashboardGui(new DashboardGui(mainGui));
+        mainGui.get_dashboardGui().mostra_area_ordini();
+        mainGui.get_dashboardGui().aggiorna_nickname_label(mainGui);
 
-
+        ristorantiLista.setModel(ristoranteListModel);
 
         ristorantiLista.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -35,6 +40,12 @@ public class ClienteGui extends JPanel {
                 mainGui.set_pagina(new RistoranteClienteGui(mainGui,ristorante));
             }
         });
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+
+    public void aggiorna_lista_ristoranti(){
+
     }
 }
 

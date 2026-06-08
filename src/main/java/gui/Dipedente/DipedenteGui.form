@@ -4,10 +4,12 @@
     <constraints>
       <xy x="20" y="20" width="1260" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <foreground color="-2500135"/>
+    </properties>
     <border type="none"/>
     <children>
-      <grid id="2f8a6" binding="BottomPanel" layout-manager="FormLayout">
+      <grid id="2f8a6" binding="bottomPanel" layout-manager="FormLayout">
         <rowspec value="center:d:noGrow"/>
         <rowspec value="top:4dlu:noGrow"/>
         <rowspec value="center:max(d;4px):noGrow"/>
@@ -15,7 +17,9 @@
         <rowspec value="center:max(d;4px):noGrow"/>
         <colspec value="fill:d:grow"/>
         <constraints border-constraint="Center"/>
-        <properties/>
+        <properties>
+          <background color="-262657"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="3c09c" class="javax.swing.JLabel" binding="tittoloLabel">
@@ -24,7 +28,9 @@
               <forms/>
             </constraints>
             <properties>
+              <background color="-262657"/>
               <font size="16" style="1"/>
+              <foreground color="-3187658"/>
               <horizontalAlignment value="0"/>
               <text value="non sei ancora un dipedente,effettua la registrazione del ristorante o tramite il codice di autenticazione del ristorante richiedi di diventare dipedente"/>
             </properties>
@@ -34,36 +40,47 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-262657"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="1b94f" class="javax.swing.JLabel" binding="nomeLabel">
                 <constraints/>
                 <properties>
+                  <foreground color="-16448233"/>
                   <text value="nome ristorante"/>
                 </properties>
               </component>
               <component id="1ca6e" class="javax.swing.JTextField" binding="nomeTextField">
                 <constraints/>
                 <properties>
+                  <background color="-13881804"/>
                   <columns value="10"/>
+                  <foreground color="-262657"/>
                 </properties>
               </component>
               <component id="21341" class="javax.swing.JLabel" binding="indirizzoLabel">
                 <constraints/>
                 <properties>
+                  <foreground color="-16448233"/>
                   <text value="indirizzo"/>
                 </properties>
               </component>
               <component id="417e9" class="javax.swing.JTextField" binding="indirizzoTextField">
                 <constraints/>
                 <properties>
+                  <background color="-13881804"/>
                   <columns value="10"/>
+                  <foreground color="-262657"/>
                 </properties>
               </component>
-              <component id="7af30" class="javax.swing.JButton" binding="RegistraButton">
+              <component id="7af30" class="javax.swing.JButton" binding="registraButton">
                 <constraints/>
                 <properties>
+                  <background color="-13881804"/>
+                  <foreground color="-262657"/>
+                  <hideActionText value="false"/>
                   <text value="registra ristorante"/>
                 </properties>
               </component>
@@ -74,24 +91,31 @@
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-262657"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="2ba76" class="javax.swing.JLabel" binding="codiceAutenticazioneLabel">
                 <constraints/>
                 <properties>
+                  <foreground color="-16448233"/>
                   <text value="codice autenticazione"/>
                 </properties>
               </component>
               <component id="4dea8" class="javax.swing.JTextField" binding="codiceAutenticazioneTextField">
                 <constraints/>
                 <properties>
+                  <background color="-13881804"/>
                   <columns value="10"/>
+                  <foreground color="-262657"/>
                 </properties>
               </component>
               <component id="d6cd7" class="javax.swing.JButton" binding="richiestaDipedenteButton">
                 <constraints/>
                 <properties>
+                  <background color="-13881804"/>
+                  <foreground color="-262657"/>
                   <text value="richiedi di diventare dipedente"/>
                 </properties>
               </component>

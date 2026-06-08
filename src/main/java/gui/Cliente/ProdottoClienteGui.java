@@ -35,12 +35,13 @@ public class ProdottoClienteGui extends JPanel {
     private JComboBox<Ordine> ordiniComboBox;
     private JButton rimuoviDalOrdineButton;
 
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
+
     public ProdottoClienteGui(MainGui mainGui, Ristorante ristorante, Menu menu, Prodotto prodotto){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
-        DashboardGui dashboardGui = new DashboardGui(mainGui);
-        add(dashboardGui, BorderLayout.NORTH);
-        dashboardGui.aggiungi_action_ordini_cliente(mainGui);
+
 
         indirizzoLabel.setText(prodotto.toString());
 
@@ -106,4 +107,7 @@ public class ProdottoClienteGui extends JPanel {
             }
         });
     }
+
+    //________________________________________________________________________________________________________________________________________________
+
 }

@@ -11,8 +11,8 @@ public class Ristorante {
     private String indirizzo;
     private String codice_autenticazione;
     private ArrayList<Dipedente> dipedenti;
-    private ArrayList<Menu> menu;
-    private ArrayList<Ordine> ordini;
+    private ArrayList<Menu> menu = new ArrayList<Menu>();
+    private ArrayList<Ordine> ordini = new ArrayList<Ordine>();
 
     private ArrayList<Dipedente> dipendenti;
     private ArrayList<Utente> richieste_assunzione;
@@ -44,8 +44,8 @@ public class Ristorante {
         this.menu.add(menu);
     }
 
-    public void cancella_menu(Menu menu_eliminiare){
-        menu.remove(menu_eliminiare);
+    public void cancella_menu(Menu menu){
+        this.menu.remove(menu);
     }
 
     //________________________________________________________________________________________________________________________________________________

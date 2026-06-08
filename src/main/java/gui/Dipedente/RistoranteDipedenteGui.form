@@ -1,97 +1,182 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.Dipedente.RistoranteDipedenteGui">
-  <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+  <grid id="27dc6" binding="mainPanel" layout-manager="FormLayout">
+    <rowspec value="center:d:noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:d:grow"/>
+    <colspec value="fill:d:grow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:d:grow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:d:grow"/>
     <constraints>
-      <xy x="20" y="20" width="595" height="400"/>
+      <xy x="20" y="20" width="841" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-262657"/>
+      <enabled value="true"/>
+    </properties>
     <border type="none"/>
     <children>
-      <grid id="53c23" binding="BottomPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="Center"/>
-        <properties/>
+      <grid id="a004a" binding="infoPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <background color="-262657"/>
+        </properties>
         <border type="none"/>
         <children>
-          <grid id="dc330" binding="TopPanelDipedenti" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints border-constraint="North"/>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="f662f" class="javax.swing.JButton" binding="TornaIndietroDipedentiButton">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Torna Indietro"/>
-                </properties>
-              </component>
-              <component id="a0317" class="javax.swing.JLabel" binding="RistoranteInfoDipedentiLabel">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="nome + indirizzo + codice_autenticazione"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <grid id="9825b" binding="DipedentiPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-            <constraints border-constraint="Center"/>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <grid id="4aaca" binding="ModificaPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-                <constraints border-constraint="North"/>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <component id="4c495" class="javax.swing.JLabel" binding="NomeLabel">
-                    <constraints/>
-                    <properties>
-                      <text value="nome"/>
-                    </properties>
-                  </component>
-                  <component id="6b2b2" class="javax.swing.JTextField" binding="NomeTextField">
-                    <constraints/>
-                    <properties>
-                      <columns value="10"/>
-                    </properties>
-                  </component>
-                  <component id="3ee32" class="javax.swing.JLabel" binding="IndirizzoLabel">
-                    <constraints/>
-                    <properties>
-                      <text value="indirizzo"/>
-                    </properties>
-                  </component>
-                  <component id="cecef" class="javax.swing.JTextField" binding="IndirizzoTextField">
-                    <constraints/>
-                    <properties>
-                      <columns value="10"/>
-                    </properties>
-                  </component>
-                  <component id="8c960" class="javax.swing.JButton" binding="modificaButton" default-binding="true">
-                    <constraints/>
-                    <properties>
-                      <text value="Modifica"/>
-                    </properties>
-                  </component>
-                  <component id="4ca6c" class="javax.swing.JButton" binding="cancellaRistoranteButton">
-                    <constraints/>
-                    <properties>
-                      <text value="Cancella"/>
-                    </properties>
-                  </component>
-                </children>
-              </grid>
-              <component id="bb930" class="javax.swing.JList" binding="MenuDipedentiLista">
-                <constraints border-constraint="Center"/>
-                <properties/>
-              </component>
-            </children>
-          </grid>
+          <component id="240eb" class="javax.swing.JLabel" binding="infoRistoranteLabel">
+            <constraints/>
+            <properties>
+              <foreground color="-16448233"/>
+              <text value="nome + indirizzo + codice_autenticazione"/>
+            </properties>
+          </component>
         </children>
       </grid>
+      <grid id="f5c5a" binding="modificaRistorantePanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <background color="-262657"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="4e145" class="javax.swing.JLabel" binding="nomeRistoranteLabel">
+            <constraints/>
+            <properties>
+              <foreground color="-16448233"/>
+              <text value=" nome"/>
+            </properties>
+          </component>
+          <component id="362bd" class="javax.swing.JTextField" binding="nomeRistoranteTextField">
+            <constraints/>
+            <properties>
+              <background color="-13881804"/>
+              <columns value="10"/>
+              <foreground color="-262657"/>
+            </properties>
+          </component>
+          <component id="739cd" class="javax.swing.JLabel" binding="indirizzoLabel">
+            <constraints/>
+            <properties>
+              <foreground color="-16448233"/>
+              <text value="indirizzo"/>
+            </properties>
+          </component>
+          <component id="31f4d" class="javax.swing.JTextField" binding="indirizzoTextField">
+            <constraints/>
+            <properties>
+              <background color="-13881804"/>
+              <columns value="10"/>
+              <foreground color="-262657"/>
+            </properties>
+          </component>
+          <component id="5053d" class="javax.swing.JButton" binding="modificaRistoranteButton">
+            <constraints/>
+            <properties>
+              <background color="-13881804"/>
+              <foreground color="-262657"/>
+              <text value="modifica ristorante"/>
+            </properties>
+          </component>
+          <component id="3460a" class="javax.swing.JButton" binding="cancellaRistoranteButton">
+            <constraints/>
+            <properties>
+              <background color="-13881804"/>
+              <foreground color="-262657"/>
+              <text value="cancella ristorante"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="59fc0" binding="menuPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <background color="-262657"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="94b51" class="javax.swing.JLabel" binding="nomeMenuLabel">
+            <constraints/>
+            <properties>
+              <foreground color="-16448233"/>
+              <text value="nome"/>
+            </properties>
+          </component>
+          <component id="52f42" class="javax.swing.JTextField" binding="nomeMenuTextField">
+            <constraints/>
+            <properties>
+              <background color="-13881804"/>
+              <columns value="10"/>
+              <foreground color="-262657"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="9c8f9" class="javax.swing.JButton" binding="creaMenuButton">
+            <constraints/>
+            <properties>
+              <background color="-13881804"/>
+              <foreground color="-262657"/>
+              <text value="crea menu"/>
+            </properties>
+          </component>
+          <component id="98118" class="javax.swing.JButton" binding="cancellaMenuButton">
+            <constraints/>
+            <properties>
+              <background color="-13881804"/>
+              <foreground color="-262657"/>
+              <text value="cancella menu"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <hspacer id="858ea">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+      </hspacer>
+      <hspacer id="8a4f8">
+        <constraints>
+          <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+      </hspacer>
+      <scrollpane id="d52df" binding="menuJScrollPane">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties/>
+        <border type="etched" title="Menu">
+          <font/>
+          <title-color color="-16448233"/>
+        </border>
+        <children>
+          <component id="4e2c7" class="javax.swing.JList" binding="menuLista">
+            <constraints/>
+            <properties>
+              <background color="-2500135"/>
+              <enabled value="true"/>
+              <foreground color="-16448233"/>
+              <model/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
     </children>
   </grid>
 </form>

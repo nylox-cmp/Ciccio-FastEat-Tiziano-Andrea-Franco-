@@ -1,0 +1,7 @@
+
+cose da fare nel terzo homework: (pregare)
+
+1.non appena viene creato il database implementare i metodi con il quale raccogliere le liste di ordini_proposti per il rider e per il cliente per prendere i ristoranti i suoi menu e i suoi prodotti non appena aperti dal cliente e nel lato dei dipedenti dei metodi che caricaino i ristoranti e menu e i prodotti già creati
+2.creare dei costruttori delle classi model che permettano il caricamento dei dati che dovranno essere mostrati all'interno della gui e su cui i controller lavoreranno
+3.corregere gli errori grammaticali :C e dare i nomi ai ScrollPane all'interno delle classi gui dei clienti
+

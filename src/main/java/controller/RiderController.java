@@ -7,19 +7,12 @@ import java.util.ArrayList;
 
 
 public class RiderController {
-    private Rider rider; //ReadOnly (al di fuori della classe)
+    private Rider rider; 
     private UtenteController utente_controller;
 
 
-    //________________________________________________________________________________________________________________________________________________
-    //
-
-    public boolean utente_is_rider(){
-        return(utente_controller.dati_utente.get_rider() != null);
-    }
-
-    public void sing_in_rider(String mezzo_trasporto){
-        this.utente_controller.dati_utente.set_rider(utente_controller.get_utente(),mezzo_trasporto);
+    public RiderController(UtenteController utente_controller){
+        this.utente_controller = utente_controller;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -37,8 +30,8 @@ public class RiderController {
     // Get and set
 
     public Rider get_rider() { return rider; }
+    public void set_rider(Rider rider){ this.rider = rider;}
 
-    public void set_utente_controller(UtenteController utente_controller){
-        this.utente_controller = utente_controller;
-    }
+    public UtenteController get_utente_controller(){ return utente_controller;}
+    public void set_utente_controller(UtenteController utente_controller){ this.utente_controller = utente_controller; }
 }

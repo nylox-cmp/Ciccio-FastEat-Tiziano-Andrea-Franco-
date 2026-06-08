@@ -18,14 +18,17 @@ public class RistoranteClienteGui extends JPanel {
 
     private JButton tornaIndietroClientiButton;
     private JLabel infoRistoranteClienteLabel;
+    private DefaultListModel<Menu> menuListModel = new DefaultListModel<Menu>();
     private JList<Menu> menuClientiLista;
+
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
 
     public RistoranteClienteGui(MainGui mainGui, Ristorante ristorante){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
         DashboardGui dashboardGui = new DashboardGui(mainGui);
         add(dashboardGui, BorderLayout.NORTH);
-        dashboardGui.aggiungi_action_ordini_cliente(mainGui);
 
         tornaIndietroClientiButton.addActionListener(new ActionListener() {
             @Override
@@ -46,4 +49,7 @@ public class RistoranteClienteGui extends JPanel {
             }
         });
     }
+
+    //________________________________________________________________________________________________________________________________________________
+
 }

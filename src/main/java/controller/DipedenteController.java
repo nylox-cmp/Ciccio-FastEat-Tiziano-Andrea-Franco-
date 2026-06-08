@@ -3,28 +3,36 @@ package controller;
 import exception.ErrorType;
 import model.*;
 
-public class DipedenteController {
-    private Dipedente dipedente;
-    private UtenteController utente_controller;
+import javax.swing.*;
 
+public class DipedenteController {
+    private UtenteController utente_controller;
+    private  Dipedente dipedente;
+
+    public DipedenteController(UtenteController utenteController){
+        this.utente_controller = utenteController;
+        this.dipedente = utenteController.dati_utente.get_dipedente();
+    }
 
     //________________________________________________________________________________________________________________________________________________
-    //
+    // Operazione sul Ristorante
 
-    public boolean utente_is_dipedente(){ return (utente_controller.dati_utente.get_dipedente() != null); }
+    public ErrorType cancella_ristorante(){
+       ErrorType error = dipedente.cancella_ristorante(dipedente.get_ristorante());
+       if(error != ErrorType.NESSUN_ERRORE) return error;
+       utente_controller.dati_utente.rimuovi_dipedente();
+       return ErrorType.NESSUN_ERRORE;
+    }
 
-    public ErrorType richiesta_assunzione_ristorante(String codice_autenticazione){
-        // operazione data base per verificare se ci siano ristoranti con sto codice
+    //________________________________________________________________________________________________________________________________________________
+    // Gestione Dipedenti
+
+    public ErrorType licenziati(){
+        ErrorType error =  dipedente.licenziati();
+        if(error != ErrorType.NESSUN_ERRORE) return error;
+        utente_controller.dati_utente.rimuovi_dipedente();
         return ErrorType.NESSUN_ERRORE;
     }
-
-    public void crea_ristorante(String nome,String indirizzo){
-        Ristorante ristorante = new Ristorante(nome,indirizzo);
-        utente_controller.dati_utente.set_dipendente(utente_controller.get_utente(),Ruolo.MANAGER,ristorante);
-    }
-
-    //________________________________________________________________________________________________________________________________________________
-    // Operazioni Dipedente
 
     public ErrorType accetta_richiesta_assunzione(Utente utente) {
         return  dipedente.accetta_richiesta_assunzione(utente);
@@ -37,7 +45,6 @@ public class DipedenteController {
     public ErrorType rimuovi_richiesta_assunzione(Utente utente){
         return dipedente.rimuovi_richiesta_assunzione(utente);
     }
-
 
     public ErrorType modifica_ruolo_dipedente(Dipedente dipedente,Ruolo ruolo){
         return dipedente.modifica_ruolo_dipente(dipedente,ruolo);
@@ -63,6 +70,7 @@ public class DipedenteController {
     // Get and Set
 
     public Dipedente get_dipedente(){return dipedente;}
+    public void set_dipendete(Dipedente dipedente){this.dipedente = dipedente;}
 
     public void set_utente_controller(UtenteController utente_controller){
         this.utente_controller = utente_controller;

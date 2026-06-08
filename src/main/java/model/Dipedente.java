@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import exception.*;
 
 public class Dipedente extends Utente{
-    private ArrayList<Dipedente> subordinati;
-    private ArrayList<Dipedente> superiori;
+    private ArrayList<Dipedente> subordinati = new ArrayList<Dipedente>();
+    private ArrayList<Dipedente> superiori = new ArrayList<Dipedente>();
     private Ruolo ruolo;
     private Ristorante ristorante;
 
@@ -30,6 +30,15 @@ public class Dipedente extends Utente{
 
     public boolean puo_eseguire(Ruolo ruolo_richiesto){
         return (ruolo.ordinal() <= ruolo_richiesto.ordinal());
+    }
+
+    public ErrorType licenziati(){
+        if(ruolo == Ruolo.MANAGER){
+            ErrorType error = cancella_ristorante(ristorante);
+            if(error != ErrorType.NESSUN_ERRORE) return error;
+        }
+        ristorante = null;
+        return ErrorType.NESSUN_ERRORE;
     }
 
     public ErrorType accetta_richiesta_assunzione(Utente utente){
@@ -83,14 +92,19 @@ public class Dipedente extends Utente{
         return ErrorType.NESSUN_ERRORE;
     }
 
-    public ErrorType cancella_ristorante(String nome,Ristorante ristorante){
+    public ErrorType cancella_ristorante(Ristorante ristorante){
         if(ruolo != Ruolo.MANAGER) return  ErrorType.PERMESSI_NON_SUFFICIENTI;
+
+        for(int i=0;i<subordinati.size();i += 1){
+            licenzia_dipedenti(subordinati.get(i));
+        }
+        ristorante = null;
 
         return ErrorType.NESSUN_ERRORE;
     }
 
     //________________________________________________________________________________________________________________________________________________
-    //Gestione Ordine
+    //Gestione Rider
 
     public void accetta_rider(Ordine ordine,Rider rider){
         if(ristorante.get_ordini().contains(ordine)){
@@ -104,6 +118,9 @@ public class Dipedente extends Utente{
             ordine.get_rider_proposti().remove(rider);
         }
     }
+
+    //________________________________________________________________________________________________________________________________________________
+    //Gestione Ordine
 
     public ErrorType segnala_ordine_pronto_ritiro(Ordine ordine){
         if((ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE) && (ristorante.get_ordini().contains(ordine) == false))

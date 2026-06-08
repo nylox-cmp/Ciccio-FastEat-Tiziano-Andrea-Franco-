@@ -12,69 +12,68 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="5b1d8" binding="TopPanelDipedenti" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="5b1d8" binding="topPanelDipedenti" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints border-constraint="North"/>
-            <properties/>
+            <properties>
+              <background color="-262657"/>
+            </properties>
             <border type="none"/>
             <children>
-              <component id="b4a4c" class="javax.swing.JButton" binding="TornaIndietroDipedentiButton">
+              <component id="cdea7" class="javax.swing.JLabel" binding="prodottoInfoLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Torna Indietro"/>
-                </properties>
-              </component>
-              <component id="cdea7" class="javax.swing.JLabel" binding="ProdottoInfoDipedentiLabel">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
+                  <foreground color="-16448233"/>
                   <text value="nome + Prezzo "/>
                 </properties>
               </component>
             </children>
           </grid>
-          <grid id="92ba" binding="ModificaProttoPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+          <grid id="92ba" binding="modificaProttoPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints border-constraint="Center"/>
-            <properties/>
+            <properties>
+              <background color="-262657"/>
+            </properties>
             <border type="none"/>
             <children>
-              <component id="125ea" class="javax.swing.JLabel" binding="NomePrdottoLabel">
+              <component id="125ea" class="javax.swing.JLabel" binding="nomePrdottoLabel">
                 <constraints/>
                 <properties>
+                  <foreground color="-16448233"/>
                   <text value="nome"/>
                 </properties>
               </component>
-              <component id="75f8f" class="javax.swing.JTextField" binding="NomeTextField">
+              <component id="75f8f" class="javax.swing.JTextField" binding="nomeTextField">
                 <constraints/>
                 <properties>
+                  <background color="-13881804"/>
                   <columns value="10"/>
+                  <foreground color="-262657"/>
                 </properties>
               </component>
-              <component id="11602" class="javax.swing.JLabel" binding="PrezzoProdottoLabel">
+              <component id="11602" class="javax.swing.JLabel" binding="prezzoProdottoLabel">
                 <constraints/>
                 <properties>
+                  <foreground color="-16448233"/>
                   <text value="Prezzo"/>
                 </properties>
               </component>
-              <component id="6fb71" class="javax.swing.JTextField" binding="PrezzoTextField">
+              <component id="6fb71" class="javax.swing.JTextField" binding="prezzoTextField">
                 <constraints/>
                 <properties>
+                  <background color="-13881804"/>
                   <columns value="10"/>
+                  <foreground color="-262657"/>
                 </properties>
               </component>
               <component id="e8c4a" class="javax.swing.JButton" binding="modificaButton" default-binding="true">
                 <constraints/>
                 <properties>
-                  <text value="Modifica"/>
-                </properties>
-              </component>
-              <component id="cf8d7" class="javax.swing.JButton" binding="cancellaProdottoButton" default-binding="true">
-                <constraints/>
-                <properties>
-                  <text value="Cancella prodotto"/>
+                  <background color="-13881804"/>
+                  <foreground color="-262657"/>
+                  <text value="Modifica prodotto"/>
                 </properties>
               </component>
             </children>

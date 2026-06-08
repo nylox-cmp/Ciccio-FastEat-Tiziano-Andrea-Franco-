@@ -5,6 +5,7 @@ public enum ErrorType {
     CREDENZIALI_NON_VALIDE,
     INPUT_NON_VALIDO,
     INPUT_NON_UNIVOCO,
+    ELEMENTO_SELEZIONATO_NULL,
     PERMESSI_NON_SUFFICIENTI;
 
 
@@ -21,6 +22,9 @@ public enum ErrorType {
                 break;
             case INPUT_NON_UNIVOCO:
                 messaggio = "l'input deve essere univoco per essere accettabile ";
+                break;
+            case ELEMENTO_SELEZIONATO_NULL:
+                messaggio = "l'operazione selezionata richiede che tu selezioni un elemento da una lista su cui eseguire l'operazione ";
                 break;
             case PERMESSI_NON_SUFFICIENTI:
                 messaggio = "l'operazione selezionata non è eseguibile, con i permessi di questo ruolo";

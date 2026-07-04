@@ -3,6 +3,7 @@ package gui.Dipedente;
 import controller.DipedenteController;
 import exception.ErrorType;
 import gui.MainGui;
+import gui.customWidget.ContenutoOrdineGui;
 import gui.customWidget.DashboardDipedenteGui;
 import model.*;
 
@@ -16,11 +17,15 @@ import java.util.ArrayList;
 
 public class OrdiniDipedenteGui extends JPanel {
     private JPanel mainPanel;
-    private JPanel bottomPanel;
     private JPanel riderPropostiPanel;
     private JPanel riderPropostiButtonPanel;
+    private JPanel bottomPanel;
     private JPanel ordiniPanel;
     private JPanel ordiniDipedentiButtonPanel;
+    private JPanel contenutoOrdinePanel;
+
+    private JScrollPane ordiniJScrollPane;
+    private JScrollPane riderPropostiJScrollPane;
 
     private JButton cancellaButton;
     private JButton senglaProntoAlRitiroButton;
@@ -31,11 +36,7 @@ public class OrdiniDipedenteGui extends JPanel {
     private JList<Ordine> ordiniLista;
     private DefaultListModel<Rider> riderPropostiListModel = new DefaultListModel<Rider>();
     private JList<Rider> riderPropostiLista;
-    private DefaultListModel<RigaOrdine> contenutoOrdineModelList = new DefaultListModel<RigaOrdine>();
-    private JList<RigaOrdine> contenutoOrdineLista;
-    private JScrollPane riderPropostiJScrollPane;
-    private JScrollPane ordiniJScrollPane;
-    private JScrollPane contenutoOrdineJScrollPane;
+
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -48,22 +49,65 @@ public class OrdiniDipedenteGui extends JPanel {
         mainGui.set_dipedente_controller(new DipedenteController(mainGui.get_utente_controller()));
         mainGui.mostra_dashboard_dipedenti(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
 
+        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui();
+        contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
+
         ordiniLista.setModel(ordiniListModel);
-        contenutoOrdineLista.setModel(contenutoOrdineModelList);
         riderPropostiLista.setModel(riderPropostiListModel);
 
-        aggiorna_ordini_lista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
+        mainGui.get_dashboardGui().nascondi_pagaRider();
+        mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
 
+        //________________________________________________________________________________________________________________________________________________
+        // ListSelectionListener che mostra il contenuto dell'ordine e mostra i rider proposti
 
         ordiniLista.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(e.getValueIsAdjusting()) return;
                 Ordine ordine = ordiniLista.getSelectedValue();
-                aggiorna_contenuto_ordine_lista(ordine);
-                aggiorna_rider_proposti_lista(ordine);
+                if(ordine == null) return;
+                contenutoOrdine.aggiorna_lista(ordine);
+                aggiorna_riderPropostiLista(ordine);
             }
         });
+
+        aggiorna_ordiniLista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
+
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione Ordini
+
+        cancellaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ordine ordine = ordiniLista.getSelectedValue();
+                if (ordine == null) {
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                mainGui.get_dipedente_controller().annulla_ordine(ordine);
+                aggiorna_ordiniLista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
+            }
+        });
+
+        senglaProntoAlRitiroButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ordine ordine = ordiniLista.getSelectedValue();
+                if (ordine == null) {
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                ErrorType error = mainGui.get_dipedente_controller().segnala_ordine_pronto_ritiro(ordine);
+                if (error != ErrorType.NESSUN_ERRORE){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                aggiorna_ordiniLista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
+            }
+        });
+
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione Rider
 
         accettaButton.addActionListener(new ActionListener() {
             @Override
@@ -71,11 +115,12 @@ public class OrdiniDipedenteGui extends JPanel {
                 Rider rider = riderPropostiLista.getSelectedValue();
                 Ordine ordine = ordiniLista.getSelectedValue();
                 if(ordine == null || rider == null){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),"Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 mainGui.get_dipedente_controller().accetta_rider(ordine,rider);
-                aggiorna_rider_proposti_lista(ordine);
+                aggiorna_riderPropostiLista(ordine);
+                aggiorna_ordiniLista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
             }
         });
 
@@ -85,48 +130,19 @@ public class OrdiniDipedenteGui extends JPanel {
                 Rider rider = riderPropostiLista.getSelectedValue();
                 Ordine ordine = ordiniLista.getSelectedValue();
                 if(ordine == null || rider == null){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),"Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 mainGui.get_dipedente_controller().rifiuta_rider(ordine,rider);
-                aggiorna_rider_proposti_lista(ordine);
-            }
-        });
-
-        cancellaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Ordine ordine = ordiniLista.getSelectedValue();
-                if (ordine == null) {
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                mainGui.get_dipedente_controller().anulla_ordine(ordine);
-                aggiorna_ordini_lista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
-            }
-        });
-
-        senglaProntoAlRitiroButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Ordine ordine = ordiniLista.getSelectedValue();
-                if (ordine == null) {
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                ErrorType error = mainGui.get_dipedente_controller().segnala_ordine_pronto_ritiro(ordine);
-                if (error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                aggiorna_ordini_lista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
+                aggiorna_riderPropostiLista(ordine);
             }
         });
     }
 
     //________________________________________________________________________________________________________________________________________________
+    // Operazioni sulle JList
 
-    public void aggiorna_rider_proposti_lista(Ordine ordine){
+    public void aggiorna_riderPropostiLista(Ordine ordine){
         riderPropostiListModel.clear();
         ArrayList<Rider> rider_proposti = ordine.get_rider_proposti();
         if(rider_proposti == null) return;
@@ -135,21 +151,12 @@ public class OrdiniDipedenteGui extends JPanel {
             riderPropostiListModel.addElement(rider);
     }
 
-    public void aggiorna_ordini_lista(Ristorante ristorante){
+    public void aggiorna_ordiniLista(Ristorante ristorante){
         ordiniListModel.clear();
         ArrayList<Ordine> ordini = ristorante.get_ordini();
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)
             ordiniListModel.addElement(ordine);
-    }
-
-    public void aggiorna_contenuto_ordine_lista(Ordine ordine){
-        contenutoOrdineModelList.clear();
-        ArrayList<RigaOrdine> righe_ordine = ordine.get_rige_ordine();
-        if(righe_ordine == null) return;
-
-        for(RigaOrdine riga_ordine : righe_ordine)
-            contenutoOrdineModelList.addElement(riga_ordine);
     }
 }

@@ -25,7 +25,6 @@ public class DatiUtente{
 
     public void set_rider(Utente utente,String mezzo_trasporto){
         this.rider = new Rider(utente,mezzo_trasporto);
-        System.out.println(rider);
     }
 
     //________________________________________________________________________________________________________________________________________________

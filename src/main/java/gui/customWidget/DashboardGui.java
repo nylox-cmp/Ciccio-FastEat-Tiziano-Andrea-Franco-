@@ -1,6 +1,5 @@
 package gui.customWidget;
 
-import exception.ErrorType;
 import gui.Autenticazione.LoginGui;
 import gui.Cliente.ClienteGui;
 import gui.Cliente.OrdiniClientiGui;
@@ -25,7 +24,8 @@ public class DashboardGui extends JPanel {
     private JButton areaOrdiniButton;
     private JButton logoutButton;
 
-    private JLabel infoUtente;
+    private JLabel infoUtenteLabel;
+    private JLabel pagaRiderLabel;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -35,6 +35,10 @@ public class DashboardGui extends JPanel {
         add(mainPanel,BorderLayout.CENTER);
 
         aggiorna_nickname_label(mainGui);
+        pagaRiderLabel.setVisible(false);
+
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione Transazione Gui
 
         areaClientiButton.addActionListener(new ActionListener() {
             @Override
@@ -78,7 +82,6 @@ public class DashboardGui extends JPanel {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 mainGui.nascondi_dashboard();
                 mainGui.nascondi_dashboard_dipedenti();
                 mainGui.set_pagina(new LoginGui(mainGui));
@@ -87,17 +90,23 @@ public class DashboardGui extends JPanel {
     }
 
     //________________________________________________________________________________________________________________________________________________
-
+    // Gestione Label
 
     public void aggiorna_nickname_label(MainGui mainGui){
-        infoUtente.setText(mainGui.get_utente_controller().get_utente().toString());
+        infoUtenteLabel.setText(mainGui.get_utente_controller().get_utente().toString());
     }
 
-    public void mostra_area_ordini(){
+    public void mostra_area_ordiniClienti(){
         areaOrdiniButton.setVisible(true);
     }
-
-    public void nascondi_area_ordini(){
+    public void nascondi_area_OrdiniClienti(){
         areaOrdiniButton.setVisible(false);
     }
+
+    public void aggiorna_pagaRider(MainGui mainGui){
+        pagaRiderLabel.setText(String.valueOf(mainGui.get_rider_controller().get_rider().get_paga()));
+    }
+
+    public void mostra_pagaRider(){pagaRiderLabel.setVisible(true);}
+    public void nascondi_pagaRider(){pagaRiderLabel.setVisible(false);}
 }

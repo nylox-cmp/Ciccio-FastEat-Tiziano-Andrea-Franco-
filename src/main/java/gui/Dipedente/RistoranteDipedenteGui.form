@@ -36,7 +36,7 @@
             <constraints/>
             <properties>
               <foreground color="-16448233"/>
-              <text value="nome + indirizzo + codice_autenticazione"/>
+              <text value="nome + indirizzo +  numero_telefono + incassi + codice_ristorante"/>
             </properties>
           </component>
         </children>
@@ -173,6 +173,7 @@
               <enabled value="true"/>
               <foreground color="-16448233"/>
               <model/>
+              <selectionMode value="0"/>
             </properties>
           </component>
         </children>

@@ -4,7 +4,10 @@ import controller.*;
 import gui.Autenticazione.*;
 import gui.customWidget.DashboardDipedenteGui;
 import gui.customWidget.DashboardGui;
+import model.Rider;
 import model.Ristorante;
+import model.StatoOrdine;
+import model.Utente;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +27,6 @@ public class MainGui {
     private RiderController rider_controller = null;
     private DipedenteController dipedente_controller = null;
 
-    private OrdineController ordine_controller = null;
     private RistoranteController ristorante_controller = null;
 
     //________________________________________________________________________________________________________________________________________________
@@ -66,6 +68,7 @@ public class MainGui {
     // Get and Set
 
     public JFrame get_mainFrame(){ return mainFrame; }
+
     public void set_mainFrame(JFrame mainFrame){
         if(this.mainFrame != null) return;
         this.mainFrame = mainFrame;
@@ -73,6 +76,7 @@ public class MainGui {
     }
 
     public JPanel get_pagina(){ return pagina; }
+
     public void set_pagina(JPanel pagina){
         if(this.pagina != null) mainFrame.remove(this.pagina);
         this.pagina = pagina;
@@ -81,6 +85,7 @@ public class MainGui {
     }
 
     public DashboardGui get_dashboardGui(){ return dashboardGui;}
+
     public void set_dashboardGui(DashboardGui dashboardGui){
         if(this.dashboardGui != null) return;
         this.dashboardGui = dashboardGui;
@@ -88,6 +93,7 @@ public class MainGui {
     }
 
     public DashboardDipedenteGui get_dashboardDipedenteGui(){ return dashboardDipedenteGui;}
+
     public void set_dashboardDipedenteGui(DashboardDipedenteGui dashboardDipedenteGui){
         if(this.dashboardDipedenteGui != null) return;
         this.dashboardDipedenteGui = dashboardDipedenteGui;
@@ -95,16 +101,19 @@ public class MainGui {
     }
 
     public UtenteController get_utente_controller(){ return utente_controller;}
+
     public void set_utente_controller(UtenteController utente_controller){
         this.utente_controller = utente_controller;
     }
 
     public ClienteController get_cliente_controller(){ return cliente_controller;}
+
     public void set_cliente_controller(ClienteController cliente_controller){
         this.cliente_controller = cliente_controller;
     }
 
     public RiderController get_rider_controller(){ return  rider_controller;}
+
     public void set_rider_controller(RiderController rider_controller){
         this.rider_controller = rider_controller;
     }
@@ -114,12 +123,8 @@ public class MainGui {
         this.dipedente_controller = dipedente_controller;
     }
 
-    public OrdineController get_ordine_controller(){ return ordine_controller;}
-    public void set_ordine_controller(OrdineController ordine_controller){
-        this.ordine_controller = ordine_controller;
-    }
-
     public RistoranteController get_ristorante_controller(){ return ristorante_controller; }
+
     public void set_ristorante_controller(RistoranteController ristorante_controller){
         this.ristorante_controller = ristorante_controller;
     }
@@ -129,7 +134,7 @@ public class MainGui {
 
     public static void main(String[] args){
         MainGui mainGui = new MainGui();
-        mainGui.set_mainFrame(new JFrame("Ciccio FastEat"));
+        mainGui.set_mainFrame(new JFrame("FastFood"));
         mainGui.get_mainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainGui.get_mainFrame().setVisible(true);
 
@@ -137,5 +142,6 @@ public class MainGui {
 
         SignInGui signInGui = new SignInGui(mainGui);
         mainGui.set_pagina(signInGui);
+
     }
 }

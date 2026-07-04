@@ -32,7 +32,7 @@
               <font size="16" style="1"/>
               <foreground color="-3187658"/>
               <horizontalAlignment value="0"/>
-              <text value="non sei ancora un dipedente,effettua la registrazione del ristorante o tramite il codice di autenticazione del ristorante richiedi di diventare dipedente"/>
+              <text value="non sei ancora un dipedente,effettua la registrazione del ristorante o tramite il codice del ristorante richiedi di diventare dipedente"/>
             </properties>
           </component>
           <grid id="14376" binding="ristorantePanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
@@ -68,6 +68,21 @@
                 </properties>
               </component>
               <component id="417e9" class="javax.swing.JTextField" binding="indirizzoTextField">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <columns value="10"/>
+                  <foreground color="-262657"/>
+                </properties>
+              </component>
+              <component id="d461c" class="javax.swing.JLabel" binding="numeroTelefonoLabel">
+                <constraints/>
+                <properties>
+                  <foreground color="-16448233"/>
+                  <text value="numero telefono ristorante "/>
+                </properties>
+              </component>
+              <component id="f4eb" class="javax.swing.JTextField" binding="numeroTelefonoTextField">
                 <constraints/>
                 <properties>
                   <background color="-13881804"/>

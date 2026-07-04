@@ -20,6 +20,7 @@ public class RistoranteClienteGui extends JPanel {
     private JLabel infoRistoranteClienteLabel;
     private DefaultListModel<Menu> menuListModel = new DefaultListModel<Menu>();
     private JList<Menu> menuClientiLista;
+    private JScrollPane menuScrollPane;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -27,8 +28,8 @@ public class RistoranteClienteGui extends JPanel {
     public RistoranteClienteGui(MainGui mainGui, Ristorante ristorante){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
-        DashboardGui dashboardGui = new DashboardGui(mainGui);
-        add(dashboardGui, BorderLayout.NORTH);
+
+        infoRistoranteClienteLabel.setText(ristorante.toString());
 
         tornaIndietroClientiButton.addActionListener(new ActionListener() {
             @Override
@@ -37,12 +38,9 @@ public class RistoranteClienteGui extends JPanel {
             }
         });
 
-        infoRistoranteClienteLabel.setText(ristorante.toString());
-
         menuClientiLista.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(e.getValueIsAdjusting()) return;
                 Menu menu = menuClientiLista.getSelectedValue();
                 if(menu != null)
                     mainGui.set_pagina(new MenuClienteGui(mainGui,ristorante,menu));

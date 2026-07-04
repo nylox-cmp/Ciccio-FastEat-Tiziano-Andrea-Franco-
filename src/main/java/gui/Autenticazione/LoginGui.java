@@ -36,7 +36,7 @@ public class LoginGui extends JPanel {
                 String password = emailTextField.getText();
 
                 if(email.isEmpty() || password.isEmpty()){
-                    JOptionPane.showMessageDialog(mainPanel,ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),"Error",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel,ErrorType.converti_error_to_message(ErrorType.INPUT_NULL),"Error",JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 

@@ -19,14 +19,48 @@ public class Ordine {
     public static final double MIN_COSTO_ORDINE_PER_PUNTI = 20.0;
     public static final int MAX_PUNTI_FEDELTA_SCONTO = 15;
 
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
+
     public Ordine(String indirizzo,Ristorante ristorante){
         this.codice_ordine = Ristorante.genera_codice_univoco();
         this.data = LocalDate.now();
-        this.stato_ordine = StatoOrdine.PREPARAZIONE;
+        this.stato_ordine = StatoOrdine.BOZZA;
         this.costo = 0.0;
         this.indirizzo = indirizzo;
-        this.rider_proposti = new ArrayList<Rider>();
-        this.righe_ordine = new ArrayList<RigaOrdine>();
+        this.ristorante = ristorante;
+    }
+
+    public Ordine(String codice_ordine,double costo,StatoOrdine stato_ordine,String indirizzo,LocalDate data,Ristorante ristorante,ArrayList<RigaOrdine> righe_ordine){
+        this.codice_ordine = codice_ordine;
+        this.costo = costo;
+        this.stato_ordine = stato_ordine;
+        this.indirizzo = indirizzo;
+        this.data = data;
+        this.ristorante = ristorante;
+        this.righe_ordine = righe_ordine;
+    }
+
+    public Ordine(String codice_ordine,double costo,StatoOrdine stato_ordine,String indirizzo,LocalDate data,Ristorante ristorante,ArrayList<RigaOrdine> righe_ordine,Rider rider){
+        this.codice_ordine = codice_ordine;
+        this.costo = costo;
+        this.stato_ordine = StatoOrdine.PREPARAZIONE;
+        this.indirizzo = indirizzo;
+        this.data = data;
+        this.ristorante = ristorante;
+        this.righe_ordine = righe_ordine;
+        this.rider = rider;
+    }
+
+    public Ordine(String codice_ordine,double costo,StatoOrdine stato_ordine,String indirizzo,LocalDate data,Ristorante ristorante,ArrayList<RigaOrdine> righe_ordine,ArrayList<Rider> rider_proposti){
+        this.codice_ordine = codice_ordine;
+        this.costo = costo;
+        this.stato_ordine = StatoOrdine.PREPARAZIONE;
+        this.indirizzo = indirizzo;
+        this.data = data;
+        this.ristorante = ristorante;
+        this.righe_ordine = righe_ordine;
+        this.rider_proposti = rider_proposti;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -34,16 +68,45 @@ public class Ordine {
 
     @Override
     public String toString(){
-        String identificativo = get_codice_ordine() + " " + get_costo() + " " + get_data() + " "+ get_stato_ordine() + " " + get_ristorante() + " rider: " + get_rider().get_nickname();
-        return identificativo;
+        String string = get_codice_ordine() + " " + get_costo() + " " + get_data() + " " + get_indirizzo() + " " + get_stato_ordine() + " " + get_ristorante().get_nome();
+        if(rider != null)
+            string = string + get_rider().get_nickname();
+        return string;
+    }
+
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o == null || o.getClass() != this.getClass()) return false;
+
+        Ordine ordine = (Ordine) o;
+        return ordine.get_codice_ordine().equals(this.get_codice_ordine());
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+    // Paga Ordine Ristorante
+
+    public void paga_ordine(){
+        get_ristorante().set_incassi(get_ristorante().get_incassi() + get_costo());
     }
 
     //________________________________________________________________________________________________________________________________________________
     // Gestione Riga ordine
 
-    public void aggiungi_riga(Prodotto prodotto, int quantita) {
-        this.righe_ordine.add(new RigaOrdine(prodotto, quantita));
+    public boolean contiene_prodotto(Prodotto prodotto){
+        for(RigaOrdine riga_ordine : righe_ordine){
+            if(prodotto == riga_ordine.get_prodotto()) return true;
+        }
+        return false;
+    }
+
+    public ErrorType aggiungi_riga(Prodotto prodotto, int quantita,Ordine ordine) {
+        if(contiene_prodotto(prodotto)) return ErrorType.ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO;
+
+        this.righe_ordine.add(new RigaOrdine(prodotto, quantita,ordine));
         calcola_costo_ordine();
+        return ErrorType.NESSUN_ERRORE;
     }
 
     public void rimuovi_riga(RigaOrdine riga_ordine) {
@@ -65,7 +128,7 @@ public class Ordine {
             this.costo = this.costo - ((this.costo * punti_fedelta) / 100);
             return ErrorType.NESSUN_ERRORE;
         }
-        return ErrorType.INPUT_NON_VALIDO;
+        return ErrorType.INPUT_NULL;
     }
 
 

@@ -41,6 +41,9 @@ public class DashboardDipedenteGui extends JPanel {
 
         aggiorna_ruolo_label(mainGui);
 
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Selettore Gui
+
         areaGestioneComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,11 +65,14 @@ public class DashboardDipedenteGui extends JPanel {
             }
         });
 
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione Dipedente
+
         licenziatiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int scelta = JOptionPane.showConfirmDialog(mainGui.get_pagina(), "Sei sicuro di volerti licenziare? , il licenziamneto nel ruolo di Manager comportera anche alla cancellazione del ristorante","Ciccio FastEat", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if(scelta == JOptionPane.NO_OPTION) return;
+                int scelta = JOptionPane.showConfirmDialog(mainGui.get_pagina(), "Sei sicuro di volerti licenziare? , il licenziamneto nel ruolo di Manager comportera anche alla cancellazione del ristorante","FastFood", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if(scelta == JOptionPane.NO_OPTION || scelta == JOptionPane.CLOSED_OPTION) return;
                 ErrorType error = mainGui.get_dipedente_controller().licenziati();
                 if(error != ErrorType.NESSUN_ERRORE){
                     JOptionPane.showMessageDialog(mainGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);

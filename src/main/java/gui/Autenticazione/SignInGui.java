@@ -48,7 +48,7 @@ public class SignInGui extends JPanel{
                 String password = passwordTextField.getText();
 
                 if( nome.isEmpty() || cognome.isEmpty() || nickname.isEmpty() || email.isEmpty() || password.isEmpty()){
-                    JOptionPane.showMessageDialog(mainPanel,ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),"Error",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel,ErrorType.converti_error_to_message(ErrorType.INPUT_NULL),"Error",JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 

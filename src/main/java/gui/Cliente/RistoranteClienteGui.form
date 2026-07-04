@@ -37,18 +37,26 @@
                 </constraints>
                 <properties>
                   <background color="-16448233"/>
-                  <foreground color="-3187658"/>
+                  <foreground color="-16448233"/>
                   <text value="nome + indirizzo"/>
                 </properties>
               </component>
             </children>
           </grid>
-          <component id="5ccb" class="javax.swing.JList" binding="menuClientiLista">
+          <scrollpane id="f3832" binding="menuScrollPane">
             <constraints border-constraint="Center"/>
-            <properties>
-              <background color="-262657"/>
-            </properties>
-          </component>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="5ccb" class="javax.swing.JList" binding="menuClientiLista">
+                <constraints/>
+                <properties>
+                  <background color="-2894377"/>
+                  <selectionMode value="0"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
         </children>
       </grid>
     </children>

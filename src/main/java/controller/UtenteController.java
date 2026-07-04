@@ -8,12 +8,14 @@ import java.util.ArrayList;
 
 public class UtenteController {
     private Utente utente;
-    public static DatiUtente dati_utente;
+    private DatiUtente dati_utente;
+
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
 
     public UtenteController(){
         this.dati_utente = new DatiUtente();
     }
-
 
     //________________________________________________________________________________________________________________________________________________
     //
@@ -31,12 +33,12 @@ public class UtenteController {
     //________________________________________________________________________________________________________________________________________________
     // Operazioni per diventare Dipdente
 
-    public void crea_ristorante(String nome,String indirizzo){
-        Ristorante ristorante = new Ristorante(nome,indirizzo);
+    public void crea_ristorante(String nome,String indirizzo,String numero_telefono){
+        Ristorante ristorante = new Ristorante(nome,indirizzo,numero_telefono);
         dati_utente.set_dipendente(get_utente(),Ruolo.MANAGER,ristorante);
     }
 
-    public ErrorType richiesta_assunzione_ristorante(String codice_autenticazione){
+    public ErrorType richiesta_assunzione_ristorante(String codice_ristorante){
         // operazione data base per verificare se ci siano ristoranti con sto codice
         return ErrorType.NESSUN_ERRORE;
     }
@@ -57,6 +59,10 @@ public class UtenteController {
     // Get and Set
 
     public Utente get_utente() { return utente; }
+    public void set_utente(Utente utente){this.utente = utente;}
+
+    public DatiUtente get_dati_utente(){return dati_utente;}
+    public void set_dati_utente(DatiUtente dati_utente){this.dati_utente = dati_utente;}
 }
 
 

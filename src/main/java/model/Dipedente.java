@@ -10,6 +10,9 @@ public class Dipedente extends Utente{
     private Ruolo ruolo;
     private Ristorante ristorante;
 
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
+
     public Dipedente(Utente utente, Ruolo ruolo,Ristorante ristorante) {
         super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
         this.ruolo = ruolo;
@@ -21,8 +24,8 @@ public class Dipedente extends Utente{
 
     @Override
     public String toString(){
-        String identificativo = super.get_nickname() + " " + Ruolo.converti_ruolo_to_string(ruolo);
-        return identificativo;
+        String string = super.get_nickname() + " " + Ruolo.converti_ruolo_to_string(ruolo);
+        return string;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -107,9 +110,9 @@ public class Dipedente extends Utente{
     //Gestione Rider
 
     public void accetta_rider(Ordine ordine,Rider rider){
-        if(ristorante.get_ordini().contains(ordine)){
-            if(ordine.get_rider_proposti().contains(rider))
-                ordine.set_rider(rider);
+        if(ristorante.get_ordini().contains(ordine) && ordine.get_rider_proposti().contains(rider)) {
+            ordine.set_rider(rider);
+            ordine.get_rider_proposti().remove(rider);
         }
     }
 
@@ -124,15 +127,15 @@ public class Dipedente extends Utente{
 
     public ErrorType segnala_ordine_pronto_ritiro(Ordine ordine){
         if((ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE) && (ristorante.get_ordini().contains(ordine) == false))
-            return ErrorType.INPUT_NON_VALIDO;
+            return ErrorType.INPUT_NULL;
 
-        ordine.set_stato_ordine(StatoOrdine.PRONTO_RITIRO);
+        ordine.set_stato_ordine(StatoOrdine.PRONTO_RITIRO_RIDER);
         return ErrorType.NESSUN_ERRORE;
     }
 
-    public void cancella_ordine(Ordine ordine) {
-        if (ristorante.get_ordini().contains(ordine))
-            ordine.set_stato_ordine(StatoOrdine.ANNULATO);
+    public void annulla_ordine(Ordine ordine) {
+        if (ristorante.get_ordini().contains(ordine) && ordine.get_stato_ordine() == StatoOrdine.PREPARAZIONE)
+            ordine.set_stato_ordine(StatoOrdine.ANNULLATO);
     }
 
     //________________________________________________________________________________________________________________________________________________

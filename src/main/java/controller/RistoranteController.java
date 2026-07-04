@@ -33,21 +33,20 @@ public class RistoranteController {
         if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
             return ErrorType.PERMESSI_NON_SUFFICIENTI;
 
-         ristorante.crea_menu(nome);
-         return ErrorType.NESSUN_ERRORE;
+        return ristorante.crea_menu(nome);
     }
 
     public ErrorType modifica_menu(String nome_modificato){
         if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
             return ErrorType.PERMESSI_NON_SUFFICIENTI;
 
-        menu.modifica_menu(nome_modificato);
-        return ErrorType.NESSUN_ERRORE;
+        return menu.modifica_menu(nome_modificato);
     }
 
     public ErrorType cancella_menu(Menu menu){
         if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
             return ErrorType.PERMESSI_NON_SUFFICIENTI;
+
         ristorante.cancella_menu(menu);
         return ErrorType.NESSUN_ERRORE;
     }
@@ -59,16 +58,14 @@ public class RistoranteController {
         if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
             return ErrorType.PERMESSI_NON_SUFFICIENTI;
 
-        menu.crea_prodotto(nome,prezzo_unitario);
-        return ErrorType.NESSUN_ERRORE;
+        return menu.crea_prodotto(nome,prezzo_unitario);
     }
 
     public ErrorType modifica_prodotto(String nome,double prezzo_unitario){
         if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
             return ErrorType.PERMESSI_NON_SUFFICIENTI;
 
-        prodotto.modica_prodotto(nome,prezzo_unitario);
-        return ErrorType.NESSUN_ERRORE;
+        return prodotto.modica_prodotto(nome,prezzo_unitario);
     }
 
     public ErrorType cancella_prodotto(Prodotto prodotto){

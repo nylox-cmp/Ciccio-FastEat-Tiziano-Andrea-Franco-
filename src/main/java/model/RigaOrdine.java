@@ -7,10 +7,40 @@ public class RigaOrdine {
     private int quantita;
     private double prezzo_totale;
 
-    public RigaOrdine(Prodotto prodotto, int quantita) {
+    private Ordine ordine;
+
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
+
+    public RigaOrdine(Prodotto prodotto,int quantita){
         this.prodotto = prodotto;
-        this.quantita = quantita;
+        set_quantita(quantita);
         this.prezzo_totale = prodotto.get_prezzo_unitario() * quantita;
+    }
+
+    public RigaOrdine(Prodotto prodotto, int quantita,Ordine ordine) {
+        this.prodotto = prodotto;
+        set_quantita(quantita);
+        this.prezzo_totale = prodotto.get_prezzo_unitario() * quantita;
+        this.ordine = ordine;
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+    // Override
+
+    @Override
+    public String toString(){
+        String string = prodotto.get_nome() + " " + get_prezzo_totale() + " " + get_quantita();
+        return string;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o == this) return true;
+        if(o == null || o.getClass() == this.getClass()) return false;
+
+        RigaOrdine riga_ordine = (RigaOrdine) o;
+        return (riga_ordine.get_ordine().equals(this.get_ordine()) && riga_ordine.get_prodotto().equals(this.get_prodotto())); //Stesso Ordine e Stesso Prodotto == True
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -31,7 +61,7 @@ public class RigaOrdine {
             calcola_prezzo_totale();
             return ErrorType.NESSUN_ERRORE;
         }
-        return ErrorType.INPUT_NON_VALIDO;
+        return ErrorType.INPUT_NULL;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -61,4 +91,7 @@ public class RigaOrdine {
     public void set_prezzo_totale(double prezzo_totale) {
         this.prezzo_totale = prezzo_totale;
     }
+
+    public Ordine get_ordine(){return ordine;}
+    public void set_ordine(Ordine ordine){this.ordine = ordine;}
 }

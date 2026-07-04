@@ -1,38 +1,58 @@
 package model;
 
+import exception.ErrorType;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Cliente extends Utente{
-    private int punti_fedelta = 0;
+    private int punti_fedelta;
     private ArrayList<Ordine> ordini;
+
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
+
+    public Cliente(Utente utente) {
+        super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
+        this.punti_fedelta = 0;
+    }
 
     public Cliente(Utente utente,int punti_fedelta) {
         super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
-        this.punti_fedelta = 0;
-        this.ordini = ordini;
+        this.punti_fedelta = punti_fedelta;
     }
 
     //________________________________________________________________________________________________________________________________________________
     //Gestione Ordini
 
-    public Ordine crea_ordine(String indirizzo,Ristorante ristorante){
+    public void crea_ordine(String indirizzo,Ristorante ristorante){
         Ordine ordine = new Ordine(indirizzo,ristorante);
         ordine.set_indirizzo(indirizzo);
         this.ordini.add(ordine);
-        return ordine;
     }
 
     public void annulla_ordine(Ordine ordine){
-        if (!ordini.contains(ordine)) {
+        if (ordini.contains(ordine)) {
             if (ordine.get_stato_ordine() == StatoOrdine.PREPARAZIONE)
-                ordine.set_stato_ordine(StatoOrdine.ANNULATO);
+                ordine.set_stato_ordine(StatoOrdine.ANNULLATO);
         }
     }
 
     public void conferma_cosegna_ordine(Ordine ordine){
         if (ordine.get_stato_ordine() == StatoOrdine.IN_CONSEGNA)
+            ordine.set_stato_ordine(StatoOrdine.CONFERMA_CONSEGNA_CLIENTE);
+
+        if(ordine.get_stato_ordine() == StatoOrdine.CONFERMA_CONSEGNA_RIDER){
             ordine.set_stato_ordine(StatoOrdine.CONSEGNATO);
+            ordine.get_rider().paga_rider(ordine);
+        }
+    }
+
+    public void cambia_stato_in_preparazione(Ordine ordine){
+        if(get_ordini().contains(ordine) && ordine.get_stato_ordine() == StatoOrdine.BOZZA) {
+            ordine.set_stato_ordine(StatoOrdine.PREPARAZIONE);
+            ordine.paga_ordine();
+        }
     }
 
     public void aggiung_punti_fedelta(Ordine ordine){

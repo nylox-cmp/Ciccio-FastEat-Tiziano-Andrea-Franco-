@@ -1,5 +1,18 @@
 
-cose da fare nel terzo homework: (pregare)
+cose da fare:
 
-1.non appena viene creato il database implementare i metodi con il quale raccogliere le liste di ordini_proposti per il rider e per il cliente per prendere i ristoranti i suoi menu e i suoi prodotti non appena aperti dal cliente e nel lato dei dipedenti dei metodi che caricaino i ristoranti e menu e i prodotti già creati
-2.creare dei costruttori delle classi model che permettano il caricamento dei dati che dovranno essere mostrati all'interno della gui e su cui i controller lavoreranno
+3.corregere gli errori grammaticali :C ,Documentazione e Codice
+4.Revisionare come abbia separato il codice in blocchi di codice Basati su cosa facciano e commentare il codice JAVADOC
+9.aggiornare le liste non appena entri all'interno di una Gui
+10.Controllare se i custrottori si addicano alle operazioni sul database
+12.Aggiungere Altri ErrorType la dove sono neccessari
+13.Rimuovere la Classe DatiUtente (che viola il pattern bce) Sistemando i Controller, e usare LazyLoading + DAO --
+
+liste già implementate
+ProdottoCliente,RistoranteCliente,MenuCLiente (metodo aggiornamento della lista,mi serve il database per poterlo implementare)
+
+da testare:
+
+implementare il lazyloding? per aumentare le prestazioni database e codice, se si controllare i costruttori è implementa logica Jlist
+
+modificare costruttore ordine? se si, fare in modo che invia anche delle liste vuote se non ci sono rider o rider_proposti (invece di avere 8 costruttori per ogni caso possibile)

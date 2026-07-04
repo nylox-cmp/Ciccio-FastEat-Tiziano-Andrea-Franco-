@@ -1,7 +1,6 @@
 package gui.Cliente;
 
 import gui.MainGui;
-import gui.customWidget.DashboardGui;
 import model.Prodotto;
 import model.Ristorante;
 
@@ -21,6 +20,7 @@ public class MenuClienteGui extends JPanel {
     private JButton tornaIndietroButton;
     private DefaultListModel<Prodotto> prodottoListModel = new DefaultListModel<Prodotto>();
     private JList<Prodotto> prodottiLista;
+    private JScrollPane prodottiJSrollPane;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -28,7 +28,6 @@ public class MenuClienteGui extends JPanel {
     public MenuClienteGui(MainGui mainGui, Ristorante ristorante,Menu menu){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
-
 
         infoMenuLabel.setText(menu.toString());
         prodottiLista.setModel(prodottoListModel);
@@ -43,7 +42,6 @@ public class MenuClienteGui extends JPanel {
         prodottiLista.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(e.getValueIsAdjusting()) return;
                 Prodotto prodotto = prodottiLista.getSelectedValue();
                 if(prodotto != null)
                     mainGui.set_pagina(new ProdottoClienteGui(mainGui,ristorante,menu,prodotto));

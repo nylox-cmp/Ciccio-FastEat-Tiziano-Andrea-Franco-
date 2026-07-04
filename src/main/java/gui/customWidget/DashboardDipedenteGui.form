@@ -21,13 +21,10 @@
           <component id="4f26" class="javax.swing.JLabel" binding="infoDipedente">
             <constraints/>
             <properties>
-              <foreground color="-262657"/>
-              <text value="nickname + ruolo"/>
+              <foreground color="-3187658"/>
+              <text value="ruolo"/>
             </properties>
           </component>
-          <hspacer id="81eba">
-            <constraints/>
-          </hspacer>
           <component id="2d415" class="javax.swing.JLabel" binding="tittoloLabel">
             <constraints/>
             <properties>

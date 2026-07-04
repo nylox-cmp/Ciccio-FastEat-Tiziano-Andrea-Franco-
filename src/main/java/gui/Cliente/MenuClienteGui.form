@@ -35,13 +35,14 @@
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-16448233"/>
                   <foreground color="-16448233"/>
                   <text value="nome"/>
                 </properties>
               </component>
             </children>
           </grid>
-          <scrollpane id="cb68d">
+          <scrollpane id="cb68d" binding="prodottiJSrollPane">
             <constraints border-constraint="Center"/>
             <properties/>
             <border type="none"/>
@@ -51,6 +52,7 @@
                 <properties>
                   <background color="-2500135"/>
                   <foreground color="-16448233"/>
+                  <selectionMode value="0"/>
                 </properties>
               </component>
             </children>

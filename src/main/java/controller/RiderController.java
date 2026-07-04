@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ErrorType;
 import model.*;
 import controller.*;
 
@@ -13,17 +14,19 @@ public class RiderController {
 
     public RiderController(UtenteController utente_controller){
         this.utente_controller = utente_controller;
+        this.rider = this.utente_controller.get_dati_utente().get_rider();
     }
 
     //________________________________________________________________________________________________________________________________________________
     // operazioni Rider
 
-    public void richiedi_approvazzione_consegna(Ordine ordine){
-        rider.richiedi_approvazione_consegna(ordine);
+    public ErrorType richiedi_approvazzione_consegna(Ordine ordine){
+       ErrorType error = rider.richiedi_approvazione_consegna(ordine);
+       return error;
     }
 
     public void conferma_consegna_ordine(Ordine ordine){
-        rider.richiedi_approvazione_consegna(ordine);
+      rider.conferma_cosegna_ordine(ordine);
     }
 
     //________________________________________________________________________________________________________________________________________________

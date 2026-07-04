@@ -44,6 +44,9 @@ public class GestioneDipedenteGui extends JPanel {
         aggiorna_subordinati_lista(mainGui.get_dipedente_controller().get_dipedente());
         aggiorna_richiesta_assunzioni_lista(mainGui.get_dipedente_controller().get_dipedente());
 
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione Richieste Assunzioni
+
         rifiutaRichestaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -77,6 +80,9 @@ public class GestioneDipedenteGui extends JPanel {
                 aggiorna_richiesta_assunzioni_lista(mainGui.get_dipedente_controller().get_dipedente());
             }
         });
+
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione (Dipedenti) Subordinati
 
         licenziaButton.addActionListener(new ActionListener() {
             @Override

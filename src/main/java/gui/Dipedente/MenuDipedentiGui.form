@@ -149,6 +149,7 @@
                 <properties>
                   <background color="-2500135"/>
                   <foreground color="-16448233"/>
+                  <selectionMode value="0"/>
                 </properties>
               </component>
             </children>

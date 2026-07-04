@@ -15,35 +15,6 @@
         </properties>
         <border type="none"/>
         <children>
-          <grid id="7cd66" binding="contenutoOrdinePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-            <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <background color="-262657"/>
-            </properties>
-            <border type="line" title="contenuto ordine">
-              <font style="1"/>
-              <title-color color="-16448233"/>
-              <color color="-13881804"/>
-            </border>
-            <children>
-              <scrollpane id="eedaf">
-                <constraints border-constraint="Center"/>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <component id="51989" class="javax.swing.JList" binding="contenutoOrdineLista">
-                    <constraints/>
-                    <properties>
-                      <background color="-2500135"/>
-                      <foreground color="-16448233"/>
-                    </properties>
-                  </component>
-                </children>
-              </scrollpane>
-            </children>
-          </grid>
           <grid id="83df5" binding="ordiniInCaricoPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -79,11 +50,12 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="1e60f" class="javax.swing.JList" binding="ordiniLista">
+                  <component id="1e60f" class="javax.swing.JList" binding="ordiniDaConsegnareLista">
                     <constraints/>
                     <properties>
                       <background color="-2894377"/>
                       <foreground color="-16448233"/>
+                      <selectionMode value="0"/>
                     </properties>
                   </component>
                 </children>
@@ -97,7 +69,7 @@
             <properties>
               <background color="-262657"/>
             </properties>
-            <border type="line" title="Ordini da prendere in carico">
+            <border type="line" title="Ordini che potresti prendere in carico">
               <font style="1"/>
               <title-color color="-16448233"/>
               <color color="-13881804"/>
@@ -130,11 +102,25 @@
                     <properties>
                       <background color="-2500135"/>
                       <foreground color="-16448233"/>
+                      <selectionMode value="0"/>
                     </properties>
                   </component>
                 </children>
               </scrollpane>
             </children>
+          </grid>
+          <grid id="835d" binding="contenutoOrdinePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-262657"/>
+            </properties>
+            <border type="line" title="Contenuto Ordine">
+              <font style="1"/>
+              <title-color color="-16448233"/>
+            </border>
+            <children/>
           </grid>
         </children>
       </grid>

@@ -3,15 +3,13 @@ package controller;
 import exception.ErrorType;
 import model.*;
 
-import javax.swing.*;
-
 public class DipedenteController {
     private UtenteController utente_controller;
     private  Dipedente dipedente;
 
     public DipedenteController(UtenteController utenteController){
         this.utente_controller = utenteController;
-        this.dipedente = utenteController.dati_utente.get_dipedente();
+        this.dipedente = utenteController.get_dati_utente().get_dipedente();
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -20,7 +18,8 @@ public class DipedenteController {
     public ErrorType cancella_ristorante(){
        ErrorType error = dipedente.cancella_ristorante(dipedente.get_ristorante());
        if(error != ErrorType.NESSUN_ERRORE) return error;
-       utente_controller.dati_utente.rimuovi_dipedente();
+
+       utente_controller.get_dati_utente().rimuovi_dipedente();
        return ErrorType.NESSUN_ERRORE;
     }
 
@@ -30,7 +29,7 @@ public class DipedenteController {
     public ErrorType licenziati(){
         ErrorType error =  dipedente.licenziati();
         if(error != ErrorType.NESSUN_ERRORE) return error;
-        utente_controller.dati_utente.rimuovi_dipedente();
+        utente_controller.get_dati_utente().rimuovi_dipedente();
         return ErrorType.NESSUN_ERRORE;
     }
 
@@ -62,8 +61,8 @@ public class DipedenteController {
         return dipedente.segnala_ordine_pronto_ritiro(ordine);
     }
 
-    public void anulla_ordine(Ordine ordine){
-        dipedente.cancella_ordine(ordine);
+    public void annulla_ordine(Ordine ordine){
+        dipedente.annulla_ordine(ordine);
     }
 
     //________________________________________________________________________________________________________________________________________________

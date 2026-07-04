@@ -11,6 +11,9 @@ public class Utente {
     private String nome;
     private String cognome;
 
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
+
     public Utente(String email, String password, String nickname, String nome, String cognome) {
         this.email = email;
         this.password = password;
@@ -20,15 +23,15 @@ public class Utente {
     }
 
     //________________________________________________________________________________________________________________________________________________
-    //Override
+    // Override
 
     @Override
-    public boolean equals(Object o){
-        if(o.getClass().getName().equals("utente")) {
-            Utente utente = (Utente) o;
-            return (this == utente);
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Utente utente = (Utente) o;
+        return utente.get_nickname().equals(this.get_nickname());
     }
 
     @Override
@@ -38,7 +41,7 @@ public class Utente {
 
 
     //________________________________________________________________________________________________________________________________________________
-    //Get and Set
+    // Get and Set
 
     public String get_email(){ return email; }
     public void set_email(String email){ this.email = email; }

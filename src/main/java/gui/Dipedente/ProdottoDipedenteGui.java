@@ -38,13 +38,16 @@ public class ProdottoDipedenteGui extends JPanel {
         mainGui.get_dashboardDipedenteGui().aggiungi_pulsanti_prodotto(mainGui,ristorante,menu);
         prodottoInfoLabel.setText(prodotto.toString());
 
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione Prodotto
+
         modificaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String nome = nomeTextField.getText();
                 String prezzo_string = prezzoTextField.getText().trim();
                 if(nome.isEmpty() || prezzo_string.isEmpty()){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO), "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NULL), "Errore", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -58,7 +61,7 @@ public class ProdottoDipedenteGui extends JPanel {
                     prodottoInfoLabel.setText(prodotto.toString());
                 }
                 catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO), "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_NUMERICO), "Errore", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

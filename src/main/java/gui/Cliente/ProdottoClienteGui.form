@@ -70,7 +70,7 @@
                       <text value="-"/>
                     </properties>
                   </component>
-                  <component id="4b41b" class="javax.swing.JLabel" binding="labelQuantita">
+                  <component id="4b41b" class="javax.swing.JLabel" binding="quantitaProdottoLabel">
                     <constraints/>
                     <properties>
                       <foreground color="-16448233"/>

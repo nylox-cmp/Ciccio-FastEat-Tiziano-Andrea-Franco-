@@ -5,16 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnessioneDatabase {
-
-	// ATTRIBUTI
 	private static ConnessioneDatabase instance;
 	public Connection connection = null;
 	private String nome = "postgres";
 	private String password = "password";
-	private String url = "jdbc:postgresql://localhost:5433/Borsa";
+	private String url = "jdbc:postgresql://localhost:5432/FastFood";
 	private String driver = "org.postgresql.Driver";
 
-	// COSTRUTTORE
+	//________________________________________________________________________________________________________________________________________________
+	// Costruttore
+
 	private ConnessioneDatabase() throws SQLException {
 		try {
 			Class.forName(driver);
@@ -26,7 +26,6 @@ public class ConnessioneDatabase {
 		}
 
 	}
-
 
 	public static ConnessioneDatabase getInstance() throws SQLException {
 		if (instance == null) {

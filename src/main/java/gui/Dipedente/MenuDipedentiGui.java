@@ -54,12 +54,15 @@ public class MenuDipedentiGui extends JPanel {
         prodottiLista.setModel(prodottiListModel);
         aggiorna_lista_prodotti(menu);
 
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione Menu
+
         modificaMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String nuovoNome = nomeMenuTextField.getText().trim();
                 if (nuovoNome.isEmpty()) {
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO), "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NULL), "Errore", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -72,6 +75,9 @@ public class MenuDipedentiGui extends JPanel {
             }
         });
 
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione Prodotto
+
         creaProdottoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,9 +85,7 @@ public class MenuDipedentiGui extends JPanel {
                 String prezzo_string = prezzoTextField.getText().trim();
 
                 if (nome.isEmpty() || prezzo_string.isEmpty()) {
-                    JOptionPane.showMessageDialog(mainPanel,
-                            ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO),
-                            "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NULL), "Errore", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -96,7 +100,7 @@ public class MenuDipedentiGui extends JPanel {
                     aggiorna_lista_prodotti(menu);
                 }
                 catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO), "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_NUMERICO), "Errore", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -121,6 +125,7 @@ public class MenuDipedentiGui extends JPanel {
     }
 
     //________________________________________________________________________________________________________________________________________________
+
 
     public void aggiorna_lista_prodotti(Menu menu){
         prodottiListModel.clear();

@@ -2,9 +2,7 @@ package gui.Rider;
 
 import controller.RiderController;
 import exception.ErrorType;
-import gui.Dipedente.OrdiniDipedenteGui;
 import gui.MainGui;
-import gui.customWidget.DashboardGui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,17 +27,18 @@ public class RiderGui extends JPanel {
         setLayout(new BorderLayout());
         add(mainPanel, BorderLayout.CENTER);
 
-        mainGui.get_dashboardGui().nascondi_area_ordini();
+        mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
 
         registratiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String mezzo_trasporto = mezzoTrasportoTextField.getText();
                 if (mezzo_trasporto.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_VALIDO), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NULL), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 mainGui.get_utente_controller().sing_in_rider(mezzo_trasporto);
+                mainGui.set_rider_controller(new RiderController(mainGui.get_utente_controller()));
                 mainGui.set_pagina(new OrdiniRiderGui(mainGui));
             }
         });

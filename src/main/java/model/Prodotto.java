@@ -5,28 +5,44 @@ import exception.*;
 public class Prodotto {
     private String nome;
     private double prezzo_unitario;
-
     private Menu menu;
 
-    public Prodotto(String nome, double prezzo_unitario) {
+    //____________________________________________________________________________________
+    //Costruttore
+
+    public Prodotto(String nome, double prezzo_unitario,Menu menu) {
         this.nome = nome;
         set_prezzo_unitario(prezzo_unitario);
+        this.menu = menu;
     }
 
     //____________________________________________________________________________________
     // Override
 
+    @Override
     public String toString(){
-        String identificativo = get_nome() + " " + get_prezzo_unitario();
-        return  identificativo;
+        String string = get_nome() + " " + get_prezzo_unitario();
+        return  string;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o == this) return true;
+        if(o == null || o.getClass() != this.getClass()) return false;
+
+        Prodotto prodotto = (Prodotto) o;
+        return (prodotto.get_menu().equals(menu) && prodotto.get_nome().equals(this.get_nome()));
+    }
+
 
     //____________________________________________________________________________________
     //
 
-    public void modica_prodotto(String nome,double prezzo_unitario){
+    public ErrorType modica_prodotto(String nome,double prezzo_unitario){
         this.nome = nome;
-        this.prezzo_unitario = prezzo_unitario;
+
+        if(menu.esiste_prodotto_stesso_nome(nome)) return ErrorType.INPUT_NON_UNIVOCO;
+        return set_prezzo_unitario(prezzo_unitario);
     }
 
     //____________________________________________________________________________________
@@ -47,7 +63,10 @@ public class Prodotto {
             this.prezzo_unitario = prezzo_unitario;
             return ErrorType.NESSUN_ERRORE;
         }
-        return ErrorType.INPUT_NON_VALIDO;
+        return ErrorType.INPUT_NULL;
     }
 
+
+    public Menu get_menu(){return menu;}
+    public void set_menu(Menu menu){this.menu = menu;}
 }

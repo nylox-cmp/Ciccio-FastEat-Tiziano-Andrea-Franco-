@@ -46,7 +46,7 @@ public class RigaOrdine {
     //________________________________________________________________________________________________________________________________________________
     // Gestione riga Ordine
 
-    protected void calcola_prezzo_totale(){
+    private void calcola_prezzo_totale(){
         this.prezzo_totale = this.prodotto.get_prezzo_unitario() * this.quantita;
     }
 

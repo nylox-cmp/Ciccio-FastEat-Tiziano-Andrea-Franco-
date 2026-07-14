@@ -1,8 +1,5 @@
 package model;
 
-import exception.ErrorType;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Cliente extends Utente{
@@ -38,24 +35,22 @@ public class Cliente extends Utente{
         }
     }
 
-    public void conferma_cosegna_ordine(Ordine ordine){
+    public void conferma_consegna_ordine(Ordine ordine){
         if (ordine.get_stato_ordine() == StatoOrdine.IN_CONSEGNA)
             ordine.set_stato_ordine(StatoOrdine.CONFERMA_CONSEGNA_CLIENTE);
 
-        if(ordine.get_stato_ordine() == StatoOrdine.CONFERMA_CONSEGNA_RIDER){
+        if(ordine.get_stato_ordine() == StatoOrdine.CONFERMA_CONSEGNA_RIDER)
             ordine.set_stato_ordine(StatoOrdine.CONSEGNATO);
-            ordine.get_rider().paga_rider(ordine);
-        }
+
     }
 
-    public void cambia_stato_in_preparazione(Ordine ordine){
-        if(get_ordini().contains(ordine) && ordine.get_stato_ordine() == StatoOrdine.BOZZA) {
+    public void conferma_creazione_ordine(Ordine ordine){
+        if(get_ordini().contains(ordine) && ordine.get_stato_ordine() == StatoOrdine.BOZZA)
             ordine.set_stato_ordine(StatoOrdine.PREPARAZIONE);
-            ordine.paga_ordine();
-        }
+
     }
 
-    public void aggiung_punti_fedelta(Ordine ordine){
+    public void aggiungi_punti_fedelta(Ordine ordine){
         if (ordine.get_costo() >= Ordine.MIN_COSTO_ORDINE_PER_PUNTI)
             punti_fedelta += 1;
     }

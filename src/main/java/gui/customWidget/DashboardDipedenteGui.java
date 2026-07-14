@@ -4,14 +4,13 @@ import exception.ErrorType;
 import gui.Cliente.ClienteGui;
 import gui.Dipedente.*;
 import gui.MainGui;
+import model.Menu;
 import model.Prodotto;
 import model.Ristorante;
-import model.Menu;
 import model.Ruolo;
 
-
 import javax.swing.*;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,7 +22,7 @@ public class DashboardDipedenteGui extends JPanel {
     private JButton apriButton;
 
     private JLabel tittoloLabel;
-    private JLabel infoDipedente;
+    private JLabel infoDipendente;
 
     private JComboBox areaGestioneComboBox;
     private JButton licenziatiButton;
@@ -72,14 +71,15 @@ public class DashboardDipedenteGui extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int scelta = JOptionPane.showConfirmDialog(mainGui.get_pagina(), "Sei sicuro di volerti licenziare? , il licenziamneto nel ruolo di Manager comportera anche alla cancellazione del ristorante","FastFood", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if(scelta == JOptionPane.NO_OPTION || scelta == JOptionPane.CLOSED_OPTION) return;
-                ErrorType error = mainGui.get_dipedente_controller().licenziati();
-                if(error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
+                if(scelta == JOptionPane.YES_OPTION) {
+                    ErrorType error = mainGui.get_dipedente_controller().licenziati();
+                    if (error != ErrorType.NESSUN_ERRORE) {
+                        JOptionPane.showMessageDialog(mainGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    mainGui.nascondi_dashboard_dipedenti();
+                    mainGui.set_pagina(new ClienteGui(mainGui));
                 }
-                mainGui.nascondi_dashboard_dipedenti();
-                mainGui.set_pagina(new ClienteGui(mainGui));
             }
         });
     }
@@ -94,7 +94,7 @@ public class DashboardDipedenteGui extends JPanel {
     }
 
     public void aggiorna_ruolo_label(MainGui mainGui){
-        infoDipedente.setText(Ruolo.converti_ruolo_to_string(mainGui.get_dipedente_controller().get_dipedente().get_ruolo()));
+        infoDipendente.setText(Ruolo.converti_ruolo_to_string(mainGui.get_dipedente_controller().get_dipendente().get_ruolo()));
     }
 
     //________________________________________________________________________________________________________________________________________________

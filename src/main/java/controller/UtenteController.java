@@ -1,68 +1,106 @@
 package controller;
 
-import exception.*;
-import model.*;
+import exception.ErrorType;
+import model.Dipedente;
+import model.Rider;
+import model.Utente;
 
-import java.util.ArrayList;
-
+import java.util.Optional;
 
 public class UtenteController {
-    private Utente utente;
-    private DatiUtente dati_utente;
+    public Utente utente;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public UtenteController(){
-        this.dati_utente = new DatiUtente();
-    }
+    public UtenteController(){}
 
     //________________________________________________________________________________________________________________________________________________
-    //
+    // Operazione Utente
 
     public ErrorType login(String email,String password){
-        // ricupera tutti i dati del utente come (cliente,rider,dipente), all'interno del database
+        //operazione di verifica e recupero dati per creare la classe utente
         return ErrorType.NESSUN_ERRORE;
     }
 
     public ErrorType sign_in(String email,String password,String nickname,String nome,String cognome){
         this.utente = new Utente(email,password,nickname,nome,cognome);
+        SessionManager.instance.set_utente(utente);
+        //operazione di registrazione
         return ErrorType.NESSUN_ERRORE;
     }
 
-    //________________________________________________________________________________________________________________________________________________
-    // Operazioni per diventare Dipdente
-
-    public void crea_ristorante(String nome,String indirizzo,String numero_telefono){
-        Ristorante ristorante = new Ristorante(nome,indirizzo,numero_telefono);
-        dati_utente.set_dipendente(get_utente(),Ruolo.MANAGER,ristorante);
-    }
-
-    public ErrorType richiesta_assunzione_ristorante(String codice_ristorante){
-        // operazione data base per verificare se ci siano ristoranti con sto codice
+    public ErrorType cancella_account(){
+        //Operazione Database cancellazione legata a due trigger Cliente/Rider
+        SessionManager.instance.distruggi_sessione();
         return ErrorType.NESSUN_ERRORE;
     }
 
-    public void sing_in_rider(String mezzo_trasporto){
-        dati_utente.set_rider(get_utente(),mezzo_trasporto);
+    public void logout(){
+        SessionManager.instance.distruggi_sessione();
     }
 
     //________________________________________________________________________________________________________________________________________________
-    // Operazioni di verifica se l'utente sia Dipedente o Rider
+    // Operazione di Verifica del Ruolo dell'Utente
 
-    public boolean utente_is_dipedente(){ return (dati_utente.get_dipedente() != null); }
+    public boolean utente_is_cliente(){
+        return false;
+    }
 
-    public boolean utente_is_rider(){ return (dati_utente.get_rider() != null);}
+    public boolean utente_is_dipedente(){
+        Optional<Dipedente> optionalDipedente = SessionManager.instance.get_utente().get_ruolo_utente(Dipedente.class);
+        if(optionalDipedente.isPresent())
+            return true;
 
+        //Operazione di verifica nel database se l'utente sia un Dipedente
+
+        return false;
+    }
+
+    public boolean utente_is_rider(){
+        Optional<Rider> optionalRider = SessionManager.instance.get_utente().get_ruolo_utente(Rider.class);
+        if(optionalRider.isPresent())
+            return true;
+
+        //Operazione di verifica nel database se l'utente sia un Dipedente
+
+        return false;
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+    // Operazione Login/Sing Rider
+
+    public void sign_in_come_rider(String mezzo_trasporto){
+        this.utente.sign_in_come_rider(mezzo_trasporto);
+    }
+
+    public void login_come_rider(){
+        //operazione di login del Rider
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+    // Operazione Login/Sing Dipedente (Piattaforma/Ristorante)
+
+    public void crea_ristorante(String nome,String indirizzo){
+        SessionManager.instance.get_utente().crea_ristorante(nome,indirizzo);
+        //operazione
+    }
+
+    public ErrorType diventa_dipendente_ristorante(String codice_ristorante){
+        //operazione di controllo se esiste un ristorante con quel codice e di rendere l'utente un dipedente
+        return ErrorType.NESSUN_ERRORE;
+    }
+
+    public void login_come_dipedente(){
+        //if NOT RiderDAO.utente_is_dipedente
+
+    }
 
     //________________________________________________________________________________________________________________________________________________
     // Get and Set
 
     public Utente get_utente() { return utente; }
     public void set_utente(Utente utente){this.utente = utente;}
-
-    public DatiUtente get_dati_utente(){return dati_utente;}
-    public void set_dati_utente(DatiUtente dati_utente){this.dati_utente = dati_utente;}
 }
 
 

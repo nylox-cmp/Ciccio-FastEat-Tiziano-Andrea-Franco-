@@ -21,14 +21,12 @@ public class DipedenteGui extends JPanel {
 
     private JTextField nomeTextField;
     private JTextField indirizzoTextField;
-    private JTextField numeroTelefonoTextField;
     private JTextField codiceAutenticazioneTextField;
 
     private JButton registraButton;
     private JButton richiestaDipedenteButton;
 
     private JLabel codiceAutenticazioneLabel;
-    private JLabel numeroTelefonoLabel;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -37,7 +35,6 @@ public class DipedenteGui extends JPanel {
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        mainGui.get_dashboardGui().nascondi_pagaRider();
         mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
 
         //________________________________________________________________________________________________________________________________________________
@@ -48,14 +45,13 @@ public class DipedenteGui extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String nome = nomeTextField.getText();
                 String indirizzo = indirizzoTextField.getText();
-                String numero_telefono = numeroTelefonoTextField.getText();
 
-                if(nome.isEmpty() || indirizzo.isEmpty() || numero_telefono.isEmpty()){
+                if(nome.isEmpty() || indirizzo.isEmpty()){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_utente_controller().crea_ristorante(nome,indirizzo,numero_telefono);
-                mainGui.set_dipedente_controller(new DipedenteController(mainGui.get_utente_controller()));
+                mainGui.get_utente_controller().crea_ristorante(nome,indirizzo);
+                mainGui.set_dipedente_controller(new DipedenteController());
                 mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
             }
         });
@@ -69,11 +65,10 @@ public class DipedenteGui extends JPanel {
                     return;
                 }
 
-                ErrorType error = mainGui.get_utente_controller().richiesta_assunzione_ristorante(codice_ristorante);
+                ErrorType error = mainGui.get_utente_controller().diventa_dipendente_ristorante(codice_ristorante);
                 if(error != ErrorType.NESSUN_ERRORE){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error),"Error", JOptionPane.ERROR_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(mainPanel,"Richiesta inviata con successo, attendi che la richiesta venga accetta prima di diventare dipendente del ristorante","FastFood stuff",JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }

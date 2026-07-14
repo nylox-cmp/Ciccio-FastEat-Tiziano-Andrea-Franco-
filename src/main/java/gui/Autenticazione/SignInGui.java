@@ -1,7 +1,7 @@
 package gui.Autenticazione;
 
 import controller.UtenteController;
-import exception.*;
+import exception.ErrorType;
 import gui.Cliente.ClienteGui;
 import gui.MainGui;
 
@@ -37,6 +37,7 @@ public class SignInGui extends JPanel{
     public SignInGui(MainGui mainGui){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
+
 
         registratiButton.addActionListener(new ActionListener() {
             @Override

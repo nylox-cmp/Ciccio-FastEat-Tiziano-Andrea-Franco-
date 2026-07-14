@@ -1,4 +1,4 @@
 package dao;
 
-public class RistoranteDAO {
+public interface RistoranteDAO {
 }

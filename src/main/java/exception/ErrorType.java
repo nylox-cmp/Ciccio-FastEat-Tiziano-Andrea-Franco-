@@ -11,6 +11,7 @@ public enum ErrorType {
     INPUT_NON_UNIVOCO,
     ELEMENTO_SELEZIONATO_NULL,
     PERMESSI_NON_SUFFICIENTI,
+    ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO,
     ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO,
     PUNTI_FEDLELTA_SUPERANO_MAX,
     RIDER_SUPERA_MAX_NUM_ORDINI;
@@ -36,6 +37,9 @@ public enum ErrorType {
                 break;
             case PERMESSI_NON_SUFFICIENTI:
                 messaggio = "l'operazione selezionata non è eseguibile, con i permessi di questo ruolo";
+                break;
+            case ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO:
+                messaggio = "l'ordine non può essere modificato in questo Stato,puo essere modificato solo nello stato di BOZZA";
                 break;
             case ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO:
                 messaggio = "l'ordine possiede già una RigaOrdine con lo stesso identico Prdotto";

@@ -1,6 +1,6 @@
 package model;
 
-import exception.*;
+import exception.ErrorType;
 
 public class Prodotto {
     private String nome;
@@ -38,7 +38,7 @@ public class Prodotto {
     //____________________________________________________________________________________
     //
 
-    public ErrorType modica_prodotto(String nome,double prezzo_unitario){
+    public ErrorType modifica_prodotto(String nome,double prezzo_unitario){
         this.nome = nome;
 
         if(menu.esiste_prodotto_stesso_nome(nome)) return ErrorType.INPUT_NON_UNIVOCO;

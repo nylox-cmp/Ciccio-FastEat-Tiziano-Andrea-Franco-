@@ -2,22 +2,20 @@ package gui.Dipedente;
 
 import exception.ErrorType;
 import gui.MainGui;
-import gui.customWidget.DashboardDipedenteGui;
-import gui.customWidget.DashboardGui;
+import model.Menu;
 import model.Prodotto;
 import model.Ristorante;
-import model.Menu;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ProdottoDipedenteGui extends JPanel {
     private JPanel mainPanel;
     private JPanel bottomPanel;
-    private JPanel topPanelDipedenti;
-    private JPanel modificaProttoPanel;
+    private JPanel topPanelDipendenti;
+    private JPanel modificaProdottoPanel;
 
     private JTextField nomeTextField;
     private JTextField prezzoTextField;
@@ -25,7 +23,7 @@ public class ProdottoDipedenteGui extends JPanel {
     private JButton modificaButton;
 
     private JLabel prodottoInfoLabel;
-    private JLabel nomePrdottoLabel;
+    private JLabel nomeProdottoLabel;
     private JLabel prezzoProdottoLabel;
 
     //________________________________________________________________________________________________________________________________________________

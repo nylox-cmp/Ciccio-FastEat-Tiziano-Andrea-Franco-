@@ -9,34 +9,25 @@ public class Ristorante {
     private String codice_ristorante;
     private String nome;
     private String indirizzo;
-    private String numero_telefono;
-    private double incassi;
-
-    private ArrayList<Dipedente> dipedenti;
-    private ArrayList<Menu> menu = new ArrayList<Menu>();
-    private ArrayList<Ordine> ordini = new ArrayList<Ordine>();
 
     private ArrayList<Dipedente> dipendenti;
-    private ArrayList<Utente> richieste_assunzione;
+    private ArrayList<Menu> menu = new ArrayList<Menu>();
+    private ArrayList<Ordine> ordini = new ArrayList<Ordine>();
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public Ristorante(String nome, String indirizzo,String numero_telefono) {
+    public Ristorante(String nome, String indirizzo) {
         this.codice_ristorante = genera_codice_univoco();
         this.nome = nome;
         this.indirizzo = indirizzo;
-        this.numero_telefono = numero_telefono;
-        this.incassi = 0.0;
     }
 
-    public Ristorante(String codice_ristorante,String nome, String indirizzo,String numero_telefono,double incassi,ArrayList<Dipedente> dipedenti,ArrayList<Menu> menu){
+    public Ristorante(String codice_ristorante,String nome, String indirizzo,ArrayList<Dipedente> dipendenti,ArrayList<Menu> menu){
         this.codice_ristorante = codice_ristorante;
         this.nome = nome;
         this.indirizzo = indirizzo;
-        this.numero_telefono = numero_telefono;
-        this.incassi = incassi;
-        this.dipedenti = dipedenti;
+        this.dipendenti = dipendenti;
         this.menu = menu;
     }
 
@@ -45,7 +36,7 @@ public class Ristorante {
 
     @Override
     public String toString(){
-        String string = get_nome() + " " + get_indirizzo() + " " + get_numero_telefono();
+        String string = get_nome() + " " + get_indirizzo();
         return string;
     }
 
@@ -61,14 +52,14 @@ public class Ristorante {
     //________________________________________________________________________________________________________________________________________________
     // Generazione Codice
 
-    public static String genera_codice_univoco(){
+    protected static String genera_codice_univoco(){
         return UUID.randomUUID().toString().replace("-", "").substring(0, 12);
     }
 
     //________________________________________________________________________________________________________________________________________________
     //Gestione Menu
 
-    public boolean esiste_menu_stesso_nome(String nome){
+    protected boolean esiste_menu_stesso_nome(String nome){
         for(Menu menu : get_menu()){
             if(menu.get_nome().equals(nome)) return true;
         }
@@ -105,21 +96,12 @@ public class Ristorante {
     public void set_nome(String nome){ this.nome = nome; }
 
     public String get_indirizzo(){ return indirizzo; }
-    public void set_inidirizzo(String indirizzo){ this.indirizzo = indirizzo; }
-
-    public String get_numero_telefono(){return this.numero_telefono;}
-    public void set_numero_telefono(){this.numero_telefono = numero_telefono;}
-
-    public double get_incassi(){return this.incassi;}
-    public void set_incassi(double incassi){this.incassi = incassi;}
+    public void set_indirizzo(String indirizzo){ this.indirizzo = indirizzo; }
 
     public ArrayList<Menu> get_menu(){ return menu; }
     public void set_menu(ArrayList<Menu> menu){ this.menu = menu; }
 
     public ArrayList<Ordine> get_ordini() { return ordini; }
     public void set_ordini(ArrayList<Ordine> ordini) { this.ordini = ordini; }
-
-    public ArrayList<Utente> get_richieste_assunzioni(){ return richieste_assunzione; }
-    public void set_richieste_assunzioni(ArrayList<Utente> richieste_assunzione){ this.richieste_assunzione = richieste_assunzione; }
 
 }

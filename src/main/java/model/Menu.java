@@ -1,6 +1,7 @@
 package model;
 
-import exception.*;
+import exception.ErrorType;
+
 import java.util.ArrayList;
 
 public class Menu {
@@ -23,7 +24,7 @@ public class Menu {
     }
 
     //________________________________________________________________________________________________________________________________________________
-    // Overidde
+    // Override
 
     public String toString(){ return nome;}
 
@@ -38,7 +39,7 @@ public class Menu {
     //________________________________________________________________________________________________________________________________________________
     //Gestione prodotti
 
-    public boolean esiste_prodotto_stesso_nome(String nome){
+    protected boolean esiste_prodotto_stesso_nome(String nome){
         for(Prodotto prodotto : get_prodotti()){
             if(prodotto.get_nome().equals(nome)) return true;
         }
@@ -55,8 +56,8 @@ public class Menu {
         return ErrorType.NESSUN_ERRORE;
     }
 
-    public void cancella_prodotto(Prodotto prodoto){
-        prodotti.remove(prodoto);
+    public void cancella_prodotto(Prodotto prodotto){
+        prodotti.remove(prodotto);
     }
 
     //________________________________________________________________________________________________________________________________________________

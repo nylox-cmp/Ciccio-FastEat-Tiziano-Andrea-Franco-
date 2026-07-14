@@ -3,11 +3,11 @@ package gui.Cliente;
 import exception.ErrorType;
 import gui.MainGui;
 import gui.customWidget.ContenutoOrdineGui;
-import model.*;
+import model.Cliente;
+import model.Ordine;
+import model.RigaOrdine;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -86,7 +86,7 @@ public class OrdiniClientiGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_cliente_controller().cambia_stato_ordine_in_preparazione(ordine);
+                mainGui.get_cliente_controller().conferma_creazione_ordine(ordine);
                 aggiorna_ordiniLista(mainGui.get_cliente_controller().get_cliente());
             }
         });

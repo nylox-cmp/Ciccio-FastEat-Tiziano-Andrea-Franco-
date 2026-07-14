@@ -15,10 +15,8 @@ import java.util.ArrayList;
 public class GestioneDipedenteGui extends JPanel {
     private JPanel mainPanel;
     private JPanel bottomPanel;
-    private JPanel richiesteAssunzioniPanel;
-    private JPanel dipedentiPanel;
-    private JPanel DipedentiButtonPanel;
-    private JPanel assunzioiniButtonPanel;
+    private JPanel dipendentiPanel;
+    private JPanel DipendentiButtonPanel;
 
     private JButton rifiutaRichestaButton;
     private JButton accettaRichiestaButton;
@@ -27,10 +25,9 @@ public class GestioneDipedenteGui extends JPanel {
     private JComboBox seletoreRuoloCombox;
     private JLabel ruoloLabel;
 
-    private JList<Utente> richiestaAssunziniLista;
+    private JList<Utente> richiestaAssunzioniLista;
     private DefaultListModel<Utente> richiestaAssunzioniListModel = new DefaultListModel<Utente>();
     private JList<Dipedente> subordinatiLista;
-    private JScrollPane richiestaAssunzioniJScrollPane;
     private JScrollPane subordinatiJscrollPane;
     private DefaultListModel<Dipedente> subordinatiListModel = new DefaultListModel<Dipedente>();
 
@@ -42,44 +39,6 @@ public class GestioneDipedenteGui extends JPanel {
         add(mainPanel,BorderLayout.CENTER);
 
         aggiorna_subordinati_lista(mainGui.get_dipedente_controller().get_dipedente());
-        aggiorna_richiesta_assunzioni_lista(mainGui.get_dipedente_controller().get_dipedente());
-
-        //________________________________________________________________________________________________________________________________________________
-        // ActionListener Gestione Richieste Assunzioni
-
-        rifiutaRichestaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Utente utente = richiestaAssunziniLista.getSelectedValue();
-                if(utente == null){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                ErrorType error = mainGui.get_dipedente_controller().rimuovi_richiesta_assunzione(utente);
-                if (error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                aggiorna_richiesta_assunzioni_lista(mainGui.get_dipedente_controller().get_dipedente());
-            }
-        });
-
-        accettaRichiestaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Utente utente = richiestaAssunziniLista.getSelectedValue();
-                if(utente == null){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                ErrorType error = mainGui.get_dipedente_controller().accetta_richiesta_assunzione(utente);
-                if (error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                aggiorna_richiesta_assunzioni_lista(mainGui.get_dipedente_controller().get_dipedente());
-            }
-        });
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione (Dipedenti) Subordinati
@@ -92,7 +51,7 @@ public class GestioneDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                ErrorType error = mainGui.get_dipedente_controller().accetta_richiesta_assunzione(dipedente);
+                ErrorType error = mainGui.get_dipedente_controller().licenzia_dipedente(dipedente);
                 if (error != ErrorType.NESSUN_ERRORE){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -141,12 +100,4 @@ public class GestioneDipedenteGui extends JPanel {
             subordinatiListModel.addElement(subordinato);
     }
 
-    public void aggiorna_richiesta_assunzioni_lista(Dipedente dipedente){
-        richiestaAssunzioniListModel.clear();
-        ArrayList<Utente> richieste = dipedente.get_ristorante().get_richieste_assunzioni();
-        if(richieste == null) return;
-
-        for(Utente richiesta : richieste)
-            richiestaAssunzioniListModel.addElement(richiesta);
-    }
 }

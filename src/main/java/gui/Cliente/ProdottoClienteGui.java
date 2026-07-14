@@ -1,9 +1,9 @@
 package gui.Cliente;
 
 import exception.ErrorType;
+import gui.MainGui;
 import model.Ordine;
 import model.Prodotto;
-import gui.MainGui;
 import model.RigaOrdine;
 import model.Ristorante;
 
@@ -70,7 +70,7 @@ public class ProdottoClienteGui extends JPanel {
         diminuisciQuantitaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ErrorType error = mainGui.get_cliente_controller().diminuisci_quanita_prodotto(riga_ordine);
+                ErrorType error = mainGui.get_cliente_controller().diminuisci_quantita_prodotto(riga_ordine);
                 if(error != ErrorType.NESSUN_ERRORE){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error),"Error", JOptionPane.ERROR_MESSAGE);
                     return;

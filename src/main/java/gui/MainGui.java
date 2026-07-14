@@ -1,13 +1,10 @@
 package gui;
 
 import controller.*;
-import gui.Autenticazione.*;
+import gui.Autenticazione.SignInGui;
 import gui.customWidget.DashboardDipedenteGui;
 import gui.customWidget.DashboardGui;
-import model.Rider;
 import model.Ristorante;
-import model.StatoOrdine;
-import model.Utente;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,6 +59,18 @@ public class MainGui {
     public void nascondi_dashboard_dipedenti(){
         if(dashboardDipedenteGui == null) return;
         dashboardDipedenteGui.setVisible(false);
+    }
+
+    public void print_controller(){
+        System.out.println(utente_controller + " " +  cliente_controller + " " + rider_controller + " " + dipedente_controller + " " + ristorante_controller);
+    }
+
+    public void distruggi_controller(){
+        utente_controller = null;
+        cliente_controller = null;
+        dipedente_controller = null;
+        rider_controller = null;
+        ristorante_controller = null;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -142,6 +151,8 @@ public class MainGui {
 
         SignInGui signInGui = new SignInGui(mainGui);
         mainGui.set_pagina(signInGui);
+
+
 
     }
 }

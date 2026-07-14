@@ -1,22 +1,33 @@
 package controller;
 
-import exception.*;
+import exception.ErrorType;
 import model.*;
 
 public class RistoranteController {
     private Ristorante ristorante;
-    private Dipedente dipedente;
     private Menu menu;
     private Prodotto prodotto;
 
+    private Dipedente dipedente;
+
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
 
     public RistoranteController(DipedenteController dipedenteController){
-        this.ristorante = dipedenteController.get_dipedente().get_ristorante();
-        this.dipedente = dipedenteController.get_dipedente();
+        this.ristorante = dipedenteController.get_dipendente().get_ristorante();
+        this.dipedente = dipedenteController.get_dipendente();
     }
 
     //________________________________________________________________________________________________________________________________________________
     // Ristorante
+
+        public ErrorType cancella_ristorante(){
+        ErrorType error = dipedente.cancella_ristorante(dipedente.get_ristorante());
+        if(error != ErrorType.NESSUN_ERRORE) return error;
+
+        this.dipedente = null;
+        return ErrorType.NESSUN_ERRORE;
+    }
 
     public ErrorType modifica_ristorante(String nome,String indirizzo){
         if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
@@ -65,7 +76,7 @@ public class RistoranteController {
         if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
             return ErrorType.PERMESSI_NON_SUFFICIENTI;
 
-        return prodotto.modica_prodotto(nome,prezzo_unitario);
+        return prodotto.modifica_prodotto(nome,prezzo_unitario);
     }
 
     public ErrorType cancella_prodotto(Prodotto prodotto){
@@ -79,8 +90,8 @@ public class RistoranteController {
     //________________________________________________________________________________________________________________________________________________
     // Get and Set
 
-    public Dipedente get_dipednete(){ return dipedente;}
-    public void set_dipendete(Dipedente dipedente){ this.dipedente = dipedente; }
+    public Dipedente get_dipendente(){ return dipedente;}
+    public void set_dipendente(Dipedente dipedente){ this.dipedente = dipedente; }
 
     public Ristorante get_ristorante(){ return ristorante;}
     public void set_ristorante(Ristorante ristorante){ this.ristorante = ristorante;}

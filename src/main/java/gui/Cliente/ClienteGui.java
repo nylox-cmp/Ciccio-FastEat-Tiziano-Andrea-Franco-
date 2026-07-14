@@ -28,7 +28,6 @@ public class ClienteGui extends JPanel {
         mainGui.set_dashboardGui(new DashboardGui(mainGui));
 
         mainGui.mostra_dashboard();
-        mainGui.get_dashboardGui().nascondi_pagaRider();
         mainGui.get_dashboardGui().mostra_area_ordiniClienti();
         mainGui.get_dashboardGui().aggiorna_nickname_label(mainGui);
 

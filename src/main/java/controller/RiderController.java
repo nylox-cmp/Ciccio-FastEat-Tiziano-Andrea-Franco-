@@ -1,32 +1,34 @@
 package controller;
 
 import exception.ErrorType;
-import model.*;
-import controller.*;
+import model.Ordine;
+import model.Rider;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
 
 public class RiderController {
     private Rider rider; 
-    private UtenteController utente_controller;
 
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
 
     public RiderController(UtenteController utente_controller){
-        this.utente_controller = utente_controller;
-        this.rider = this.utente_controller.get_dati_utente().get_rider();
+        Optional<Rider> optionalRider = SessionManager.instance.get_utente().get_ruolo_utente(Rider.class);
+        if(optionalRider.isPresent())
+            this.rider = optionalRider.get();
     }
 
     //________________________________________________________________________________________________________________________________________________
     // operazioni Rider
 
-    public ErrorType richiedi_approvazzione_consegna(Ordine ordine){
+    public ErrorType richiedi_approvazione_consegna(Ordine ordine){
        ErrorType error = rider.richiedi_approvazione_consegna(ordine);
        return error;
     }
 
     public void conferma_consegna_ordine(Ordine ordine){
-      rider.conferma_cosegna_ordine(ordine);
+      rider.conferma_consegna_ordine(ordine);
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -35,6 +37,4 @@ public class RiderController {
     public Rider get_rider() { return rider; }
     public void set_rider(Rider rider){ this.rider = rider;}
 
-    public UtenteController get_utente_controller(){ return utente_controller;}
-    public void set_utente_controller(UtenteController utente_controller){ this.utente_controller = utente_controller; }
 }

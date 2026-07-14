@@ -1,8 +1,9 @@
 package model;
 
-import exception.ErrorType;
+import controller.SessionManager;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Utente {
     private String email;
@@ -10,6 +11,8 @@ public class Utente {
     private String nickname;
     private String nome;
     private String cognome;
+
+    private ArrayList<Utente> profili_utente = new ArrayList<>();
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -41,6 +44,30 @@ public class Utente {
 
 
     //________________________________________________________________________________________________________________________________________________
+    // Gestione Profili Utente
+
+    public <Tipo extends Utente> Optional<Tipo> get_ruolo_utente(Class<Tipo> tipo_ruolo_cercato){
+        for(Utente ruolo : profili_utente){
+            if(tipo_ruolo_cercato.isInstance(ruolo))
+                return Optional.of(tipo_ruolo_cercato.cast(ruolo));
+        }
+        return Optional.empty();
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+    // Operazione di Aggiunta Ruolo Utente
+
+    // Operazione per diventare Dipedente (piattaforma)
+    public void crea_ristorante(String nome,String indirizzo){
+       Ristorante ristorante = new Ristorante(nome,indirizzo);
+       this.profili_utente.add(new Dipedente(this,Ruolo.MANAGER,ristorante));
+    }
+
+    public void sign_in_come_rider(String mezzo_trasporto){
+        SessionManager.instance.get_utente().get_profili_utente().add(new Rider(SessionManager.instance.get_utente(), mezzo_trasporto));
+    }
+
+    //________________________________________________________________________________________________________________________________________________
     // Get and Set
 
     public String get_email(){ return email; }
@@ -57,4 +84,7 @@ public class Utente {
 
     public String get_cognome(){ return cognome; }
     public void set_cognome(String cognome){ this.cognome = cognome; }
+
+    public ArrayList<Utente> get_profili_utente(){return profili_utente;}
+    public void set_profili_utente(ArrayList<Utente> profili_utente){this.profili_utente = profili_utente;}
 }

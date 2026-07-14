@@ -5,7 +5,9 @@ import exception.ErrorType;
 import gui.MainGui;
 import gui.customWidget.ContenutoOrdineGui;
 import gui.customWidget.DashboardDipedenteGui;
-import model.*;
+import model.Ordine;
+import model.Rider;
+import model.Ristorante;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -21,14 +23,14 @@ public class OrdiniDipedenteGui extends JPanel {
     private JPanel riderPropostiButtonPanel;
     private JPanel bottomPanel;
     private JPanel ordiniPanel;
-    private JPanel ordiniDipedentiButtonPanel;
+    private JPanel ordiniDipendentiButtonPanel;
     private JPanel contenutoOrdinePanel;
 
     private JScrollPane ordiniJScrollPane;
     private JScrollPane riderPropostiJScrollPane;
 
     private JButton cancellaButton;
-    private JButton senglaProntoAlRitiroButton;
+    private JButton segnalaProntoAlRitiroButton;
     private JButton rifiutaButton;
     private JButton accettaButton;
 
@@ -46,7 +48,7 @@ public class OrdiniDipedenteGui extends JPanel {
         add(mainPanel,BorderLayout.CENTER);
 
         mainGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(mainGui));
-        mainGui.set_dipedente_controller(new DipedenteController(mainGui.get_utente_controller()));
+        mainGui.set_dipedente_controller(new DipedenteController());
         mainGui.mostra_dashboard_dipedenti(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
 
         ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui();
@@ -55,7 +57,6 @@ public class OrdiniDipedenteGui extends JPanel {
         ordiniLista.setModel(ordiniListModel);
         riderPropostiLista.setModel(riderPropostiListModel);
 
-        mainGui.get_dashboardGui().nascondi_pagaRider();
         mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
 
         //________________________________________________________________________________________________________________________________________________

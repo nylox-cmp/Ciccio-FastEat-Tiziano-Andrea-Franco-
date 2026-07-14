@@ -46,7 +46,7 @@ public class RistoranteDipedenteGui extends JPanel {
 
         mainGui.set_ristorante_controller(new RistoranteController(mainGui.get_dipedente_controller()));
         mainGui.get_dashboardDipedenteGui().aggiungi_pulsanti_ristorante(mainGui,ristorante,menuLista);
-        infoRistoranteLabel.setText(ristorante.toString()+ " incassi: " + ristorante.get_incassi() + " codice ristorante: "  + ristorante.get_codice_ristorante());
+        infoRistoranteLabel.setText(ristorante.toString() + " codice ristorante: "  + ristorante.get_codice_ristorante());
 
         menuLista.setModel(menuListModel);
         aggiorna_lista_menu(ristorante);
@@ -69,7 +69,7 @@ public class RistoranteDipedenteGui extends JPanel {
                      JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Errore", JOptionPane.ERROR_MESSAGE);
                      return;
                  }
-                 infoRistoranteLabel.setText(ristorante.toString() + " incassi: " + ristorante.get_incassi() + " codice autenticazione: "+ ristorante.get_codice_ristorante());
+                 infoRistoranteLabel.setText(ristorante.toString() + " codice autenticazione: "+ ristorante.get_codice_ristorante());
             }
         });
 
@@ -77,15 +77,16 @@ public class RistoranteDipedenteGui extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int scelta = JOptionPane.showConfirmDialog(mainPanel, "Sei sicuro di voler eliminare questo Ristorante e licenziare tutti i suoi dipendenti e cancellare tutti i suoi prodotti e menu?", "FastFood", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if(scelta == JOptionPane.NO_OPTION) return;
+                if(scelta == JOptionPane.YES_OPTION) {
 
-                ErrorType error = mainGui.get_dipedente_controller().cancella_ristorante();
-                if(error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Errore", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    ErrorType error = mainGui.get_ristorante_controller().cancella_ristorante();
+                    if (error != ErrorType.NESSUN_ERRORE) {
+                        JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Errore", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    mainGui.nascondi_dashboard_dipedenti();
+                    mainGui.set_pagina(new ClienteGui(mainGui));
                 }
-                mainGui.nascondi_dashboard_dipedenti();
-                mainGui.set_pagina(new ClienteGui(mainGui));
             }
         });
 
@@ -121,14 +122,15 @@ public class RistoranteDipedenteGui extends JPanel {
                 }
 
                 int scelta = JOptionPane.showConfirmDialog(mainPanel, "Sei sicuro di voler eliminare questo menu e tutti i suoi prodotti?", "Conferma", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if(scelta == JOptionPane.NO_OPTION || scelta == JOptionPane.CLOSED_OPTION) return;
+                if(scelta == JOptionPane.YES_OPTION) {
 
-                ErrorType error = mainGui.get_ristorante_controller().cancella_menu(menu);
-                if(error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Errore", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    ErrorType error = mainGui.get_ristorante_controller().cancella_menu(menu);
+                    if (error != ErrorType.NESSUN_ERRORE) {
+                        JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Errore", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    aggiorna_lista_menu(ristorante);
                 }
-                aggiorna_lista_menu(ristorante);
             }
         });
     }

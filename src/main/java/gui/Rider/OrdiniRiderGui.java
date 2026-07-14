@@ -45,8 +45,7 @@ public class OrdiniRiderGui extends JPanel{
         ordiniPropostiLista.setModel(ordiniPropostiListModel);
 
         mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
-        mainGui.get_dashboardGui().mostra_pagaRider();
-        mainGui.get_dashboardGui().aggiorna_pagaRider(mainGui);
+
 
         //________________________________________________________________________________________________________________________________________________
         // ListSelectionListener per poter visualizzare il cotenuto del OrdineProposto
@@ -70,7 +69,7 @@ public class OrdiniRiderGui extends JPanel{
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                ErrorType error = mainGui.get_rider_controller().richiedi_approvazzione_consegna(ordine);
+                ErrorType error = mainGui.get_rider_controller().richiedi_approvazione_consegna(ordine);
                 if(error != ErrorType.NESSUN_ERRORE){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error),"Error", JOptionPane.ERROR_MESSAGE);
                     return;

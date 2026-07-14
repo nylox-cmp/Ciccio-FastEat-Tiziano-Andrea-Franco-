@@ -1,5 +1,6 @@
 package gui.customWidget;
 
+import exception.ErrorType;
 import gui.Autenticazione.LoginGui;
 import gui.Cliente.ClienteGui;
 import gui.Cliente.OrdiniClientiGui;
@@ -23,9 +24,9 @@ public class DashboardGui extends JPanel {
     private JButton areaDipedentiButton;
     private JButton areaOrdiniButton;
     private JButton logoutButton;
+    private JButton cancellaAccountButton;
 
     private JLabel infoUtenteLabel;
-    private JLabel pagaRiderLabel;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -35,7 +36,6 @@ public class DashboardGui extends JPanel {
         add(mainPanel,BorderLayout.CENTER);
 
         aggiorna_nickname_label(mainGui);
-        pagaRiderLabel.setVisible(false);
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Transazione Gui
@@ -48,7 +48,7 @@ public class DashboardGui extends JPanel {
             }
         });
 
-        areaRiderButton.addActionListener(new ActionListener() {
+       areaRiderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainGui.nascondi_dashboard_dipedenti();
@@ -79,12 +79,33 @@ public class DashboardGui extends JPanel {
             }
         });
 
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione Account Utente
+
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                mainGui.get_utente_controller().logout();
+                mainGui.distruggi_controller();
+
                 mainGui.nascondi_dashboard();
                 mainGui.nascondi_dashboard_dipedenti();
                 mainGui.set_pagina(new LoginGui(mainGui));
+            }
+        });
+
+        cancellaAccountButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int scelta = JOptionPane.showConfirmDialog(mainPanel, "sei sicuro di volere eliminare l'account? l'eliminazione dell'account comportera la cancellazione dei ristoranti in cui sei Manager e licenzimento dei dipedenti ", "FoodDelivery", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if(scelta == JOptionPane.YES_OPTION) {
+                    mainGui.get_utente_controller().cancella_account();
+                    mainGui.distruggi_controller();
+
+                    mainGui.nascondi_dashboard();
+                    mainGui.nascondi_dashboard_dipedenti();
+                    mainGui.set_pagina(new LoginGui(mainGui));
+                }
             }
         });
     }
@@ -103,10 +124,4 @@ public class DashboardGui extends JPanel {
         areaOrdiniButton.setVisible(false);
     }
 
-    public void aggiorna_pagaRider(MainGui mainGui){
-        pagaRiderLabel.setText(String.valueOf(mainGui.get_rider_controller().get_rider().get_paga()));
-    }
-
-    public void mostra_pagaRider(){pagaRiderLabel.setVisible(true);}
-    public void nascondi_pagaRider(){pagaRiderLabel.setVisible(false);}
 }

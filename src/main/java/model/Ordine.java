@@ -1,7 +1,8 @@
 package model;
 
-import exception.*;
-import java.time.*;
+import exception.ErrorType;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Ordine {
@@ -85,16 +86,9 @@ public class Ordine {
     }
 
     //________________________________________________________________________________________________________________________________________________
-    // Paga Ordine Ristorante
-
-    public void paga_ordine(){
-        get_ristorante().set_incassi(get_ristorante().get_incassi() + get_costo());
-    }
-
-    //________________________________________________________________________________________________________________________________________________
     // Gestione Riga ordine
 
-    public boolean contiene_prodotto(Prodotto prodotto){
+    private boolean contiene_prodotto(Prodotto prodotto){
         for(RigaOrdine riga_ordine : righe_ordine){
             if(prodotto == riga_ordine.get_prodotto()) return true;
         }
@@ -102,6 +96,7 @@ public class Ordine {
     }
 
     public ErrorType aggiungi_riga(Prodotto prodotto, int quantita,Ordine ordine) {
+        if(stato_ordine != StatoOrdine.BOZZA) return ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO;
         if(contiene_prodotto(prodotto)) return ErrorType.ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO;
 
         this.righe_ordine.add(new RigaOrdine(prodotto, quantita,ordine));
@@ -109,12 +104,15 @@ public class Ordine {
         return ErrorType.NESSUN_ERRORE;
     }
 
-    public void rimuovi_riga(RigaOrdine riga_ordine) {
+    public ErrorType rimuovi_riga(RigaOrdine riga_ordine) {
+        if(stato_ordine != StatoOrdine.BOZZA) return ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO;
+
         righe_ordine.remove(riga_ordine);
         calcola_costo_ordine();
+        return ErrorType.NESSUN_ERRORE;
     }
 
-    public double calcola_costo_ordine() {
+    private double calcola_costo_ordine() {
         double totale = 0.0;
         for (RigaOrdine riga : this.righe_ordine) {
             totale += riga.get_prezzo_totale();

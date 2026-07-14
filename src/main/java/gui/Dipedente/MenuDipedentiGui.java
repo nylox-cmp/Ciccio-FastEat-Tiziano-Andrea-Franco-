@@ -2,17 +2,14 @@ package gui.Dipedente;
 
 import exception.ErrorType;
 import gui.MainGui;
-import gui.customWidget.DashboardDipedenteGui;
-import gui.customWidget.DashboardGui;
 import model.Menu;
 import model.Prodotto;
 import model.Ristorante;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.*;
 import java.util.ArrayList;
 
 public class MenuDipedentiGui extends JPanel {

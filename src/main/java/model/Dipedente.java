@@ -1,8 +1,9 @@
 package model;
 
 
+import exception.ErrorType;
+
 import java.util.ArrayList;
-import exception.*;
 
 public class Dipedente extends Utente{
     private ArrayList<Dipedente> subordinati = new ArrayList<Dipedente>();
@@ -29,11 +30,7 @@ public class Dipedente extends Utente{
     }
 
     //________________________________________________________________________________________________________________________________________________
-    //Gestione Dipedenti
-
-    public boolean puo_eseguire(Ruolo ruolo_richiesto){
-        return (ruolo.ordinal() <= ruolo_richiesto.ordinal());
-    }
+    // Operazione Dipedente
 
     public ErrorType licenziati(){
         if(ruolo == Ruolo.MANAGER){
@@ -44,24 +41,15 @@ public class Dipedente extends Utente{
         return ErrorType.NESSUN_ERRORE;
     }
 
-    public ErrorType accetta_richiesta_assunzione(Utente utente){
-        if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+    //________________________________________________________________________________________________________________________________________________
+    //Gestione Dipedenti
 
-        if(ristorante.get_richieste_assunzioni().contains(utente)){
-            Dipedente nuovo_dipedente = new Dipedente(utente,Ruolo.BASE,ristorante);
-            subordinati.add(nuovo_dipedente);
-        }
-        return ErrorType.NESSUN_ERRORE;
+    public boolean puo_eseguire(Ruolo ruolo_richiesto){
+        return (ruolo.ordinal() <= ruolo_richiesto.ordinal());
     }
 
-    public ErrorType rimuovi_richiesta_assunzione(Utente utente){
-        if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal()) return ErrorType.PERMESSI_NON_SUFFICIENTI;
-        ristorante.get_richieste_assunzioni().remove(utente);
-        return ErrorType.NESSUN_ERRORE;
-    }
 
-    public ErrorType licenzia_dipedenti(Dipedente dipedente){
+    public ErrorType licenzia_dipedente(Dipedente dipedente){
         if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal())
             return ErrorType.PERMESSI_NON_SUFFICIENTI;
 
@@ -72,7 +60,7 @@ public class Dipedente extends Utente{
         return ErrorType.NESSUN_ERRORE;
     }
 
-    public ErrorType modifica_ruolo_dipente(Dipedente dipedente,Ruolo ruolo){
+    public ErrorType modifica_ruolo_dipendente(Dipedente dipedente,Ruolo ruolo){
         if(ruolo.ordinal() < Ruolo.MANAGER.ordinal())
             return ErrorType.PERMESSI_NON_SUFFICIENTI;
 
@@ -86,20 +74,11 @@ public class Dipedente extends Utente{
     //________________________________________________________________________________________________________________________________________________
     //Gestione Ristorante
 
-    public ErrorType modica_risorante(String nome,String indirizzo,Ristorante ristorante){
-        if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
-
-        ristorante.set_nome(nome);
-        ristorante.set_inidirizzo(indirizzo);
-        return ErrorType.NESSUN_ERRORE;
-    }
-
     public ErrorType cancella_ristorante(Ristorante ristorante){
-        if(ruolo != Ruolo.MANAGER) return  ErrorType.PERMESSI_NON_SUFFICIENTI;
+        if(ruolo != Ruolo.MANAGER && this.ristorante != ristorante) return  ErrorType.PERMESSI_NON_SUFFICIENTI;
 
         for(int i=0;i<subordinati.size();i += 1){
-            licenzia_dipedenti(subordinati.get(i));
+            licenzia_dipedente(subordinati.get(i));
         }
         ristorante = null;
 
@@ -110,7 +89,7 @@ public class Dipedente extends Utente{
     //Gestione Rider
 
     public void accetta_rider(Ordine ordine,Rider rider){
-        if(ristorante.get_ordini().contains(ordine) && ordine.get_rider_proposti().contains(rider)) {
+        if(ristorante.get_ordini().contains(ordine) && ordine.get_rider_proposti().contains(rider) && ordine.get_rider() != null) {
             ordine.set_rider(rider);
             ordine.get_rider_proposti().remove(rider);
         }
@@ -127,7 +106,7 @@ public class Dipedente extends Utente{
 
     public ErrorType segnala_ordine_pronto_ritiro(Ordine ordine){
         if((ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE) && (ristorante.get_ordini().contains(ordine) == false))
-            return ErrorType.INPUT_NULL;
+            return ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO;
 
         ordine.set_stato_ordine(StatoOrdine.PRONTO_RITIRO_RIDER);
         return ErrorType.NESSUN_ERRORE;

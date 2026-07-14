@@ -1,7 +1,6 @@
 package gui.Cliente;
 
 import gui.MainGui;
-import gui.customWidget.DashboardGui;
 import model.Ristorante;
 
 import javax.swing.*;

@@ -94,7 +94,7 @@ public class DashboardDipedenteGui extends JPanel {
     }
 
     public void aggiorna_ruolo_label(MainGui mainGui){
-        infoDipendente.setText(Ruolo.converti_ruolo_to_string(mainGui.get_dipedente_controller().get_dipendente().get_ruolo()));
+        infoDipendente.setText(Ruolo.converti_ruolo_to_string(mainGui.get_dipedente_controller().get_dipedente().get_ruolo()));
     }
 
     //________________________________________________________________________________________________________________________________________________

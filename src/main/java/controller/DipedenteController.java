@@ -66,6 +66,6 @@ public class DipedenteController {
 
     public Dipedente get_dipedente(){return dipedente;}
 
-    public void set_dipendente(Dipedente dipedente){this.dipedente = dipedente;}
+    public void set_dipedente(Dipedente dipedente){this.dipedente = dipedente;}
 
 }

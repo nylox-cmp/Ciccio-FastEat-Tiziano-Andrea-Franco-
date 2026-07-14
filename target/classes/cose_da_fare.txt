@@ -20,6 +20,11 @@ ProdottoCliente (La ComboBox degli Ordini)
 modificare costruttore ordine? se si, fare in modo che invia anche delle liste vuote se non ci sono rider o rider_proposti (invece di avere 8 costruttori per ogni caso possibile)
 
 
+//Scrivere metodo login cliente per creare la classe model e prenderala dal database
+
 //SessionManger Singelton che fa da dipedenza globale che passa l'utente replicando la logica di datiUtenteController ma non essendo effettivamente un controller
 //dovrebbe diventare l'orchestratore dei controller apposto di mainGUI
 //dovrebbe
+
+
+//usare metodo aggiungta_punti per il cliente

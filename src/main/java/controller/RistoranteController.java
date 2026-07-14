@@ -14,8 +14,8 @@ public class RistoranteController {
     // Costruttore
 
     public RistoranteController(DipedenteController dipedenteController){
-        this.ristorante = dipedenteController.get_dipendente().get_ristorante();
-        this.dipedente = dipedenteController.get_dipendente();
+        this.ristorante = dipedenteController.get_dipedente().get_ristorante();
+        this.dipedente = dipedenteController.get_dipedente();
     }
 
     //________________________________________________________________________________________________________________________________________________

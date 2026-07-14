@@ -90,7 +90,7 @@ public class OrdiniDipedenteGui extends JPanel {
             }
         });
 
-        senglaProntoAlRitiroButton.addActionListener(new ActionListener() {
+        segnalaProntoAlRitiroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Ordine ordine = ordiniLista.getSelectedValue();

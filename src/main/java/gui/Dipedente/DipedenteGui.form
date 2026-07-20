@@ -32,7 +32,7 @@
               <font size="16" style="1"/>
               <foreground color="-3187658"/>
               <horizontalAlignment value="0"/>
-              <text value="Per diventare Dipedente (Piattaforma/Ristorante) , registra il ristorante o diventa dipedente tramite il codice del ristorante"/>
+              <text value="Per diventare Dipedente (Piattaforma/Ristorante) , registra il ristorante o diventa dipendente tramite il codice del ristorante"/>
             </properties>
           </component>
           <grid id="14376" binding="ristorantePanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
@@ -116,7 +116,7 @@
                 <properties>
                   <background color="-13881804"/>
                   <foreground color="-262657"/>
-                  <text value="diventa dipedente"/>
+                  <text value="diventa dipendente"/>
                 </properties>
               </component>
             </children>

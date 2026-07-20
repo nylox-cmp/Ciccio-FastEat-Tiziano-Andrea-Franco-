@@ -1,5 +1,6 @@
 package model;
 
+import exception.BusinessError;
 import exception.ErrorType;
 
 import java.util.ArrayList;
@@ -46,14 +47,12 @@ public class Menu {
         return false;
     }
 
-    public ErrorType crea_prodotto(String nome, double prezzo_unitario) {
-        if(prezzo_unitario < 0) return ErrorType.INPUT_NULL;
-        if(esiste_prodotto_stesso_nome(nome)) return ErrorType.INPUT_NON_UNIVOCO;
+    public void crea_prodotto(String nome, double prezzo_unitario) {
+        if(prezzo_unitario < 0) throw  new BusinessError(ErrorType.INPUT_NULL);
+        if(esiste_prodotto_stesso_nome(nome)) throw new BusinessError(ErrorType.INPUT_NON_UNIVOCO);
 
         Prodotto prodotto = new Prodotto(nome,prezzo_unitario,this);
         prodotti.add(prodotto);
-
-        return ErrorType.NESSUN_ERRORE;
     }
 
     public void cancella_prodotto(Prodotto prodotto){
@@ -63,11 +62,10 @@ public class Menu {
     //________________________________________________________________________________________________________________________________________________
     //Gestione Menu
 
-    public ErrorType modifica_menu(String nome){
-        if(ristorante.esiste_menu_stesso_nome(nome)) return ErrorType.INPUT_NON_UNIVOCO;
+    public void modifica_menu(String nome){
+        if(ristorante.esiste_menu_stesso_nome(nome)) throw  new BusinessError(ErrorType.INPUT_NON_UNIVOCO);
 
         this.nome = nome;
-        return ErrorType.NESSUN_ERRORE;
     }
 
     //________________________________________________________________________________________________________________________________________________

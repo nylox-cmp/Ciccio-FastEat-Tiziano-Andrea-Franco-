@@ -1,5 +1,6 @@
 package gui.Cliente;
 
+import exception.BusinessError;
 import exception.ErrorType;
 import gui.MainGui;
 import model.Ordine;
@@ -70,9 +71,11 @@ public class ProdottoClienteGui extends JPanel {
         diminuisciQuantitaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ErrorType error = mainGui.get_cliente_controller().diminuisci_quantita_prodotto(riga_ordine);
-                if(error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error),"Error", JOptionPane.ERROR_MESSAGE);
+                try {
+                    mainGui.get_cliente_controller().diminuisci_quantita_prodotto(riga_ordine);
+                }
+                catch(BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 quantitaProdottoLabel.setText(String.valueOf(riga_ordine.get_quantita()));
@@ -98,10 +101,12 @@ public class ProdottoClienteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                Ordine ordine = (Ordine) obj;
-                ErrorType error = mainGui.get_cliente_controller().aggiungi_riga(ordine,prodotto);
-                if(error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error),"Error", JOptionPane.ERROR_MESSAGE);
+                try {
+                    Ordine ordine = (Ordine) obj;
+                    mainGui.get_cliente_controller().aggiungi_riga(ordine, prodotto);
+                }
+                catch(BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }

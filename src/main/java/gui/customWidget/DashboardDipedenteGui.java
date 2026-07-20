@@ -1,5 +1,6 @@
 package gui.customWidget;
 
+import exception.BusinessError;
 import exception.ErrorType;
 import gui.Cliente.ClienteGui;
 import gui.Dipedente.*;
@@ -56,7 +57,7 @@ public class DashboardDipedenteGui extends JPanel {
                     case "Ristorante":
                         mainGui.set_pagina(new RistoranteDipedenteGui(mainGui, DashboardDipedenteGui.this.ristorante));
                         break;
-                    case "Dipedenti":
+                    case "Dipendenti":
                         nascondi_pulsanti_navigazione();
                         mainGui.set_pagina(new GestioneDipedenteGui(mainGui));
                         break;
@@ -65,20 +66,22 @@ public class DashboardDipedenteGui extends JPanel {
         });
 
         //________________________________________________________________________________________________________________________________________________
-        // ActionListener Gestione Dipedente
+        // ActionListener Gestione Dipendente
 
         licenziatiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int scelta = JOptionPane.showConfirmDialog(mainGui.get_pagina(), "Sei sicuro di volerti licenziare? , il licenziamneto nel ruolo di Manager comportera anche alla cancellazione del ristorante","FastFood", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                int scelta = JOptionPane.showConfirmDialog(mainGui.get_pagina(), "Sei sicuro di volerti licenziare? , il licenziamneto nel ruolo di Manager comportera anche alla cancellazione del ristorante","FoodDelivery", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if(scelta == JOptionPane.YES_OPTION) {
-                    ErrorType error = mainGui.get_dipedente_controller().licenziati();
-                    if (error != ErrorType.NESSUN_ERRORE) {
-                        JOptionPane.showMessageDialog(mainGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
+                    try {
+                        mainGui.get_dipendente_controller().licenziati();
+                        mainGui.nascondi_dashboard_dipedenti();
+                        mainGui.set_pagina(new ClienteGui(mainGui));
                     }
-                    mainGui.nascondi_dashboard_dipedenti();
-                    mainGui.set_pagina(new ClienteGui(mainGui));
+                    catch(BusinessError error){
+                        JOptionPane.showMessageDialog(mainGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
                 }
             }
         });
@@ -94,7 +97,7 @@ public class DashboardDipedenteGui extends JPanel {
     }
 
     public void aggiorna_ruolo_label(MainGui mainGui){
-        infoDipendente.setText(Ruolo.converti_ruolo_to_string(mainGui.get_dipedente_controller().get_dipedente().get_ruolo()));
+        infoDipendente.setText(Ruolo.converti_ruolo_to_string(mainGui.get_dipendente_controller().get_dipendente().get_ruolo()));
     }
 
     //________________________________________________________________________________________________________________________________________________

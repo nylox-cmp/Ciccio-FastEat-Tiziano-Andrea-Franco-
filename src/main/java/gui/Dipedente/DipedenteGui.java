@@ -1,6 +1,7 @@
 package gui.Dipedente;
 
-import controller.DipedenteController;
+import controller.DipendenteController;
+import exception.BusinessError;
 import exception.ErrorType;
 import gui.MainGui;
 
@@ -38,7 +39,7 @@ public class DipedenteGui extends JPanel {
         mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
 
         //________________________________________________________________________________________________________________________________________________
-        // ActionListener Registrazione e Richiesta Assunzione Dipedente
+        // ActionListener Registrazione e Richiesta Assunzione Dipendente
 
         registraButton.addActionListener(new ActionListener() {
             @Override
@@ -51,7 +52,7 @@ public class DipedenteGui extends JPanel {
                     return;
                 }
                 mainGui.get_utente_controller().crea_ristorante(nome,indirizzo);
-                mainGui.set_dipedente_controller(new DipedenteController());
+                mainGui.set_dipendente_controller(new DipendenteController());
                 mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
             }
         });
@@ -65,9 +66,11 @@ public class DipedenteGui extends JPanel {
                     return;
                 }
 
-                ErrorType error = mainGui.get_utente_controller().diventa_dipendente_ristorante(codice_ristorante);
-                if(error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error),"Error", JOptionPane.ERROR_MESSAGE);
+                try {
+                    mainGui.get_utente_controller().registrazione_dipedente_ristorante(codice_ristorante);
+                }
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel, error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

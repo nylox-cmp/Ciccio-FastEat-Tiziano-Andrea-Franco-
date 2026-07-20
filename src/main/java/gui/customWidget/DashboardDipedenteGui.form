@@ -18,7 +18,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="4f26" class="javax.swing.JLabel" binding="infoDipedente">
+          <component id="4f26" class="javax.swing.JLabel" binding="infoDipendente">
             <constraints/>
             <properties>
               <foreground color="-3187658"/>

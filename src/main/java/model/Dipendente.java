@@ -1,20 +1,21 @@
 package model;
 
 
+import exception.BusinessError;
 import exception.ErrorType;
 
 import java.util.ArrayList;
 
-public class Dipedente extends Utente{
-    private ArrayList<Dipedente> subordinati = new ArrayList<Dipedente>();
-    private ArrayList<Dipedente> superiori = new ArrayList<Dipedente>();
+public class Dipendente extends Utente{
+    private ArrayList<Dipendente> subordinati = new ArrayList<Dipendente>();
+    private ArrayList<Dipendente> superiori = new ArrayList<Dipendente>();
     private Ruolo ruolo;
     private Ristorante ristorante;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public Dipedente(Utente utente, Ruolo ruolo,Ristorante ristorante) {
+    public Dipendente(Utente utente, Ruolo ruolo, Ristorante ristorante) {
         super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
         this.ruolo = ruolo;
         this.ristorante = ristorante;
@@ -30,59 +31,55 @@ public class Dipedente extends Utente{
     }
 
     //________________________________________________________________________________________________________________________________________________
-    // Operazione Dipedente
+    // Operazione Dipendente
 
-    public ErrorType licenziati(){
+    public void licenziati(){
         if(ruolo == Ruolo.MANAGER){
-            ErrorType error = cancella_ristorante(ristorante);
-            if(error != ErrorType.NESSUN_ERRORE) return error;
+            cancella_ristorante(ristorante);
         }
         ristorante = null;
-        return ErrorType.NESSUN_ERRORE;
     }
 
     //________________________________________________________________________________________________________________________________________________
-    //Gestione Dipedenti
+    //Gestione Dipendenti
 
     public boolean puo_eseguire(Ruolo ruolo_richiesto){
         return (ruolo.ordinal() <= ruolo_richiesto.ordinal());
     }
 
 
-    public ErrorType licenzia_dipedente(Dipedente dipedente){
+    public void licenzia_dipendente(Dipendente dipendente){
         if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
-        if((dipedente.equals(dipedente) == false) && (puo_eseguire(Ruolo.GESTIONALE))){
-            if(subordinati.contains(dipedente))
-                subordinati.remove(dipedente);
+        if((dipendente.equals(dipendente) == false) && (puo_eseguire(Ruolo.GESTIONALE))){
+            if(subordinati.contains(dipendente))
+                subordinati.remove(dipendente);
         }
-        return ErrorType.NESSUN_ERRORE;
     }
 
-    public ErrorType modifica_ruolo_dipendente(Dipedente dipedente,Ruolo ruolo){
+    public void modifica_ruolo_dipendente(Dipendente dipendente, Ruolo ruolo){
         if(ruolo.ordinal() < Ruolo.MANAGER.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
-        if((dipedente.equals(dipedente) == false) && (puo_eseguire(Ruolo.MANAGER))){
-            if(subordinati.contains(dipedente))
-                dipedente.ruolo = ruolo;
+        if((dipendente.equals(dipendente) == false) && (puo_eseguire(Ruolo.MANAGER))){
+            if(subordinati.contains(dipendente))
+                dipendente.ruolo = ruolo;
         }
-        return ErrorType.NESSUN_ERRORE;
     }
 
     //________________________________________________________________________________________________________________________________________________
     //Gestione Ristorante
 
-    public ErrorType cancella_ristorante(Ristorante ristorante){
-        if(ruolo != Ruolo.MANAGER && this.ristorante != ristorante) return  ErrorType.PERMESSI_NON_SUFFICIENTI;
+    public void cancella_ristorante(Ristorante ristorante){
+        if(ruolo != Ruolo.MANAGER && this.ristorante != ristorante)
+            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         for(int i=0;i<subordinati.size();i += 1){
-            licenzia_dipedente(subordinati.get(i));
+            licenzia_dipendente(subordinati.get(i));
         }
         ristorante = null;
 
-        return ErrorType.NESSUN_ERRORE;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -104,12 +101,11 @@ public class Dipedente extends Utente{
     //________________________________________________________________________________________________________________________________________________
     //Gestione Ordine
 
-    public ErrorType segnala_ordine_pronto_ritiro(Ordine ordine){
+    public void segnala_ordine_pronto_ritiro(Ordine ordine){
         if((ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE) && (ristorante.get_ordini().contains(ordine) == false))
-            return ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO;
+            throw new BusinessError(ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO);
 
         ordine.set_stato_ordine(StatoOrdine.PRONTO_RITIRO_RIDER);
-        return ErrorType.NESSUN_ERRORE;
     }
 
     public void annulla_ordine(Ordine ordine) {
@@ -120,11 +116,11 @@ public class Dipedente extends Utente{
     //________________________________________________________________________________________________________________________________________________
     //Get and Set
 
-    public ArrayList<Dipedente> get_subordinati() { return subordinati; }
-    public void set_subordinati(ArrayList<Dipedente> subordinati) { this.subordinati = subordinati; }
+    public ArrayList<Dipendente> get_subordinati() { return subordinati; }
+    public void set_subordinati(ArrayList<Dipendente> subordinati) { this.subordinati = subordinati; }
 
-    public ArrayList<Dipedente> get_superiori() { return superiori; }
-    public void set_superiori(ArrayList<Dipedente> superiori) { this.superiori = superiori; }
+    public ArrayList<Dipendente> get_superiori() { return superiori; }
+    public void set_superiori(ArrayList<Dipendente> superiori) { this.superiori = superiori; }
 
     public Ruolo get_ruolo() { return ruolo; }
     public void set_ruolo(Ruolo ruolo) { this.ruolo = ruolo; }

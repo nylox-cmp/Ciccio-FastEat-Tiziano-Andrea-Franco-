@@ -1,5 +1,6 @@
 package gui.Cliente;
 
+import exception.BusinessError;
 import exception.ErrorType;
 import gui.MainGui;
 import gui.customWidget.ContenutoOrdineGui;
@@ -48,6 +49,7 @@ public class OrdiniClientiGui extends JPanel {
         ordiniLista.setModel(ordiniListModel);
         ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniLista);
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
+        quantitaLabel.setText(String.valueOf(mainGui.get_cliente_controller().get_cliente().get_punti_fedelta()));
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListner Gestione Stato Ordine
@@ -110,16 +112,17 @@ public class OrdiniClientiGui extends JPanel {
 
             try{
                 int punti_fedelta  = Integer.parseInt(puntiFedeltaTextField.getText());
-                ErrorType error = mainGui.get_cliente_controller().applica_sconto(ordine,punti_fedelta);
-                if(error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error),"Error", JOptionPane.ERROR_MESSAGE);
-                    return;
+                try {
+                    mainGui.get_cliente_controller().applica_sconto(ordine, punti_fedelta);
+                    aggiorna_ordiniLista(mainGui.get_cliente_controller().get_cliente());
+
                 }
-                aggiorna_ordiniLista(mainGui.get_cliente_controller().get_cliente());
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel, error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
             catch(Exception exception){
                 JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_NUMERICO),"Error", JOptionPane.ERROR_MESSAGE);
-                return;
             }
             }
         });

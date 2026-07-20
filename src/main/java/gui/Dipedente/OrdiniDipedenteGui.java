@@ -1,6 +1,7 @@
 package gui.Dipedente;
 
-import controller.DipedenteController;
+import controller.DipendenteController;
+import exception.BusinessError;
 import exception.ErrorType;
 import gui.MainGui;
 import gui.customWidget.ContenutoOrdineGui;
@@ -48,8 +49,8 @@ public class OrdiniDipedenteGui extends JPanel {
         add(mainPanel,BorderLayout.CENTER);
 
         mainGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(mainGui));
-        mainGui.set_dipedente_controller(new DipedenteController());
-        mainGui.mostra_dashboard_dipedenti(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
+        mainGui.set_dipendente_controller(new DipendenteController());
+        mainGui.mostra_dashboard_dipedenti(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
 
         ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui();
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
@@ -72,7 +73,7 @@ public class OrdiniDipedenteGui extends JPanel {
             }
         });
 
-        aggiorna_ordiniLista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
+        aggiorna_ordiniLista(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Ordini
@@ -85,8 +86,8 @@ public class OrdiniDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_dipedente_controller().annulla_ordine(ordine);
-                aggiorna_ordiniLista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
+                mainGui.get_dipendente_controller().annulla_ordine(ordine);
+                aggiorna_ordiniLista(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
             }
         });
 
@@ -98,12 +99,13 @@ public class OrdiniDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                ErrorType error = mainGui.get_dipedente_controller().segnala_ordine_pronto_ritiro(ordine);
-                if (error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
+                try {
+                    mainGui.get_dipendente_controller().segnala_ordine_pronto_ritiro(ordine);
+                    aggiorna_ordiniLista(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
                 }
-                aggiorna_ordiniLista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -119,9 +121,9 @@ public class OrdiniDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_dipedente_controller().accetta_rider(ordine,rider);
+                mainGui.get_dipendente_controller().accetta_rider(ordine,rider);
                 aggiorna_riderPropostiLista(ordine);
-                aggiorna_ordiniLista(mainGui.get_dipedente_controller().get_dipedente().get_ristorante());
+                aggiorna_ordiniLista(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
             }
         });
 
@@ -134,7 +136,7 @@ public class OrdiniDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_dipedente_controller().rifiuta_rider(ordine,rider);
+                mainGui.get_dipendente_controller().rifiuta_rider(ordine,rider);
                 aggiorna_riderPropostiLista(ordine);
             }
         });

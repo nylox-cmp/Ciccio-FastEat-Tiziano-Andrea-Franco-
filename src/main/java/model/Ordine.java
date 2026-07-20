@@ -1,5 +1,6 @@
 package model;
 
+import exception.BusinessError;
 import exception.ErrorType;
 
 import java.time.LocalDate;
@@ -95,21 +96,19 @@ public class Ordine {
         return false;
     }
 
-    public ErrorType aggiungi_riga(Prodotto prodotto, int quantita,Ordine ordine) {
-        if(stato_ordine != StatoOrdine.BOZZA) return ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO;
-        if(contiene_prodotto(prodotto)) return ErrorType.ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO;
+    public void aggiungi_riga(Prodotto prodotto, int quantita,Ordine ordine) {
+        if(stato_ordine != StatoOrdine.BOZZA) throw new BusinessError(ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO);
+        if(contiene_prodotto(prodotto)) throw new BusinessError(ErrorType.ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO);
 
         this.righe_ordine.add(new RigaOrdine(prodotto, quantita,ordine));
         calcola_costo_ordine();
-        return ErrorType.NESSUN_ERRORE;
     }
 
-    public ErrorType rimuovi_riga(RigaOrdine riga_ordine) {
-        if(stato_ordine != StatoOrdine.BOZZA) return ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO;
+    public void rimuovi_riga(RigaOrdine riga_ordine) {
+        if(stato_ordine != StatoOrdine.BOZZA) throw new BusinessError(ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO);
 
         righe_ordine.remove(riga_ordine);
         calcola_costo_ordine();
-        return ErrorType.NESSUN_ERRORE;
     }
 
     private double calcola_costo_ordine() {
@@ -121,12 +120,12 @@ public class Ordine {
         return totale;
     }
 
-    public ErrorType applica_sconto(int punti_fedelta) {
+    public void applica_sconto(int punti_fedelta) {
         if(punti_fedelta <= MAX_PUNTI_FEDELTA_SCONTO){
             this.costo = this.costo - ((this.costo * punti_fedelta) / 100);
-            return ErrorType.NESSUN_ERRORE;
+            return;
         }
-        return ErrorType.INPUT_NULL;
+        throw new BusinessError(ErrorType.INPUT_NULL);
     }
 
 

@@ -1,5 +1,6 @@
 package model;
 
+import exception.BusinessError;
 import exception.ErrorType;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ public class Ristorante {
     private String nome;
     private String indirizzo;
 
-    private ArrayList<Dipedente> dipendenti;
+    private ArrayList<Dipendente> dipendenti;
     private ArrayList<Menu> menu = new ArrayList<Menu>();
     private ArrayList<Ordine> ordini = new ArrayList<Ordine>();
 
@@ -23,7 +24,7 @@ public class Ristorante {
         this.indirizzo = indirizzo;
     }
 
-    public Ristorante(String codice_ristorante,String nome, String indirizzo,ArrayList<Dipedente> dipendenti,ArrayList<Menu> menu){
+    public Ristorante(String codice_ristorante, String nome, String indirizzo, ArrayList<Dipendente> dipendenti, ArrayList<Menu> menu){
         this.codice_ristorante = codice_ristorante;
         this.nome = nome;
         this.indirizzo = indirizzo;
@@ -66,12 +67,11 @@ public class Ristorante {
         return false;
     }
 
-    public ErrorType crea_menu(String nome){
-        if(esiste_menu_stesso_nome(nome)) return ErrorType.INPUT_NON_UNIVOCO;
+    public void crea_menu(String nome){
+        if(esiste_menu_stesso_nome(nome)) throw new BusinessError(ErrorType.INPUT_NON_UNIVOCO);
 
         Menu menu = new Menu(nome,this);
         this.menu.add(menu);
-        return ErrorType.NESSUN_ERRORE;
     }
 
     public void cancella_menu(Menu menu){

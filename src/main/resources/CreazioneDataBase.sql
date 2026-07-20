@@ -9,12 +9,17 @@ CREATE TABLE Utente(
     email varchar(32) NOT NULL,
     password varchar(32) NOT NULL,
     nome varchar(32) NOT NULL,
-    cognome varchar(32) NOT NULL
+    cognome varchar(32) NOT NULL,
+	
+	CONSTRAINT unique_nickname UNIQUE(nickname),
+	CONSTRAINT unique_email UNIQUE(email)
 );
 
 CREATE TABLE Cliente(
     nickname varchar(32) PRIMARY KEY REFERENCES Utente(nickname) ON DELETE CASCADE,
-    punti_fedelta int CHECK(punti_fedelta >= 0) NOT NULL 
+    punti_fedelta int NOT NULL,
+
+	CONSTRAINT punti_fedelta_positivi CHECK(punti_fedelta >= 0)
 );
 
 CREATE TABLE Rider(
@@ -45,15 +50,17 @@ CREATE TABLE Ristorante(
 
 CREATE TABLE Menu(
     id_menu serial PRIMARY KEY,
-    nome varchar(64) UNIQUE NOT NULL,
+    nome varchar(64) NOT NULL,
     codice_ristorante varchar(12) NOT NULL REFERENCES Ristorante(codice_ristorante) ON DELETE CASCADE
 );
 
 CREATE TABLE Prodotto(
     id_prodotto serial PRIMARY KEY,
-    nome varchar(64) UNIQUE NOT NULL, 
-    prezzo_unitario DECIMAL(10,2) CHECK(prezzo_unitario > 0) NOT NULL,
-    id_menu int NOT NULL REFERENCES Menu(id_menu) ON DELETE CASCADE
+    nome varchar(64) NOT NULL,
+    prezzo_unitario DECIMAL(10,2) NOT NULL,
+    id_menu int NOT NULL REFERENCES Menu(id_menu) ON DELETE CASCADE,
+
+	CONSTRAINT prezzo_maggiore_di_zero CHECK(prezzo_unitario > 0)
 );
 
 ------------------------------------------------------------------------------------------------------------------------------------------
@@ -71,8 +78,10 @@ CREATE TABLE Ordine(
 CREATE TABLE RigaOrdine(
     id_prodotto int NOT NULL REFERENCES Prodotto(id_prodotto) ON DELETE CASCADE,
     codice_ordine varchar(12) NOT NULL REFERENCES Ordine(codice_ordine) ON DELETE CASCADE,
-    quantita int CHECK(quantita > 0) NOT NULL,
-    PRIMARY KEY(id_prodotto, codice_ordine)
+    quantita int NOT NULL,
+	
+    PRIMARY KEY(id_prodotto, codice_ordine),
+	CONSTRAINT quantita_prodotto_maggiore_di_zero CHECK(quantita > 0)
 );
 
 CREATE TABLE RiderPropostiConsegna(
@@ -177,3 +186,6 @@ CREATE TRIGGER impedisci_cancellazione_utente_trigger
 BEFORE DELETE ON Rider
 FOR EACH ROW
 EXECUTE FUNCTION controlla_cancellazione_account();
+
+--SELECT * FROM Utente;
+--DELETE FROM Utente WHERE nickname = 'f';

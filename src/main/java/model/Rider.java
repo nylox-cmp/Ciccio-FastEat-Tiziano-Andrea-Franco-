@@ -1,6 +1,7 @@
 package model;
 
 
+import exception.BusinessError;
 import exception.ErrorType;
 
 import java.util.ArrayList;
@@ -19,12 +20,6 @@ public class Rider extends Utente{
         this.mezzo_trasporto = mezzo_trasporto;
     }
 
-    public Rider(Utente utente,String mezzo_trasporto,ArrayList<Ordine> ordini){
-        super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
-        this.mezzo_trasporto = mezzo_trasporto;
-        this.ordini = ordini;
-    }
-
     //________________________________________________________________________________________________________________________________________________
     // Override
 
@@ -37,12 +32,11 @@ public class Rider extends Utente{
     //________________________________________________________________________________________________________________________________________________
     // Operazioni su Ordine
 
-    public ErrorType richiedi_approvazione_consegna(Ordine ordine){
+    public void richiedi_approvazione_consegna(Ordine ordine){
         if(ordine.get_stato_ordine().ordinal() < StatoOrdine.IN_CONSEGNA.ordinal()){
-            if(ordini.size() >= MAX_ORDINI_PER_RIDER) return ErrorType.RIDER_SUPERA_MAX_NUM_ORDINI;
+            if(ordini.size() >= MAX_ORDINI_PER_RIDER) throw new BusinessError(ErrorType.RIDER_SUPERA_MAX_NUM_ORDINI);
             ordine.get_rider_proposti().add(this);
         }
-        return ErrorType.NESSUN_ERRORE;
     }
 
     public void conferma_consegna_ordine(Ordine ordine){

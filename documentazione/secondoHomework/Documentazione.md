@@ -13,7 +13,7 @@ l'applicazzizzione supporta tre macro-categorie di utenti , ciascuno con ruoli �
 agli utenti non registrati  gli sara richiesto di effettuare il login , per poter diventare **cliente** ed effettuare gli ordini, fornendo email , password , nickname , nome e cognome , clienti potranno sfogliare i ristoranti e i loro menu con i loro prodotti , effettuando ordini sopra i 20 euro sulla piattaforma accumelando punti fedeltà alla piattaforma con il quale potranno avere uno sconto su un prodotto aquistato.
 
 **DIPEDENTE** 
-gli utenti potranno registrasti anche i loro ristoranti alla piattaforma aquisendo  il ruolo aggiuntivo da **dipedente** della piattaforma , non appena registrato il ristorante l'utente che la creato ottera il ruolo del **manager** e sara l'unico dipendete ad avere questo ruolo , verrà generato anche un codice di autenticazione con il quale altri utenti potranno richiede diventare dipedenti del ristorante, se accettati avranno il ruolo base con il quale potranno semplicemente  creare gli ordini e accettare i rider per la consegnare del'ordine , mentre i dipendenti promossi al ruolo **gestionale** avranno la possibilità di poter anche loro come il maneger effettuare delle modifichie al ristorante al suo menu e ai suoi prodotti , e di poter accettare gli utenti come dipedenti del risotante.
+gli utenti potranno registrasti anche i loro ristoranti alla piattaforma aquisendo  il ruolo aggiuntivo da **dipendente** della piattaforma , non appena registrato il ristorante l'utente che la creato ottera il ruolo del **manager** e sara l'unico dipendete ad avere questo ruolo , verrà generato anche un codice di autenticazione con il quale altri utenti potranno richiede diventare dipedenti del ristorante, se accettati avranno il ruolo base con il quale potranno semplicemente  creare gli ordini e accettare i rider per la consegnare del'ordine , mentre i dipendenti promossi al ruolo **gestionale** avranno la possibilità di poter anche loro come il maneger effettuare delle modifichie al ristorante al suo menu e ai suoi prodotti , e di poter accettare gli utenti come dipedenti del risotante.
 
 (schema dei permessi in base al ruolo)
 (ruolo ↓ )(operazione  →)
@@ -25,7 +25,7 @@ gli utenti potranno registrasti anche i loro ristoranti alla piattaforma aquisen
 | MANAGER    | SI                             | SI                                                    | SI                                                       | SI                                                           |
 
 **RIDER** 
-gli utenti che si registranno come rider dovranno specificare il loro mezzo di trasporto con il quale effettuerano le consegne, puo visualizzare gli ordini che sono in **fase di preparazione disponibili** per la consegna e **proporsi come rider**, se accettato dal dipedente del ristorante potra effettuare il ritiro del'ordine non appena disponibile.
+gli utenti che si registranno come rider dovranno specificare il loro mezzo di trasporto con il quale effettuerano le consegne, puo visualizzare gli ordini che sono in **fase di preparazione disponibili** per la consegna e **proporsi come rider**, se accettato dal dipendente del ristorante potra effettuare il ritiro del'ordine non appena disponibile.
 
 (tabella di transizione degli stati degli ordini)
 
@@ -41,7 +41,7 @@ gli utenti che si registranno come rider dovranno specificare il loro mezzo di t
 ### Modifiche apportate dall'Homework 1 all'Homework 2
 
 1. eliminizanazione degli attributi e dei metodi di nota_ordine e categoria eliminiate per motivi di  semplificazione del dominio 
-2. modifica delle relazione ricorsiva di dipedente , in 0..* a 0..* rispetto alla precendete 1 a 0..*, che non prendeva in considerazione che il manager non abbia dipedenti superiori , mentre i dipedenti con il ruolo base abbiano più superiori  ovvero i dipedenti con il ruolo gestionale e manager.
+2. modifica delle relazione ricorsiva di dipendente , in 0..* a 0..* rispetto alla precendete 1 a 0..*, che non prendeva in considerazione che il manager non abbia dipedenti superiori , mentre i dipedenti con il ruolo base abbiano più superiori  ovvero i dipedenti con il ruolo gestionale e manager.
 3. modifica delle relazione tra Ristorante , Menu e Prdotto in composizione,in modo da permette una cancellazione a "cascata" dei Menu e dei Prodotto al momento delle cancellazione del ristorante.
 
 

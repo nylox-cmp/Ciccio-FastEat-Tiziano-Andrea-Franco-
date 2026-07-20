@@ -17,6 +17,7 @@ public class ClienteGui extends JPanel {
     private DefaultListModel<Ristorante> ristoranteListModel = new DefaultListModel<Ristorante>();
     private JList<Ristorante> ristorantiLista;
 
+
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
@@ -24,8 +25,15 @@ public class ClienteGui extends JPanel {
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
+        if(mainGui.get_utente_controller().utente_is_cliente() == false){
+            mainGui.get_utente_controller().load_dati_cliente();
+            if(mainGui.get_utente_controller().utente_is_cliente() == false)
+                mainGui.get_utente_controller().registrazione_cliente();
+        }
+
         mainGui.set_cliente_controller(new ClienteController());
         mainGui.set_dashboardGui(new DashboardGui(mainGui));
+
 
         mainGui.mostra_dashboard();
         mainGui.get_dashboardGui().mostra_area_ordiniClienti();

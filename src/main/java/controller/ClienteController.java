@@ -3,6 +3,8 @@ package controller;
 import exception.ErrorType;
 import model.*;
 
+import java.util.Optional;
+
 public class ClienteController {
     private Cliente cliente;
 
@@ -10,7 +12,9 @@ public class ClienteController {
     // Costruttore
 
     public ClienteController( ){
-
+        Optional<Cliente> optionalCliente = SessionManager.instance.get_utente().get_ruolo_utente(Cliente.class);
+        if(optionalCliente.isPresent())
+            this.cliente = optionalCliente.get();
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -35,28 +39,27 @@ public class ClienteController {
     //________________________________________________________________________________________________________________________________________________
     // Gestione Ordine
 
-    public ErrorType applica_sconto(Ordine ordine, int punti_fedelta) {
-        return ordine.applica_sconto(punti_fedelta);
+    public void applica_sconto(Ordine ordine, int punti_fedelta) {
+        ordine.applica_sconto(punti_fedelta);
     }
 
     //________________________________________________________________________________________________________________________________________________
     // Gestione RigaOrdine
 
-    public ErrorType aggiungi_riga(Ordine ordine, Prodotto prodotto) {
-        ErrorType error = ordine.aggiungi_riga(prodotto, 1, ordine);
-        return error;
+    public void aggiungi_riga(Ordine ordine, Prodotto prodotto) {
+        ordine.aggiungi_riga(prodotto, 1, ordine);
     }
 
-    public ErrorType rimuovi_riga(Ordine ordine, RigaOrdine riga_ordine) {
-        return ordine.rimuovi_riga(riga_ordine);
+    public void rimuovi_riga(Ordine ordine, RigaOrdine riga_ordine) {
+         ordine.rimuovi_riga(riga_ordine);
     }
 
     public void aumenta_quantita_prodotto(RigaOrdine riga_ordine) {
         riga_ordine.aumenta_quantita();
     }
 
-    public ErrorType diminuisci_quantita_prodotto(RigaOrdine rigaOrdine) {
-        return rigaOrdine.diminuisci_quantita();
+    public void diminuisci_quantita_prodotto(RigaOrdine rigaOrdine) {
+        rigaOrdine.diminuisci_quantita();
     }
 
     //________________________________________________________________________________________________________________________________________________

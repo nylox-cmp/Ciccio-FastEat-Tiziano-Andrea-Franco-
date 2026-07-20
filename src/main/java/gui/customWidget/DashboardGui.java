@@ -1,6 +1,5 @@
 package gui.customWidget;
 
-import exception.ErrorType;
 import gui.Autenticazione.LoginGui;
 import gui.Cliente.ClienteGui;
 import gui.Cliente.OrdiniClientiGui;
@@ -21,7 +20,7 @@ public class DashboardGui extends JPanel {
 
     private JButton areaClientiButton;
     private JButton areaRiderButton;
-    private JButton areaDipedentiButton;
+    private JButton areaDipendentiButton;
     private JButton areaOrdiniButton;
     private JButton logoutButton;
     private JButton cancellaAccountButton;
@@ -52,23 +51,29 @@ public class DashboardGui extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainGui.nascondi_dashboard_dipedenti();
-                if(mainGui.get_utente_controller().utente_is_rider()){
-                    mainGui.set_pagina(new OrdiniRiderGui(mainGui));
-                    return;
+                if(mainGui.get_utente_controller().utente_is_rider() == false){
+                    mainGui.get_utente_controller().load_dati_rider();
+
+                    if(mainGui.get_utente_controller().utente_is_rider() == false)
+                        mainGui.set_pagina(new RiderGui(mainGui));
                 }
-                mainGui.set_pagina(new RiderGui(mainGui));
+                else mainGui.set_pagina(new OrdiniRiderGui(mainGui));
             }
         });
 
-        areaDipedentiButton.addActionListener(new ActionListener() {
+        areaDipendentiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(mainGui.get_utente_controller().utente_is_dipedente()){
+                if(mainGui.get_utente_controller().utente_is_dipendente() == false){
+                    mainGui.get_utente_controller().load_dati_dipedente();
+
+                    if(mainGui.get_utente_controller().utente_is_dipendente() == false)
+                        mainGui.set_pagina(new DipedenteGui(mainGui));
+                }
+                else {
                     mainGui.get_dashboardDipedenteGui().aggiorna_ruolo_label(mainGui);
                     mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
-                    return;
                 }
-                mainGui.set_pagina(new DipedenteGui(mainGui));
             }
         });
 

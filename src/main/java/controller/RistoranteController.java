@@ -1,5 +1,6 @@
 package controller;
 
+import exception.BusinessError;
 import exception.ErrorType;
 import model.*;
 
@@ -8,90 +9,87 @@ public class RistoranteController {
     private Menu menu;
     private Prodotto prodotto;
 
-    private Dipedente dipedente;
+    private Dipendente dipendente;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public RistoranteController(DipedenteController dipedenteController){
-        this.ristorante = dipedenteController.get_dipedente().get_ristorante();
-        this.dipedente = dipedenteController.get_dipedente();
+    public RistoranteController(DipendenteController dipendenteController){
+        this.ristorante = dipendenteController.get_dipendente().get_ristorante();
+        this.dipendente = dipendenteController.get_dipendente();
     }
 
     //________________________________________________________________________________________________________________________________________________
     // Ristorante
 
-        public ErrorType cancella_ristorante(){
-        ErrorType error = dipedente.cancella_ristorante(dipedente.get_ristorante());
-        if(error != ErrorType.NESSUN_ERRORE) return error;
+        public void cancella_ristorante(){
+        dipendente.cancella_ristorante(dipendente.get_ristorante());
 
-        this.dipedente = null;
-        return ErrorType.NESSUN_ERRORE;
+        this.dipendente = null;
     }
 
-    public ErrorType modifica_ristorante(String nome,String indirizzo){
-        if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+    public void modifica_ristorante(String nome,String indirizzo){
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
+            throw  new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         ristorante.modifica_ristorante(nome,indirizzo);
-        return ErrorType.NESSUN_ERRORE;
     }
 
     //________________________________________________________________________________________________________________________________________________
     // Menu
 
-    public ErrorType crea_menu(String nome){
-        if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+    public void crea_menu(String nome){
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
+            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
-        return ristorante.crea_menu(nome);
+        ristorante.crea_menu(nome);
     }
 
-    public ErrorType modifica_menu(String nome_modificato){
-        if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+    public void modifica_menu(String nome_modificato){
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
+            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
-        return menu.modifica_menu(nome_modificato);
+        menu.modifica_menu(nome_modificato);
     }
 
-    public ErrorType cancella_menu(Menu menu){
-        if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+    public void cancella_menu(Menu menu){
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
+            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         ristorante.cancella_menu(menu);
-        return ErrorType.NESSUN_ERRORE;
     }
 
     //________________________________________________________________________________________________________________________________________________
     // Prodotto
 
-    public ErrorType crea_prodotto(String nome,double prezzo_unitario){
-        if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+    public void crea_prodotto(String nome,double prezzo_unitario){
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
+            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
-        return menu.crea_prodotto(nome,prezzo_unitario);
+
+        menu.crea_prodotto(nome,prezzo_unitario);
     }
 
-    public ErrorType modifica_prodotto(String nome,double prezzo_unitario){
-        if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+    public void modifica_prodotto(String nome,double prezzo_unitario){
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
+            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
-        return prodotto.modifica_prodotto(nome,prezzo_unitario);
+        prodotto.modifica_prodotto(nome,prezzo_unitario);
     }
 
-    public ErrorType cancella_prodotto(Prodotto prodotto){
-        if(dipedente.get_ruolo().ordinal() < Ruolo.GESTIONALE.ordinal())
-            return ErrorType.PERMESSI_NON_SUFFICIENTI;
+    public void cancella_prodotto(Prodotto prodotto){
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
+            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+
 
         menu.cancella_prodotto(prodotto);
-        return ErrorType.NESSUN_ERRORE;
     }
 
     //________________________________________________________________________________________________________________________________________________
     // Get and Set
 
-    public Dipedente get_dipendente(){ return dipedente;}
-    public void set_dipendente(Dipedente dipedente){ this.dipedente = dipedente; }
+    public Dipendente get_dipendente(){ return dipendente;}
+    public void set_dipendente(Dipendente dipendente){ this.dipendente = dipendente; }
 
     public Ristorante get_ristorante(){ return ristorante;}
     public void set_ristorante(Ristorante ristorante){ this.ristorante = ristorante;}

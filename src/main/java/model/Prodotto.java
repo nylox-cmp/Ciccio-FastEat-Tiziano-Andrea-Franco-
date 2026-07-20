@@ -1,5 +1,6 @@
 package model;
 
+import exception.BusinessError;
 import exception.ErrorType;
 
 public class Prodotto {
@@ -38,11 +39,12 @@ public class Prodotto {
     //____________________________________________________________________________________
     //
 
-    public ErrorType modifica_prodotto(String nome,double prezzo_unitario){
-        this.nome = nome;
+    public void modifica_prodotto(String nome,double prezzo_unitario){
+        if(menu.esiste_prodotto_stesso_nome(nome))
+            throw new BusinessError(ErrorType.INPUT_NON_UNIVOCO);
 
-        if(menu.esiste_prodotto_stesso_nome(nome)) return ErrorType.INPUT_NON_UNIVOCO;
-        return set_prezzo_unitario(prezzo_unitario);
+        this.nome = nome;
+        set_prezzo_unitario(prezzo_unitario);
     }
 
     //____________________________________________________________________________________
@@ -58,12 +60,12 @@ public class Prodotto {
     public double get_prezzo_unitario(){
         return prezzo_unitario;
     }
-    public ErrorType set_prezzo_unitario(double prezzo_unitario){
+    public void set_prezzo_unitario(double prezzo_unitario){
         if(prezzo_unitario > 0) {
             this.prezzo_unitario = prezzo_unitario;
-            return ErrorType.NESSUN_ERRORE;
+            return;
         }
-        return ErrorType.INPUT_NULL;
+        throw new BusinessError(ErrorType.INPUT_NUMERICO_NEGATIVO);
     }
 
 

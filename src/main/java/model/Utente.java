@@ -57,10 +57,10 @@ public class Utente {
     //________________________________________________________________________________________________________________________________________________
     // Operazione di Aggiunta Ruolo Utente
 
-    // Operazione per diventare Dipedente (piattaforma)
+    // Operazione per diventare Dipendente (piattaforma)
     public void crea_ristorante(String nome,String indirizzo){
        Ristorante ristorante = new Ristorante(nome,indirizzo);
-       this.profili_utente.add(new Dipedente(this,Ruolo.MANAGER,ristorante));
+       this.profili_utente.add(new Dipendente(this,Ruolo.MANAGER,ristorante));
     }
 
     public void sign_in_come_rider(String mezzo_trasporto){

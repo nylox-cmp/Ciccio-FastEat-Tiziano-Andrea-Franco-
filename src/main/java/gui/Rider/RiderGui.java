@@ -37,7 +37,7 @@ public class RiderGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NULL), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_utente_controller().sign_in_come_rider(mezzo_trasporto);
+                mainGui.get_utente_controller().registrazione_rider(mezzo_trasporto);
                 mainGui.set_rider_controller(new RiderController(mainGui.get_utente_controller()));
                 mainGui.set_pagina(new OrdiniRiderGui(mainGui));
             }

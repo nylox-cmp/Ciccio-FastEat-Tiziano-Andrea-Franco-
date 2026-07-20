@@ -31,7 +31,7 @@
               <color color="-13881804"/>
             </border>
             <children>
-              <grid id="bf1bf" binding="ordiniDipedentiButtonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+              <grid id="bf1bf" binding="ordiniDipendentiButtonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                 <constraints border-constraint="South"/>
                 <properties>
                   <background color="-262657"/>
@@ -46,7 +46,7 @@
                       <text value="Cancella"/>
                     </properties>
                   </component>
-                  <component id="caff4" class="javax.swing.JButton" binding="senglaProntoAlRitiroButton" default-binding="true">
+                  <component id="caff4" class="javax.swing.JButton" binding="segnalaProntoAlRitiroButton">
                     <constraints/>
                     <properties>
                       <background color="-13881804"/>

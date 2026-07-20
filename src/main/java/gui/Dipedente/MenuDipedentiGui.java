@@ -1,5 +1,6 @@
 package gui.Dipedente;
 
+import exception.BusinessError;
 import exception.ErrorType;
 import gui.MainGui;
 import model.Menu;
@@ -63,12 +64,13 @@ public class MenuDipedentiGui extends JPanel {
                     return;
                 }
 
-                ErrorType error = mainGui.get_ristorante_controller().modifica_menu(nuovoNome);
-                if (error != ErrorType.NESSUN_ERRORE) {
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Errore", JOptionPane.ERROR_MESSAGE);
-                    return;
+                try {
+                    mainGui.get_ristorante_controller().modifica_menu(nuovoNome);
+                    nomeMenuLabel.setText(nuovoNome);
                 }
-                nomeMenuLabel.setText(nuovoNome);
+                catch (BusinessError error) {
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Errore", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -88,13 +90,13 @@ public class MenuDipedentiGui extends JPanel {
 
                 try {
                     double prezzo = Double.parseDouble(prezzo_string);
-                    ErrorType error = mainGui.get_ristorante_controller().crea_prodotto(nome,prezzo);
-
-                    if (error != ErrorType.NESSUN_ERRORE) {
-                        JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Errore", JOptionPane.ERROR_MESSAGE);
-                        return;
+                    try {
+                        mainGui.get_ristorante_controller().crea_prodotto(nome, prezzo);
+                        aggiorna_lista_prodotti(menu);
                     }
-                    aggiorna_lista_prodotti(menu);
+                    catch (BusinessError error) {
+                        JOptionPane.showMessageDialog(mainPanel, error.get_error_message(), "Errore", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_NUMERICO), "Errore", JOptionPane.ERROR_MESSAGE);
@@ -111,12 +113,13 @@ public class MenuDipedentiGui extends JPanel {
                     return;
                 }
 
-                ErrorType error = mainGui.get_ristorante_controller().cancella_prodotto(prodotto);
-                if(error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Errore", JOptionPane.ERROR_MESSAGE);
-                    return;
+                try {
+                    mainGui.get_ristorante_controller().cancella_prodotto(prodotto);
+                    aggiorna_lista_prodotti(menu);
                 }
-                aggiorna_lista_prodotti(menu);
+                catch (BusinessError error){
+                JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Errore", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }

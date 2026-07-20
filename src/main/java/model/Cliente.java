@@ -6,6 +6,7 @@ public class Cliente extends Utente{
     private int punti_fedelta;
     private ArrayList<Ordine> ordini;
 
+
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
@@ -39,9 +40,10 @@ public class Cliente extends Utente{
         if (ordine.get_stato_ordine() == StatoOrdine.IN_CONSEGNA)
             ordine.set_stato_ordine(StatoOrdine.CONFERMA_CONSEGNA_CLIENTE);
 
-        if(ordine.get_stato_ordine() == StatoOrdine.CONFERMA_CONSEGNA_RIDER)
+        if(ordine.get_stato_ordine() == StatoOrdine.CONFERMA_CONSEGNA_RIDER) {
             ordine.set_stato_ordine(StatoOrdine.CONSEGNATO);
-
+            aggiungi_punti_fedelta(ordine);
+        }
     }
 
     public void conferma_creazione_ordine(Ordine ordine){

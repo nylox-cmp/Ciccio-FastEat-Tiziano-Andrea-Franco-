@@ -1,14 +1,16 @@
 package controller;
 
+import ImplementazioniDAO.UtenteImpDAO;
+import dao.UtenteDAO;
+import exception.BusinessError;
 import exception.ErrorType;
-import model.Dipedente;
-import model.Rider;
-import model.Utente;
+import model.*;
 
 import java.util.Optional;
 
 public class UtenteController {
     public Utente utente;
+    private UtenteImpDAO utenteDB = new UtenteImpDAO();
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -18,22 +20,24 @@ public class UtenteController {
     //________________________________________________________________________________________________________________________________________________
     // Operazione Utente
 
-    public ErrorType login(String email,String password){
-        //operazione di verifica e recupero dati per creare la classe utente
-        return ErrorType.NESSUN_ERRORE;
+    public void login(String email,String password){
+       this.utente =  utenteDB.login(email, password);
+       SessionManager.instance.set_utente(utente);
+
     }
 
-    public ErrorType sign_in(String email,String password,String nickname,String nome,String cognome){
+    public void sign_in(String email,String password,String nickname,String nome,String cognome){
         this.utente = new Utente(email,password,nickname,nome,cognome);
         SessionManager.instance.set_utente(utente);
-        //operazione di registrazione
-        return ErrorType.NESSUN_ERRORE;
+
+        utenteDB.sign_in(email,password,nickname,nome,cognome);
     }
 
-    public ErrorType cancella_account(){
-        //Operazione Database cancellazione legata a due trigger Cliente/Rider
+    public void cancella_account(){
+        utenteDB.cancella_account(this.utente.get_nickname());
+        this.utente = null;
+
         SessionManager.instance.distruggi_sessione();
-        return ErrorType.NESSUN_ERRORE;
     }
 
     public void logout(){
@@ -44,16 +48,9 @@ public class UtenteController {
     // Operazione di Verifica del Ruolo dell'Utente
 
     public boolean utente_is_cliente(){
-        return false;
-    }
-
-    public boolean utente_is_dipedente(){
-        Optional<Dipedente> optionalDipedente = SessionManager.instance.get_utente().get_ruolo_utente(Dipedente.class);
-        if(optionalDipedente.isPresent())
+        Optional<Cliente> optionalCliente = SessionManager.instance.get_utente().get_ruolo_utente(Cliente.class);
+        if(optionalCliente.isPresent())
             return true;
-
-        //Operazione di verifica nel database se l'utente sia un Dipedente
-
         return false;
     }
 
@@ -61,38 +58,56 @@ public class UtenteController {
         Optional<Rider> optionalRider = SessionManager.instance.get_utente().get_ruolo_utente(Rider.class);
         if(optionalRider.isPresent())
             return true;
+        return false;
+    }
 
-        //Operazione di verifica nel database se l'utente sia un Dipedente
-
+    public boolean utente_is_dipendente(){
+        Optional<Dipendente> optionalDipendente = SessionManager.instance.get_utente().get_ruolo_utente(Dipendente.class);
+        if(optionalDipendente.isPresent())
+            return true;
         return false;
     }
 
     //________________________________________________________________________________________________________________________________________________
     // Operazione Login/Sing Rider
 
-    public void sign_in_come_rider(String mezzo_trasporto){
+    public void registrazione_rider(String mezzo_trasporto){
         this.utente.sign_in_come_rider(mezzo_trasporto);
     }
 
-    public void login_come_rider(){
+    public void load_dati_rider(){
         //operazione di login del Rider
     }
 
     //________________________________________________________________________________________________________________________________________________
-    // Operazione Login/Sing Dipedente (Piattaforma/Ristorante)
+    // Operazione Login/Creazione Cliente
+
+    public void registrazione_cliente(){
+        SessionManager.instance.get_utente().get_profili_utente().add(new Cliente(utente));
+    }
+
+    public void load_dati_cliente(){
+
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+    // Operazione Login/Sing Dipendente (Piattaforma/Ristorante)
 
     public void crea_ristorante(String nome,String indirizzo){
         SessionManager.instance.get_utente().crea_ristorante(nome,indirizzo);
-        //operazione
+
+       Optional<Dipendente> optionalDipendente = SessionManager.instance.get_utente().get_ruolo_utente(Dipendente.class);
+       if(optionalDipendente.isPresent()){
+           Dipendente dipendente = optionalDipendente.get();
+           utenteDB.crea_ristorante(nome,indirizzo,dipendente.get_ristorante().get_codice_ristorante(),dipendente.get_nickname(),dipendente.get_ruolo());
+       }
     }
 
-    public ErrorType diventa_dipendente_ristorante(String codice_ristorante){
-        //operazione di controllo se esiste un ristorante con quel codice e di rendere l'utente un dipedente
-        return ErrorType.NESSUN_ERRORE;
+    public void registrazione_dipedente_ristorante(String codice_ristorante){
+        //operazione di controllo se esiste un ristorante con quel codice e rendere l'utente un dipendente subito
     }
 
-    public void login_come_dipedente(){
-        //if NOT RiderDAO.utente_is_dipedente
+    public void load_dati_dipedente(){
 
     }
 

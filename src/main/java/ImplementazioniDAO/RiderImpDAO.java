@@ -2,5 +2,5 @@ package ImplementazioniDAO;
 
 import dao.RiderDAO;
 
-public class RiderImpDAO implements RiderDAO {
+public class RiderImpDAO {
 }

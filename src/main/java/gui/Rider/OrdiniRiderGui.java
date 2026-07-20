@@ -1,5 +1,6 @@
 package gui.Rider;
 
+import exception.BusinessError;
 import exception.ErrorType;
 import gui.MainGui;
 import gui.customWidget.ContenutoOrdineGui;
@@ -69,12 +70,15 @@ public class OrdiniRiderGui extends JPanel{
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                ErrorType error = mainGui.get_rider_controller().richiedi_approvazione_consegna(ordine);
-                if(error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error),"Error", JOptionPane.ERROR_MESSAGE);
+
+                try {
+                    mainGui.get_rider_controller().richiedi_approvazione_consegna(ordine);
+                    aggiorna_OrdiniProposti(mainGui.get_rider_controller().get_rider());
+                }
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel, error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                aggiorna_OrdiniProposti(mainGui.get_rider_controller().get_rider());
             }
         });
 

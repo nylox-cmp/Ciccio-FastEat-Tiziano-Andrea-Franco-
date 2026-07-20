@@ -1,8 +1,9 @@
 package gui.Dipedente;
 
+import exception.BusinessError;
 import exception.ErrorType;
 import gui.MainGui;
-import model.Dipedente;
+import model.Dipendente;
 import model.Ruolo;
 import model.Utente;
 
@@ -27,9 +28,9 @@ public class GestioneDipedenteGui extends JPanel {
 
     private JList<Utente> richiestaAssunzioniLista;
     private DefaultListModel<Utente> richiestaAssunzioniListModel = new DefaultListModel<Utente>();
-    private JList<Dipedente> subordinatiLista;
+    private JList<Dipendente> subordinatiLista;
     private JScrollPane subordinatiJscrollPane;
-    private DefaultListModel<Dipedente> subordinatiListModel = new DefaultListModel<Dipedente>();
+    private DefaultListModel<Dipendente> subordinatiListModel = new DefaultListModel<Dipendente>();
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -38,52 +39,55 @@ public class GestioneDipedenteGui extends JPanel {
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        aggiorna_subordinati_lista(mainGui.get_dipedente_controller().get_dipedente());
+        aggiorna_subordinati_lista(mainGui.get_dipendente_controller().get_dipendente());
 
         //________________________________________________________________________________________________________________________________________________
-        // ActionListener Gestione (Dipedenti) Subordinati
+        // ActionListener Gestione (Dipendenti) Subordinati
 
         licenziaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dipedente dipedente = subordinatiLista.getSelectedValue();
-                if(dipedente == null){
+                Dipendente dipendente = subordinatiLista.getSelectedValue();
+                if(dipendente == null){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                ErrorType error = mainGui.get_dipedente_controller().licenzia_dipedente(dipedente);
-                if (error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
+                try {
+                    mainGui.get_dipendente_controller().licenzia_dipendente(dipendente);
+                    aggiorna_subordinati_lista(mainGui.get_dipendente_controller().get_dipendente());
                 }
-                aggiorna_subordinati_lista(mainGui.get_dipedente_controller().get_dipedente());
+                catch (BusinessError error) {
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
             }
         });
 
         seletoreRuoloCombox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dipedente dipedente = subordinatiLista.getSelectedValue();
+                Dipendente dipendente = subordinatiLista.getSelectedValue();
                 Object item = seletoreRuoloCombox.getSelectedItem();
-                if(dipedente == null){
+                if(dipendente == null){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                ErrorType error = ErrorType.NESSUN_ERRORE;
-                String ruolo_selezionato = (String) item;
-                switch (ruolo_selezionato){
-                    case "BASE":
-                       error = mainGui.get_dipedente_controller().modifica_ruolo_dipedente(dipedente,Ruolo.BASE);
-                       break;
-                    case "GESTIONALE":
-                        error = mainGui.get_dipedente_controller().modifica_ruolo_dipedente(dipedente,Ruolo.GESTIONALE);
-                        break;
+
+                try {
+                    String ruolo_selezionato = (String) item;
+                    switch (ruolo_selezionato) {
+                        case "BASE":
+                            mainGui.get_dipendente_controller().modifica_ruolo_dipendente(dipendente, Ruolo.BASE);
+                            break;
+                        case "GESTIONALE":
+                            mainGui.get_dipendente_controller().modifica_ruolo_dipendente(dipendente, Ruolo.GESTIONALE);
+                            break;
+                    }
                 }
-                if (error != ErrorType.NESSUN_ERRORE){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                aggiorna_subordinati_lista(mainGui.get_dipedente_controller().get_dipedente());
+                aggiorna_subordinati_lista(mainGui.get_dipendente_controller().get_dipendente());
             }
         });
     }
@@ -91,12 +95,12 @@ public class GestioneDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
 
 
-    public void aggiorna_subordinati_lista(Dipedente dipedente){
+    public void aggiorna_subordinati_lista(Dipendente dipendente){
         subordinatiListModel.clear();
-        ArrayList<Dipedente> subordinati = dipedente.get_subordinati();
+        ArrayList<Dipendente> subordinati = dipendente.get_subordinati();
         if(subordinati == null) return;
 
-        for(Dipedente subordinato : subordinati)
+        for(Dipendente subordinato : subordinati)
             subordinatiListModel.addElement(subordinato);
     }
 

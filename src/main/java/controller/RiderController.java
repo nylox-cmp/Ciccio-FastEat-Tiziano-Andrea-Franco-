@@ -22,9 +22,8 @@ public class RiderController {
     //________________________________________________________________________________________________________________________________________________
     // operazioni Rider
 
-    public ErrorType richiedi_approvazione_consegna(Ordine ordine){
-       ErrorType error = rider.richiedi_approvazione_consegna(ordine);
-       return error;
+    public void richiedi_approvazione_consegna(Ordine ordine){
+        rider.richiedi_approvazione_consegna(ordine);
     }
 
     public void conferma_consegna_ordine(Ordine ordine){

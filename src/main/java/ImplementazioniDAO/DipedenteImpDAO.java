@@ -2,5 +2,5 @@ package ImplementazioniDAO;
 
 import dao.DipedenteDAO;
 
-public class DipedenteImpDAO implements DipedenteDAO {
+public class DipedenteImpDAO {
 }

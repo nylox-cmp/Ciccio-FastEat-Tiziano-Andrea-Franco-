@@ -1,5 +1,6 @@
 package gui.Dipedente;
 
+import exception.BusinessError;
 import exception.ErrorType;
 import gui.MainGui;
 import model.Menu;
@@ -51,12 +52,14 @@ public class ProdottoDipedenteGui extends JPanel {
 
                 try {
                     double prezzo = Double.parseDouble(prezzo_string);
-                    ErrorType error = mainGui.get_ristorante_controller().modifica_prodotto(nome,prezzo);
-                    if (error != ErrorType.NESSUN_ERRORE) {
-                        JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(error), "Errore", JOptionPane.ERROR_MESSAGE);
+                    try {
+                        mainGui.get_ristorante_controller().modifica_prodotto(nome, prezzo);
+                        prodottoInfoLabel.setText(prodotto.toString());
+                    }
+                    catch (BusinessError error) {
+                        JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Errore", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    prodottoInfoLabel.setText(prodotto.toString());
                 }
                 catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NON_NUMERICO), "Errore", JOptionPane.ERROR_MESSAGE);

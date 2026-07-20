@@ -1,6 +1,7 @@
 package gui.Autenticazione;
 
 import controller.UtenteController;
+import exception.BusinessError;
 import exception.ErrorType;
 import gui.Cliente.ClienteGui;
 import gui.MainGui;
@@ -13,14 +14,17 @@ import java.awt.event.ActionListener;
 public class LoginGui extends JPanel {
     private JPanel mainPanel;
     private JPanel buttonPanel;
+    private JPanel textFieldPanel;
+
+    private JLabel emailLabel;
+    private JLabel passwordLabel;
+    private JLabel tittoloLabel;
+
+    private JTextField emailTextField;
+    private JPasswordField passwordPasswordField;
+
     private JButton accediButton;
     private JButton registratiButton;
-    private JPanel textFieldPanel;
-    private JLabel emailLabel;
-    private JTextField emailTextField;
-    private JLabel passwordLabel;
-    private JPasswordField passwordPasswordField;
-    private JLabel tittoloLabel;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -40,13 +44,14 @@ public class LoginGui extends JPanel {
                     return;
                 }
 
-                mainGui.set_utente_controller(new UtenteController());
-                ErrorType error = mainGui.get_utente_controller().login(email, password);
-                if (error != ErrorType.NESSUN_ERRORE) {
-                    JOptionPane.showMessageDialog(mainPanel,ErrorType.converti_error_to_message(error),"Error",JOptionPane.ERROR_MESSAGE);
-                    return;
+                try {
+                    mainGui.set_utente_controller(new UtenteController());
+                    mainGui.get_utente_controller().login(email, password);
+                    mainGui.set_pagina(new ClienteGui(mainGui));
                 }
-                mainGui.set_pagina(new ClienteGui(mainGui));
+                catch (BusinessError error) {
+                    JOptionPane.showMessageDialog(mainPanel, error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 

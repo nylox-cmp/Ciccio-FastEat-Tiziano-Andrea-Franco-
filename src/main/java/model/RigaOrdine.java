@@ -1,5 +1,6 @@
 package model;
 
+import exception.BusinessError;
 import exception.ErrorType;
 
 public class RigaOrdine {
@@ -55,13 +56,13 @@ public class RigaOrdine {
         calcola_prezzo_totale();
     }
 
-    public ErrorType diminuisci_quantita(){
+    public void diminuisci_quantita(){
         if (this.quantita > 1) {
             this.quantita -= 1;
             calcola_prezzo_totale();
-            return ErrorType.NESSUN_ERRORE;
+            return;
         }
-        return ErrorType.INPUT_NULL;
+        throw new BusinessError(ErrorType.INPUT_NULL);
     }
 
     //________________________________________________________________________________________________________________________________________________

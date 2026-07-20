@@ -22,7 +22,7 @@ public class MainGui {
     private UtenteController utente_controller = null;
     private ClienteController cliente_controller = null;
     private RiderController rider_controller = null;
-    private DipedenteController dipedente_controller = null;
+    private DipendenteController dipendente_controller = null;
 
     private RistoranteController ristorante_controller = null;
 
@@ -62,13 +62,13 @@ public class MainGui {
     }
 
     public void print_controller(){
-        System.out.println(utente_controller + " " +  cliente_controller + " " + rider_controller + " " + dipedente_controller + " " + ristorante_controller);
+        System.out.println(utente_controller + " " +  cliente_controller + " " + rider_controller + " " + dipendente_controller + " " + ristorante_controller);
     }
 
     public void distruggi_controller(){
         utente_controller = null;
         cliente_controller = null;
-        dipedente_controller = null;
+        dipendente_controller = null;
         rider_controller = null;
         ristorante_controller = null;
     }
@@ -127,9 +127,9 @@ public class MainGui {
         this.rider_controller = rider_controller;
     }
 
-    public DipedenteController get_dipedente_controller(){ return dipedente_controller;}
-    public void set_dipedente_controller(DipedenteController dipedente_controller){
-        this.dipedente_controller = dipedente_controller;
+    public DipendenteController get_dipendente_controller(){ return dipendente_controller;}
+    public void set_dipendente_controller(DipendenteController dipendente_controller){
+        this.dipendente_controller = dipendente_controller;
     }
 
     public RistoranteController get_ristorante_controller(){ return ristorante_controller; }
@@ -143,7 +143,7 @@ public class MainGui {
 
     public static void main(String[] args){
         MainGui mainGui = new MainGui();
-        mainGui.set_mainFrame(new JFrame("FastFood"));
+        mainGui.set_mainFrame(new JFrame("FoodDelivery"));
         mainGui.get_mainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainGui.get_mainFrame().setVisible(true);
 

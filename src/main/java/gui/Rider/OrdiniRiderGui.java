@@ -1,11 +1,10 @@
 package gui.Rider;
 
-import gui.MainGui;
+import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
 import gui.customWidget.ContenutoOrdineGui;
 import model.Ordine;
-import model.Rider;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -33,23 +32,24 @@ public class OrdiniRiderGui extends JPanel{
     private JButton confermaConsegnaButton;
     private JButton cancellaRichiestaOrdineButton;
 
-    private MainGui mainGui;
+    private CanvasGui canvasGui;
+    private main.Main main;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public OrdiniRiderGui(MainGui mainGui){
-        this.mainGui = mainGui;
+    public OrdiniRiderGui(CanvasGui canvasGui){
+        this.canvasGui = canvasGui;
+        this.main = canvasGui.main;
+
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniDaConsegnareLista);
+        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniDaConsegnareLista,canvasGui);
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
 
         ordiniDaConsegnareLista.setModel(ordiniDaConsegnareListModel);
         ordiniPropostiLista.setModel(ordiniPropostiListModel);
-
-        mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
 
         aggiorna_OrdiniDaConsegnare();
         aggiorna_OrdiniProposti();
@@ -78,7 +78,7 @@ public class OrdiniRiderGui extends JPanel{
                 }
 
                 try {
-                    mainGui.get_rider_controller().crea_richiesta_approvazione_consegna(ordine);
+                    main.get_rider_controller().crea_richiesta_approvazione_consegna(ordine);
                     aggiorna_OrdiniProposti();
                 }
                 catch (BusinessError error){
@@ -98,7 +98,7 @@ public class OrdiniRiderGui extends JPanel{
                 }
 
                 try{
-                    mainGui.get_rider_controller().cancella_richiesta_approvazione_consegna(ordine);
+                    main.get_rider_controller().cancella_richiesta_approvazione_consegna(ordine);
                     aggiorna_OrdiniDaConsegnare();
                 }
                 catch (BusinessError error){
@@ -116,7 +116,7 @@ public class OrdiniRiderGui extends JPanel{
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_rider_controller().conferma_consegna_ordine(ordine);
+                main.get_rider_controller().conferma_consegna_ordine(ordine);
                 aggiorna_OrdiniDaConsegnare();
             }
         });
@@ -127,7 +127,7 @@ public class OrdiniRiderGui extends JPanel{
 
     public void aggiorna_OrdiniProposti(){
         ordiniPropostiListModel.clear();
-        ArrayList<Ordine> ordini = mainGui.get_rider_controller().get_ordini_proposti();
+        ArrayList<Ordine> ordini = main.get_rider_controller().get_ordini_proposti();
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)
@@ -136,7 +136,7 @@ public class OrdiniRiderGui extends JPanel{
 
     public void aggiorna_OrdiniDaConsegnare(){
         ordiniDaConsegnareListModel.clear();
-        ArrayList<Ordine> ordini = mainGui.get_rider_controller().get_ordini_da_consegnare();
+        ArrayList<Ordine> ordini = main.get_rider_controller().get_ordini_da_consegnare();
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)

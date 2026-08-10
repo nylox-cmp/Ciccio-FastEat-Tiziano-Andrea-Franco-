@@ -1,9 +1,11 @@
 package gui.Dipedente;
 
-import gui.MainGui;
+import gui.CanvasGui;
 import controller.DipendenteController;
 import exception.BusinessError;
 import exception.ErrorType;
+import gui.customWidget.DashboardDipedenteGui;
+import main.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,14 +31,16 @@ public class DipedenteGui extends JPanel {
 
     private JLabel codiceAutenticazioneLabel;
 
+    private Main main;
+
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public DipedenteGui(MainGui mainGui){
+    public DipedenteGui(CanvasGui canvasGui){
+        this.main = canvasGui.main;
+
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
-
-        mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Registrazione e Richiesta Assunzione Dipendente
@@ -51,9 +55,10 @@ public class DipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_utente_controller().crea_ristorante(nome,indirizzo);
-                mainGui.set_dipendente_controller(new DipendenteController());
-                mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
+                main.get_utente_controller().crea_ristorante(nome,indirizzo);
+                main.set_dipendente_controller(new DipendenteController());
+                canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui));
+                canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
             }
         });
 
@@ -67,8 +72,9 @@ public class DipedenteGui extends JPanel {
                 }
 
                 try {
-                    mainGui.get_utente_controller().registrazione_dipedente_ristorante(codice_ristorante);
-                    mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
+                    main.get_utente_controller().registrazione_dipedente_ristorante(codice_ristorante);
+                    canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui));
+                    canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
                 }
                 catch (BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel, error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);

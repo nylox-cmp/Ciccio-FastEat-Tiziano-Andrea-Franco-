@@ -1,6 +1,6 @@
 package gui.Dipedente;
 
-import gui.MainGui;
+import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
 import model.Dipendente;
@@ -32,13 +32,15 @@ public class GestioneDipedenteGui extends JPanel {
     private JScrollPane subordinatiJscrollPane;
     private DefaultListModel<Dipendente> subordinatiListModel = new DefaultListModel<Dipendente>();
 
-    private MainGui mainGui;
+    private CanvasGui canvasGui;
+    private main.Main main;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public GestioneDipedenteGui(MainGui mainGui){
-        this.mainGui = mainGui;
+    public GestioneDipedenteGui(CanvasGui canvasGui){
+        this.canvasGui = canvasGui;
+        this.main = canvasGui.main;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
@@ -57,7 +59,7 @@ public class GestioneDipedenteGui extends JPanel {
                     return;
                 }
                 try {
-                    mainGui.get_dipendente_controller().licenzia_dipendente(dipendente);
+                    main.get_dipendente_controller().licenzia_dipendente(dipendente);
                     aggiorna_subordinati_lista();
                 }
                 catch (BusinessError error) {
@@ -81,10 +83,10 @@ public class GestioneDipedenteGui extends JPanel {
                     String ruolo_selezionato = (String) item;
                     switch (ruolo_selezionato) {
                         case "BASE":
-                            mainGui.get_dipendente_controller().modifica_ruolo_dipendente(dipendente, Ruolo.BASE);
+                            main.get_dipendente_controller().modifica_ruolo_dipendente(dipendente, Ruolo.BASE);
                             break;
                         case "GESTIONALE":
-                            mainGui.get_dipendente_controller().modifica_ruolo_dipendente(dipendente, Ruolo.GESTIONALE);
+                            main.get_dipendente_controller().modifica_ruolo_dipendente(dipendente, Ruolo.GESTIONALE);
                             break;
                     }
                 }
@@ -101,7 +103,7 @@ public class GestioneDipedenteGui extends JPanel {
 
     public void aggiorna_subordinati_lista(){
         subordinatiListModel.clear();
-        ArrayList<Dipendente> subordinati = mainGui.get_dipendente_controller().get_subordinati();
+        ArrayList<Dipendente> subordinati = main.get_dipendente_controller().get_subordinati();
         if(subordinati == null) return;
 
         for(Dipendente subordinato : subordinati)

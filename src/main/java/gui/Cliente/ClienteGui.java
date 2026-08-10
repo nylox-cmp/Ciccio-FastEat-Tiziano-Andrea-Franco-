@@ -2,14 +2,11 @@ package gui.Cliente;
 
 import controller.ClienteController;
 import exception.ErrorType;
-import gui.MainGui;
+import gui.CanvasGui;
 import gui.customWidget.DashboardGui;
-import model.RigaOrdine;
 import model.Ristorante;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,29 +21,29 @@ public class ClienteGui extends JPanel {
     private JPanel buttonPanel;
     private JButton apriButton;
 
-    private MainGui mainGui;
+    private CanvasGui canvasGui;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public ClienteGui(MainGui mainGui){
-        this.mainGui = mainGui;
+    public ClienteGui(CanvasGui canvasGui){
+        this.canvasGui = canvasGui;
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        if(mainGui.get_utente_controller().utente_is_cliente() == false){
-            mainGui.get_utente_controller().load_dati_cliente();
-            if(mainGui.get_utente_controller().utente_is_cliente() == false)
-                mainGui.get_utente_controller().registra_cliente();
+        if(canvasGui.main.get_utente_controller().utente_is_cliente() == false){
+            canvasGui.main.get_utente_controller().load_dati_cliente();
+            if(canvasGui.main.get_utente_controller().utente_is_cliente() == false)
+                canvasGui.main.get_utente_controller().registra_cliente();
         }
 
-        mainGui.set_cliente_controller(new ClienteController());
-        mainGui.set_dashboardGui(new DashboardGui(mainGui));
+        canvasGui.main.set_cliente_controller(new ClienteController());
+        canvasGui.set_dashboardGui(new DashboardGui(canvasGui));
 
 
-        mainGui.mostra_dashboard();
-        mainGui.get_dashboardGui().mostra_area_ordiniClienti();
-        mainGui.get_dashboardGui().aggiorna_nickname_label(mainGui);
+        canvasGui.mostra_dashboard();
+        canvasGui.get_dashboardGui().mostra_area_ordiniClienti();
+        canvasGui.get_dashboardGui().aggiorna_nickname_label(canvasGui);
 
         ristorantiLista.setModel(ristoranteListModel);
         aggiorna_lista_ristoranti();
@@ -62,7 +59,7 @@ public class ClienteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.set_pagina(new RistoranteClienteGui(mainGui,ristorante));
+                canvasGui.set_pagina(new RistoranteClienteGui(canvasGui,ristorante));
             }
         });
 
@@ -72,7 +69,7 @@ public class ClienteGui extends JPanel {
 
     public void aggiorna_lista_ristoranti(){
         ristoranteListModel.clear();
-        ArrayList<Ristorante> ristoranti = mainGui.get_cliente_controller().get_ristoranti();
+        ArrayList<Ristorante> ristoranti = canvasGui.main.get_cliente_controller().get_ristoranti();
         if(ristoranti == null) return;
 
         for(Ristorante ristorante : ristoranti)

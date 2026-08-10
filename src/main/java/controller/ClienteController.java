@@ -67,9 +67,10 @@ public class ClienteController {
     //________________________________________________________________________________________________________________________________________________
     // Gestione RigaOrdine
 
-    public void aggiungi_riga(Ordine ordine, Prodotto prodotto) {
-        ordine.aggiungi_riga(prodotto,RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE,ordine);
+    public RigaOrdine aggiungi_riga(Ordine ordine, Prodotto prodotto) {
+        RigaOrdine riga_ordine = ordine.aggiungi_riga(prodotto,RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE,ordine);
         clienteDB.aggiungi_riga(ordine.get_codice_ordine(),Integer.parseInt(id_righeOrdine.get(ordine).get(1)),RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE);
+        return riga_ordine;
     }
 
     public void rimuovi_riga(Ordine ordine, RigaOrdine riga_ordine) {
@@ -101,7 +102,6 @@ public class ClienteController {
 
     public ArrayList<RigaOrdine>  get_righeOrdine(Ordine ordine) {
         EntityWitchId<RigaOrdine, ArrayList<String>> righeOrdineMap = clienteDB.get_contenuto_ordine(ordine.get_codice_ordine());
-        if(righeOrdineMap.entitys == null || righeOrdineMap.ids == null) return null;
 
         righe_ordine = righeOrdineMap.entitys;
 
@@ -118,7 +118,6 @@ public class ClienteController {
     public ArrayList<Menu> get_menu(Ristorante ristorante){
         id_menu = new HashMap<Menu,Integer>();
         EntityWitchId<Menu,Integer> menuMap = RistoranteImpDAO.get_menu(ristorante.get_codice_ristorante());
-        if(menuMap.entitys == null || menuMap.ids == null) return null;
 
         for(int i=0;i<menuMap.entitys.size();i++){
             id_menu.put(menuMap.entitys.get(i),menuMap.ids.get(i));

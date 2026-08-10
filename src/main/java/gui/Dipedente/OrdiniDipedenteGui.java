@@ -1,14 +1,11 @@
 package gui.Dipedente;
 
-import gui.MainGui;
-import controller.DipendenteController;
+import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
 import gui.customWidget.ContenutoOrdineGui;
-import gui.customWidget.DashboardDipedenteGui;
 import model.Ordine;
 import model.Rider;
-import model.Ristorante;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -40,23 +37,21 @@ public class OrdiniDipedenteGui extends JPanel {
     private DefaultListModel<Rider> riderPropostiListModel = new DefaultListModel<Rider>();
     private JList<Rider> riderPropostiLista;
 
-    private MainGui mainGui;
+    private CanvasGui canvasGui;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public OrdiniDipedenteGui(MainGui mainGui){
-        this.mainGui = mainGui;
+    public OrdiniDipedenteGui(CanvasGui canvasGui){
+        this.canvasGui = canvasGui;
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui();
+        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniLista,canvasGui);
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
 
         ordiniLista.setModel(ordiniListModel);
         riderPropostiLista.setModel(riderPropostiListModel);
-
-        mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
 
         //________________________________________________________________________________________________________________________________________________
         // ListSelectionListener che mostra il contenuto dell'ordine e mostra i rider proposti
@@ -84,7 +79,7 @@ public class OrdiniDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_dipendente_controller().annulla_ordine(ordine);
+                canvasGui.main.get_dipendente_controller().annulla_ordine(ordine);
                 aggiorna_ordiniLista();
             }
         });
@@ -98,7 +93,7 @@ public class OrdiniDipedenteGui extends JPanel {
                     return;
                 }
                 try {
-                    mainGui.get_dipendente_controller().segnala_ordine_pronto_ritiro(ordine);
+                    canvasGui.main.get_dipendente_controller().segnala_ordine_pronto_ritiro(ordine);
                     aggiorna_ordiniLista();
                 }
                 catch (BusinessError error){
@@ -119,7 +114,7 @@ public class OrdiniDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_dipendente_controller().accetta_rider(ordine,rider);
+                canvasGui.main.get_dipendente_controller().accetta_rider(ordine,rider);
                 aggiorna_riderPropostiLista(ordine);
                 aggiorna_ordiniLista();
             }
@@ -134,7 +129,7 @@ public class OrdiniDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_dipendente_controller().rifiuta_rider(ordine,rider);
+                canvasGui.main.get_dipendente_controller().rifiuta_rider(ordine,rider);
                 aggiorna_riderPropostiLista(ordine);
             }
         });
@@ -145,7 +140,7 @@ public class OrdiniDipedenteGui extends JPanel {
 
     public void aggiorna_riderPropostiLista(Ordine ordine){
         riderPropostiListModel.clear();
-        ArrayList<Rider> rider_proposti = mainGui.get_dipendente_controller().get_rider_proposti_consegna(ordine);
+        ArrayList<Rider> rider_proposti = canvasGui.main.get_dipendente_controller().get_rider_proposti_consegna(ordine);
         if(rider_proposti == null) return;
 
         for(Rider rider : rider_proposti)
@@ -154,7 +149,7 @@ public class OrdiniDipedenteGui extends JPanel {
 
     public void aggiorna_ordiniLista(){
         ordiniListModel.clear();
-        ArrayList<Ordine> ordini = mainGui.get_dipendente_controller().get_ordini();
+        ArrayList<Ordine> ordini = canvasGui.main.get_dipendente_controller().get_ordini();
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)

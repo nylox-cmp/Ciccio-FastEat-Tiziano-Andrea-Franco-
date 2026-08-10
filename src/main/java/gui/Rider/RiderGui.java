@@ -1,6 +1,6 @@
 package gui.Rider;
 
-import gui.MainGui;
+import gui.CanvasGui;
 import controller.RiderController;
 import exception.ErrorType;
 
@@ -20,14 +20,17 @@ public class RiderGui extends JPanel {
     private JTextField mezzoTrasportoTextField;
     private JButton registratiButton;
 
+    private main.Main main;
+
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public RiderGui(MainGui mainGui) {
+    public RiderGui(CanvasGui canvasGui) {
+        this.main = canvasGui.main;
         setLayout(new BorderLayout());
         add(mainPanel, BorderLayout.CENTER);
 
-        mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
+        canvasGui.get_dashboardGui().nascondi_area_OrdiniClienti();
 
         registratiButton.addActionListener(new ActionListener() {
             @Override
@@ -37,9 +40,9 @@ public class RiderGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NULL), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_utente_controller().registra_rider(mezzo_trasporto);
-                mainGui.set_rider_controller(new RiderController());
-                mainGui.set_pagina(new OrdiniRiderGui(mainGui));
+                main.get_utente_controller().registra_rider(mezzo_trasporto);
+                main.set_rider_controller(new RiderController());
+                canvasGui.set_pagina(new OrdiniRiderGui(canvasGui));
             }
         });
     }

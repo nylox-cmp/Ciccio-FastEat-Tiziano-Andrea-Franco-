@@ -10,7 +10,7 @@ public class RigaOrdine {
 
     private Ordine ordine;
 
-    public static final int QUANTITA_CREAZIONE_RIGA_ORDINE = 0;
+    public static final int QUANTITA_CREAZIONE_RIGA_ORDINE = 1;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore

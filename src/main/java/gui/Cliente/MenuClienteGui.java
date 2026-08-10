@@ -1,12 +1,13 @@
 package gui.Cliente;
 
-import exception.ErrorType;
-import gui.MainGui;
+import gui.CanvasGui;
 import model.Menu;
 import model.Prodotto;
 import model.Ristorante;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,20 +26,26 @@ public class MenuClienteGui extends JPanel {
 
     private JButton tornaIndietroButton;
 
-    private MainGui mainGui;
+    private CanvasGui canvasGui;
+    private main.Main main;
+
     private Ristorante ristorante;
     private Menu menu;
+    private ProdottoClienteGui prodottiGui;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public MenuClienteGui(MainGui mainGui, Ristorante ristorante,Menu menu){
-        this.mainGui = mainGui;
+    public MenuClienteGui(CanvasGui canvasGui, Ristorante ristorante, Menu menu){
+        this.canvasGui = canvasGui;
+        this.main = canvasGui.main;
+
         this.ristorante = ristorante;
         this.menu = menu;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
+        add(this.prodottiGui = new ProdottoClienteGui(canvasGui,ristorante,menu));
 
         infoMenuLabel.setText(menu.toString());
         prodottiLista.setModel(prodottoListModel);
@@ -48,11 +55,23 @@ public class MenuClienteGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener di navigazione
 
-
         tornaIndietroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainGui.set_pagina(new RistoranteClienteGui(mainGui,ristorante));
+                canvasGui.set_pagina(new RistoranteClienteGui(canvasGui,ristorante));
+            }
+        });
+
+        //________________________________________________________________________________________________________________________________________________
+        // ListListener
+
+        prodottiLista.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                Prodotto prodotto = prodottiLista.getSelectedValue();
+                if(prodotto == null) return;
+
+                prodottiGui.set_prodotto(prodotto);
             }
         });
     }
@@ -62,7 +81,7 @@ public class MenuClienteGui extends JPanel {
 
     public void aggiorna_lista_prodotti(){
         prodottoListModel.clear();
-        ArrayList<Prodotto> prodotti = mainGui.get_cliente_controller().get_prodotti(menu);
+        ArrayList<Prodotto> prodotti = main.get_cliente_controller().get_prodotti(menu);
         if(prodotti == null) return;
 
         for(Prodotto prodotto : prodotti)

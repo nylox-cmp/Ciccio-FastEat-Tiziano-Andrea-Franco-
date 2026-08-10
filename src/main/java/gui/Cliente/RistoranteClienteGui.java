@@ -1,7 +1,7 @@
 package gui.Cliente;
 
 import exception.ErrorType;
-import gui.MainGui;
+import gui.CanvasGui;
 import model.Menu;
 import model.Ristorante;
 
@@ -25,14 +25,14 @@ public class RistoranteClienteGui extends JPanel {
     private JList<Menu> menuLista;
     private JScrollPane menuScrollPane;
 
-    private MainGui mainGui;
+    private CanvasGui canvasGui;
     private Ristorante ristorante;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public RistoranteClienteGui(MainGui mainGui, Ristorante ristorante){
-        this.mainGui = mainGui;
+    public RistoranteClienteGui(CanvasGui canvasGui, Ristorante ristorante){
+        this.canvasGui = canvasGui;
         this.ristorante = ristorante;
 
         setLayout(new BorderLayout());
@@ -47,7 +47,7 @@ public class RistoranteClienteGui extends JPanel {
         tornaIndietroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainGui.set_pagina(new ClienteGui(mainGui));
+                canvasGui.set_pagina(new ClienteGui(canvasGui));
             }
         });
 
@@ -59,7 +59,7 @@ public class RistoranteClienteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.set_pagina(new MenuClienteGui(mainGui,ristorante,menu));
+                canvasGui.set_pagina(new MenuClienteGui(canvasGui,ristorante,menu));
             }
         });
 
@@ -70,7 +70,7 @@ public class RistoranteClienteGui extends JPanel {
 
     public void aggiorna_menu_lista(){
         menuListModel.clear();
-        ArrayList<model.Menu> menu_list = mainGui.get_cliente_controller().get_menu(ristorante);
+        ArrayList<model.Menu> menu_list = canvasGui.main.get_cliente_controller().get_menu(ristorante);
         if(menu_list == null) return;
 
         for(Menu menu : menu_list)

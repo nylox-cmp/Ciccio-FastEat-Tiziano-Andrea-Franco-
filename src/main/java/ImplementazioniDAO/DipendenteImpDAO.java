@@ -223,35 +223,6 @@ public class DipendenteImpDAO implements DipendenteDAO {
         }
     }
 
-    public static ArrayList<RigaOrdine> get_righeOrdine(String codice_ordine){
-        ArrayList<RigaOrdine> righe_ordine = new ArrayList<RigaOrdine>();
-        String sql = "SELECT * FROM RigaOrdine r JOIN Prodotto p ON r.id_prodotto = p.id_prodotto WHERE r.codice_ordine = ?;";
-
-        Connection con = null;
-        try{
-            con = ConnessioneDatabase.getInstance().getConnection();
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
-        }
-
-        try(PreparedStatement query =  con.prepareStatement(sql)){
-            query.setString(1,codice_ordine);
-
-            try(ResultSet result = query.executeQuery()){
-                while(result.next()){
-                    righe_ordine.add(ResultSetMapper.converti_result_into_rigaOrdine(result));
-                }
-            }
-            return righe_ordine;
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
-        }
-    }
-
     @Override
     public ArrayList<Rider> get_rider_proposti_consegna(String codice_ordine){
         ArrayList<Rider> rider_proposti = new ArrayList<Rider>();

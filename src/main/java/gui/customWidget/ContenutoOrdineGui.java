@@ -1,5 +1,7 @@
 package gui.customWidget;
 
+import controller.OrdiniController;
+import gui.CanvasGui;
 import model.Ordine;
 import model.RigaOrdine;
 
@@ -16,10 +18,15 @@ public class ContenutoOrdineGui extends JPanel {
     private JList<RigaOrdine> contenutoOrdineLista;
     private JScrollPane cotenutoOrdineJScrollPane;
 
+    private CanvasGui canvasGui;
+
     //________________________________________________________________________________________________________________________________________________
     // Costurttore
 
-    public ContenutoOrdineGui(JList<Ordine> ordiniLista){
+    public ContenutoOrdineGui(JList<Ordine> ordiniLista, CanvasGui canvasGui){
+        this.canvasGui = canvasGui;
+
+        canvasGui.main.set_ordine_controller(new OrdiniController());
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
@@ -37,18 +44,12 @@ public class ContenutoOrdineGui extends JPanel {
         });
     }
 
-    public ContenutoOrdineGui(){
-        setLayout(new BorderLayout());
-        add(mainPanel,BorderLayout.CENTER);
-
-        contenutoOrdineLista.setModel(contenutoOrdineListModel);
-    }
-
     //________________________________________________________________________________________________________________________________________________
+    // Metodi Gestione Lista
 
     public void aggiorna_lista(Ordine ordine){
         contenutoOrdineListModel.clear();
-        ArrayList<RigaOrdine> righe_ordine = ordine.get_rige_ordine();
+        ArrayList<RigaOrdine> righe_ordine = canvasGui.main.get_ordini_controller().get_contenuto_ordine(ordine);
         if(righe_ordine == null) return;
 
         for(RigaOrdine riga_ordine : righe_ordine)
@@ -56,12 +57,10 @@ public class ContenutoOrdineGui extends JPanel {
     }
 
     //________________________________________________________________________________________________________________________________________________
+    // Metodi Get
 
     public JList<RigaOrdine> get_contenutoOrdineLista(){
         return contenutoOrdineLista;
     }
 
-    public void set_contenutoOrdineLista(JList<RigaOrdine> contenutoOrdineLista){
-        this.contenutoOrdineLista = contenutoOrdineLista;
-    }
 }

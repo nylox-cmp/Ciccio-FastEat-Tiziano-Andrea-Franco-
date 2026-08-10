@@ -36,15 +36,4 @@ public class ConnessioneDatabase {
         return instance;
     }
 
-    public Connection getConnection(){
-        try {
-            if(connection == null || connection.isClosed()) {
-                connection = DriverManager.getConnection(url, nome, password);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
-        }
-        return connection;
-    }
 }

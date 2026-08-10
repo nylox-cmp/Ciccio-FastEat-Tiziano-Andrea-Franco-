@@ -167,7 +167,7 @@ public class RistoranteImpDAO implements RistoranteDAO {
 
         Connection con = null;
         try{
-           con = ConnessioneDatabase.getInstance().getConnection();
+           con = ConnessioneDatabase.getInstance().connection;
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -196,7 +196,7 @@ public class RistoranteImpDAO implements RistoranteDAO {
 
         Connection con = null;
         try{
-            con = ConnessioneDatabase.getInstance().getConnection();
+            con = ConnessioneDatabase.getInstance().connection;
         }
         catch(SQLException e){
             e.printStackTrace();

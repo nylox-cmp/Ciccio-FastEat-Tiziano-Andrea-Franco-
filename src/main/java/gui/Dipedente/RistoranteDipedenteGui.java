@@ -1,6 +1,6 @@
 package gui.Dipedente;
 
-import gui.MainGui;
+import gui.CanvasGui;
 import controller.RistoranteController;
 import exception.BusinessError;
 import exception.ErrorType;
@@ -44,20 +44,20 @@ public class RistoranteDipedenteGui extends JPanel {
     private JList<Menu> menuLista;
     private DefaultListModel<Menu> menuListModel = new DefaultListModel<Menu>();
 
-    private MainGui mainGui;
+    private CanvasGui canvasGui;
     private Ristorante ristorante;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public RistoranteDipedenteGui(MainGui mainGui, Ristorante ristorante){
-        this.mainGui = mainGui;
+    public RistoranteDipedenteGui(CanvasGui canvasGui, Ristorante ristorante){
+        this.canvasGui = canvasGui;
         this.ristorante = ristorante;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        mainGui.set_ristorante_controller(new RistoranteController(mainGui.get_dipendente_controller()));
+        canvasGui.main.set_ristorante_controller(new RistoranteController(canvasGui.main.get_dipendente_controller()));
         aggiorna_infoLabel();
 
         menuLista.setModel(menuListModel);
@@ -77,7 +77,7 @@ public class RistoranteDipedenteGui extends JPanel {
                  }
 
                  try {
-                     mainGui.get_ristorante_controller().modifica_ristorante(nome, indirizzo);
+                     canvasGui.main.get_ristorante_controller().modifica_ristorante(nome, indirizzo);
                      infoRistoranteLabel.setText(ristorante.toString() + " codice autenticazione: "+ ristorante.get_codice_ristorante());
                  }
                  catch (BusinessError error){
@@ -93,9 +93,9 @@ public class RistoranteDipedenteGui extends JPanel {
                 if(scelta == JOptionPane.YES_OPTION) {
 
                     try {
-                        mainGui.get_ristorante_controller().cancella_ristorante();
-                        mainGui.nascondi_dashboard_dipedenti();
-                        mainGui.set_pagina(new ClienteGui(mainGui));
+                        canvasGui.main.get_ristorante_controller().cancella_ristorante();
+                        canvasGui.nascondi_dashboard_dipedenti();
+                        canvasGui.set_pagina(new ClienteGui(canvasGui));
                     }
                     catch (BusinessError error) {
                         JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Errore", JOptionPane.ERROR_MESSAGE);
@@ -119,7 +119,7 @@ public class RistoranteDipedenteGui extends JPanel {
                 }
 
                try {
-                   mainGui.get_ristorante_controller().crea_menu(nome);
+                   canvasGui.main.get_ristorante_controller().crea_menu(nome);
                    aggiorna_lista_menu();
                }
                catch (BusinessError error) {
@@ -141,7 +141,7 @@ public class RistoranteDipedenteGui extends JPanel {
                 if(scelta == JOptionPane.YES_OPTION) {
 
                    try {
-                       mainGui.get_ristorante_controller().cancella_menu(menu);
+                       canvasGui.main.get_ristorante_controller().cancella_menu(menu);
                        aggiorna_lista_menu();
 
                    }
@@ -160,17 +160,17 @@ public class RistoranteDipedenteGui extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Menu menu = menuLista.getSelectedValue();
                 if (menu == null) {
-                    JOptionPane.showMessageDialog(mainGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(canvasGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.set_pagina(new MenuDipedentiGui(mainGui, ristorante, menu));
+                canvasGui.set_pagina(new MenuDipedentiGui(canvasGui, ristorante, menu));
             }
         });
 
         tornaIndietroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
+                canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
             }
         });
     }
@@ -180,7 +180,7 @@ public class RistoranteDipedenteGui extends JPanel {
 
     public void aggiorna_lista_menu(){
         menuListModel.clear();
-        ArrayList<Menu> menu_list = mainGui.get_ristorante_controller().get_menu();
+        ArrayList<Menu> menu_list = canvasGui.main.get_ristorante_controller().get_menu();
         if(menu_list == null) return;
 
         for(Menu menu : menu_list)
@@ -191,7 +191,7 @@ public class RistoranteDipedenteGui extends JPanel {
     // Metdoto Aggiornmaneto infoLabel
 
     public void aggiorna_infoLabel(){
-        if(mainGui.get_dipendente_controller().get_dipendente().get_ruolo().ordinal() >= Ruolo.GESTIONALE.ordinal()) {
+        if(canvasGui.main.get_dipendente_controller().get_dipendente().get_ruolo().ordinal() >= Ruolo.GESTIONALE.ordinal()) {
             infoRistoranteLabel.setText(ristorante.toString() + " codice ristorante: " + ristorante.get_codice_ristorante());
             return;
         }

@@ -1,6 +1,6 @@
 package gui.Dipedente;
 
-import gui.MainGui;
+import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
 import model.Menu;
@@ -41,15 +41,15 @@ public class MenuDipedentiGui extends JPanel {
     private JButton modificaButton;
     private DefaultListModel<Prodotto> prodottiListModel = new DefaultListModel<Prodotto>();
 
-    private MainGui mainGui;
+    private CanvasGui canvasGui;
     private Ristorante ristorante;
     private Menu menu;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public MenuDipedentiGui(MainGui mainGui, Ristorante ristorante,Menu menu) {
-        this.mainGui = mainGui;
+    public MenuDipedentiGui(CanvasGui canvasGui, Ristorante ristorante, Menu menu) {
+        this.canvasGui = canvasGui;
         this.ristorante = ristorante;
         this.menu = menu;
 
@@ -74,7 +74,7 @@ public class MenuDipedentiGui extends JPanel {
                 }
 
                 try {
-                    mainGui.get_ristorante_controller().modifica_menu(menu,nuovoNome);
+                    canvasGui.main.get_ristorante_controller().modifica_menu(menu,nuovoNome);
                     nomeMenuLabel.setText(nuovoNome);
                 }
                 catch (BusinessError error) {
@@ -100,7 +100,7 @@ public class MenuDipedentiGui extends JPanel {
                 try {
                     double prezzo = Double.parseDouble(prezzo_string);
                     try {
-                        mainGui.get_ristorante_controller().crea_prodotto(menu,nome, prezzo);
+                        canvasGui.main.get_ristorante_controller().crea_prodotto(menu,nome, prezzo);
                         aggiorna_lista_prodotti(menu);
                     }
                     catch (BusinessError error) {
@@ -123,7 +123,7 @@ public class MenuDipedentiGui extends JPanel {
                 }
 
                 try {
-                    mainGui.get_ristorante_controller().cancella_prodotto(menu,prodotto);
+                    canvasGui.main.get_ristorante_controller().cancella_prodotto(menu,prodotto);
                     aggiorna_lista_prodotti(menu);
                 }
                 catch (BusinessError error){
@@ -151,7 +151,7 @@ public class MenuDipedentiGui extends JPanel {
                 try {
                     double prezzo = Double.parseDouble(prezzo_string);
                     try {
-                        mainGui.get_ristorante_controller().modifica_prodotto(prodotto,nome, prezzo);
+                        canvasGui.main.get_ristorante_controller().modifica_prodotto(prodotto,nome, prezzo);
                     }
                     catch (BusinessError error) {
                         JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Errore", JOptionPane.ERROR_MESSAGE);
@@ -170,7 +170,7 @@ public class MenuDipedentiGui extends JPanel {
         tornaIndietroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainGui.set_pagina(new RistoranteDipedenteGui(mainGui, ristorante));
+                canvasGui.set_pagina(new RistoranteDipedenteGui(canvasGui, ristorante));
             }
         });
 
@@ -181,7 +181,7 @@ public class MenuDipedentiGui extends JPanel {
 
     public void aggiorna_lista_prodotti(Menu menu){
         prodottiListModel.clear();
-        ArrayList<Prodotto> prodotti = mainGui.get_ristorante_controller().get_prodotti(menu);
+        ArrayList<Prodotto> prodotti = canvasGui.main.get_ristorante_controller().get_prodotti(menu);
         if(prodotti == null) return;
 
         for(Prodotto prodotto : prodotti)

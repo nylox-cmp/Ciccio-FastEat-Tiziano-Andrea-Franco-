@@ -1,10 +1,9 @@
 package gui.Cliente;
 
-import gui.MainGui;
+import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
 import gui.customWidget.ContenutoOrdineGui;
-import model.Cliente;
 import model.Ordine;
 import model.RigaOrdine;
 
@@ -39,20 +38,21 @@ public class OrdiniClientiGui extends JPanel {
     private JTextField puntiFedeltaTextField;
     private JScrollPane ordiniJScrollPane;
 
-    private MainGui mainGui;
+    private CanvasGui canvasGui;
+    private main.Main main;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public OrdiniClientiGui(MainGui mainGui){
-        this.mainGui = mainGui;
+    public OrdiniClientiGui(CanvasGui canvasGui){
+        this.canvasGui = canvasGui;
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
         ordiniLista.setModel(ordiniListModel);
-        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniLista);
+        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniLista,canvasGui);
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
-        quantitaLabel.setText(String.valueOf(mainGui.get_cliente_controller().get_cliente().get_punti_fedelta()));
+        quantitaLabel.setText(String.valueOf(main.get_cliente_controller().get_cliente().get_punti_fedelta()));
 
         aggiorna_ordiniLista();
 
@@ -67,7 +67,7 @@ public class OrdiniClientiGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_cliente_controller().conferma_consegna_ordine(ordine);
+                main.get_cliente_controller().conferma_consegna_ordine(ordine);
                 aggiorna_ordiniLista();
             }
         });
@@ -80,7 +80,7 @@ public class OrdiniClientiGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_cliente_controller().annulla_ordine(ordine);
+                main.get_cliente_controller().annulla_ordine(ordine);
                 aggiorna_ordiniLista();
             }
         });
@@ -93,7 +93,7 @@ public class OrdiniClientiGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_cliente_controller().conferma_creazione_ordine(ordine);
+                main.get_cliente_controller().conferma_creazione_ordine(ordine);
                 aggiorna_ordiniLista();
             }
         });
@@ -118,7 +118,7 @@ public class OrdiniClientiGui extends JPanel {
             try{
                 int punti_fedelta  = Integer.parseInt(puntiFedeltaTextField.getText());
                 try {
-                    mainGui.get_cliente_controller().applica_sconto(ordine, punti_fedelta);
+                    main.get_cliente_controller().applica_sconto(ordine, punti_fedelta);
                     aggiorna_ordiniLista();
 
                 }
@@ -141,7 +141,7 @@ public class OrdiniClientiGui extends JPanel {
                 Ordine ordine = ordiniLista.getSelectedValue();
                 RigaOrdine riga_ordine = contenutoOrdine.get_contenutoOrdineLista().getSelectedValue();
                 if(ordine == null || riga_ordine == null) return;
-                mainGui.get_cliente_controller().rimuovi_riga(ordine,riga_ordine);
+                main.get_cliente_controller().rimuovi_riga(ordine,riga_ordine);
                 contenutoOrdine.aggiorna_lista(ordine);
             }
         });
@@ -152,7 +152,7 @@ public class OrdiniClientiGui extends JPanel {
 
     public void aggiorna_ordiniLista(){
         ordiniListModel.clear();
-        ArrayList<Ordine> ordini = mainGui.get_cliente_controller().get_ordini();
+        ArrayList<Ordine> ordini = main.get_cliente_controller().get_ordini();
 
         for(Ordine ordine : ordini)
             ordiniListModel.addElement(ordine);

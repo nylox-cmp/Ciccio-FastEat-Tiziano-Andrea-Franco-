@@ -1,6 +1,7 @@
 package controller;
 
 import ImplementazioniDAO.DipendenteImpDAO;
+import ImplementazioniDAO.OrdiniImpDAO;
 import ImplementazioniDAO.RiderImpDAO;
 import controller.Utils.SessionManager;
 import model.Dipendente;
@@ -50,22 +51,15 @@ public class RiderController {
     // Get and set
 
     public Rider get_rider() { return rider; }
-    public void set_rider(Rider rider){ this.rider = rider;}
 
     public ArrayList<Ordine> get_ordini_proposti(){
        this.ordini_proposti = riderDB.get_ordini_proposti();
        return ordini_proposti;
     }
-    public void set_ordini_proposti(ArrayList<Ordine> oridini_proposti){this.ordini_proposti = oridini_proposti;}
 
     public ArrayList<Ordine> get_ordini_da_consegnare(){
         this.ordini_da_consegnare = riderDB.get_ordini_da_consegnare(rider.get_nickname());
         return ordini_da_consegnare;
     }
-    public void set_ordini_da_consegnare(ArrayList<Ordine> ordini_da_consegnare){ this.ordini_da_consegnare = ordini_da_consegnare;}
 
-    public ArrayList<RigaOrdine> get_contenuto_ordine(String codice_ordine){
-        ArrayList<RigaOrdine> righe_ordine = DipendenteImpDAO.get_righeOrdine(codice_ordine);
-        return righe_ordine;
-    }
 }

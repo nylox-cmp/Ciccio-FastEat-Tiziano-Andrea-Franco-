@@ -1,16 +1,6 @@
 
 
-6.Mostrare il codice ristorante solo a gli utenti con ruolo >= Gestionale
 7.commentare il codice tramite javadoc e fare un controllo grammaticale extra + controllare se abbia separato il codice bene in chunk
 8.finire il class diagramm
 9.finire la documentazione
 16.Verifica che tutti i metodi rispettino l'integrita dei dati
-22.controllare i dati.sql
-23.Sistemerare la dashboard
-24.Separare i metodi di navigazione dalla dashboard dipendenti
-25.Sistemare Contenuto Prodotto
-
-//Dipedente
-//Sistemare ErrorType
-//modificare nome registra_cliente in registrazione_cliente
-//fare un metodo per prendere il ristorante per il metodo get del dipedente UtenteImpDAO

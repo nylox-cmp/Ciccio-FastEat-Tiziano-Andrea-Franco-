@@ -11,6 +11,7 @@ public enum ErrorType {
     INPUT_NUMERICO_NEGATIVO,
     INPUT_NON_UNIVOCO,
     ELEMENTO_SELEZIONATO_NULL,
+    PRODOTTO_NON_PRESENTE_ORDINE,
     CODICE_RISTORANTE_INESISTENTE,
     PERMESSI_NON_SUFFICIENTI,
     ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO,
@@ -46,6 +47,9 @@ public enum ErrorType {
                 break;
             case ELEMENTO_SELEZIONATO_NULL:
                 messaggio = "Nessun elemento selezionato. Seleziona una voce dalla lista per procedere con l'operazione.";
+                break;
+            case PRODOTTO_NON_PRESENTE_ORDINE:
+                messaggio = "Prodotto non presente nell'ordine. Prova add aggiungerlo all'orinde";
                 break;
             case CODICE_RISTORANTE_INESISTENTE:
                 messaggio = "Il codice inserito è inesistente.Riprova con un'altro codice";

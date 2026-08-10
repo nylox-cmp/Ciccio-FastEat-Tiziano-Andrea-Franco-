@@ -73,12 +73,16 @@ public class Ordine {
         return false;
     }
 
-    public void aggiungi_riga(Prodotto prodotto, int quantita,Ordine ordine) {
+    public RigaOrdine aggiungi_riga(Prodotto prodotto, int quantita,Ordine ordine) {
         if(stato_ordine != StatoOrdine.BOZZA) throw new BusinessError(ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO);
         if(contiene_prodotto(prodotto)) throw new BusinessError(ErrorType.ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO);
 
-        this.righe_ordine.add(new RigaOrdine(prodotto, quantita,ordine));
+        RigaOrdine riga_ordine = new RigaOrdine(prodotto, quantita,ordine);
+
+        this.righe_ordine.add(riga_ordine);
         calcola_costo_ordine();
+
+        return riga_ordine;
     }
 
     public void rimuovi_riga(RigaOrdine riga_ordine) {

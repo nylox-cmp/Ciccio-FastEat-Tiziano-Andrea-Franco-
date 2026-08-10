@@ -46,7 +46,7 @@ public class Menu {
     }
 
     public void crea_prodotto(String nome, double prezzo_unitario) {
-        if(prezzo_unitario < 0) throw  new BusinessError(ErrorType.INPUT_NULL);
+        if(prezzo_unitario < 0) throw  new BusinessError(ErrorType.INPUT_NUMERICO_NEGATIVO);
         if(esiste_prodotto_stesso_nome(nome)) throw new BusinessError(ErrorType.INPUT_NON_UNIVOCO);
 
         Prodotto prodotto = new Prodotto(nome,prezzo_unitario,this);

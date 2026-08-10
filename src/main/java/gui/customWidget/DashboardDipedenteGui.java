@@ -1,12 +1,10 @@
 package gui.customWidget;
 
-import gui.MainGui;
+import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
 import gui.Cliente.ClienteGui;
 import gui.Dipedente.*;
-import model.Menu;
-import model.Prodotto;
 import model.Ristorante;
 import model.Ruolo;
 
@@ -30,7 +28,7 @@ public class DashboardDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public DashboardDipedenteGui(MainGui mainGui) {
+    public DashboardDipedenteGui(CanvasGui canvasGui) {
         setLayout(new BorderLayout());
         add(mainPanel, BorderLayout.CENTER);
 
@@ -44,13 +42,13 @@ public class DashboardDipedenteGui extends JPanel {
                 String area = (String) item;
                 switch (area) {
                     case "Ordini":
-                        mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
+                        canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
                         break;
                     case "Ristorante":
-                        mainGui.set_pagina(new RistoranteDipedenteGui(mainGui, DashboardDipedenteGui.this.ristorante));
+                        canvasGui.set_pagina(new RistoranteDipedenteGui(canvasGui, DashboardDipedenteGui.this.ristorante));
                         break;
                     case "Dipendenti":
-                        mainGui.set_pagina(new GestioneDipedenteGui(mainGui));
+                        canvasGui.set_pagina(new GestioneDipedenteGui(canvasGui));
                         break;
                 }
             }
@@ -62,15 +60,15 @@ public class DashboardDipedenteGui extends JPanel {
         licenziatiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int scelta = JOptionPane.showConfirmDialog(mainGui.get_pagina(), "Sei sicuro di volerti licenziare? , il licenziamneto nel ruolo di Manager comportera anche alla cancellazione del ristorante","FoodDelivery", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                int scelta = JOptionPane.showConfirmDialog(canvasGui.get_pagina(), "Sei sicuro di volerti licenziare? , il licenziamneto nel ruolo di Manager comportera anche alla cancellazione del ristorante","FoodDelivery", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if(scelta == JOptionPane.YES_OPTION) {
                     try {
-                        mainGui.get_dipendente_controller().licenziati();
-                        mainGui.nascondi_dashboard_dipedenti();
-                        mainGui.set_pagina(new ClienteGui(mainGui));
+                        canvasGui.main.get_dipendente_controller().licenziati();
+                        canvasGui.nascondi_dashboard_dipedenti();
+                        canvasGui.set_pagina(new ClienteGui(canvasGui));
                     }
                     catch(BusinessError error){
-                        JOptionPane.showMessageDialog(mainGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(canvasGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                 }
@@ -81,8 +79,8 @@ public class DashboardDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Metodo Aggiornamento Label
 
-    public void aggiorna_ruolo_label(MainGui mainGui){
-        infoDipendente.setText(Ruolo.converti_ruolo_to_string(mainGui.get_dipendente_controller().get_dipendente().get_ruolo()));
+    public void aggiorna_ruolo_label(CanvasGui canvasGui){
+        infoDipendente.setText(Ruolo.converti_ruolo_to_string(canvasGui.main.get_dipendente_controller().get_dipendente().get_ruolo()));
     }
 
 

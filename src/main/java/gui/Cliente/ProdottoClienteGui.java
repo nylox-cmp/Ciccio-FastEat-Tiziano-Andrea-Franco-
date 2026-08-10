@@ -1,6 +1,6 @@
 package gui.Cliente;
 
-import gui.MainGui;
+import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
 import model.*;
@@ -17,10 +17,6 @@ import java.util.ArrayList;
 
 public class ProdottoClienteGui extends JPanel {
     private JPanel mainPanel;
-    private JPanel bottomPanel;
-    private JPanel ordinmeButtonPanel;
-    private JPanel clientiButtonPanel;
-    private JPanel quantitaButtonPanel;
 
     private JButton aumentaQuantitaButton;
     private JButton aggiungiAllOrdineButton;
@@ -31,39 +27,35 @@ public class ProdottoClienteGui extends JPanel {
 
 
     private JLabel quantitaProdottoLabel;
-    private JLabel indirizzoLabel;
 
     private JTextField indirizzoTextField;
     private DefaultComboBoxModel<Ordine> ordineComboBoxModel = new DefaultComboBoxModel<Ordine>();
     private JComboBox<Ordine> ordiniComboBox;
+    private JPanel quantitaButtonPanel;
+    private JPanel ordinmeButtonPanel;
+    private JLabel indirizzoLabel;
 
-    private MainGui mainGui;
+    private CanvasGui canvasGui;
+    private main.Main main;
     private Ristorante ristorante;
     private Menu menu;
-    private Prodotto prodotto;
+    private Prodotto prodotto = null;
+    private RigaOrdine riga_ordine = null;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public ProdottoClienteGui(MainGui mainGui, Ristorante ristorante, model.Menu menu, Prodotto prodotto){
-        this.mainGui = mainGui;
+    public ProdottoClienteGui(CanvasGui canvasGui, Ristorante ristorante, model.Menu menu){
+        this.canvasGui = canvasGui;
+        this.main = canvasGui.main;
         this.ristorante = ristorante;
         this.menu = menu;
-        this.prodotto = prodotto;
+        this.prodotto = null;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        RigaOrdine riga_ordine = new RigaOrdine(prodotto,1);
         aggiorna_combo_box_ordini();
-
-
-        tornaIndietroClienteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mainGui.set_pagina(new MenuClienteGui(mainGui,ristorante,menu));
-            }
-        });
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione quantita Prodotto
@@ -71,8 +63,13 @@ public class ProdottoClienteGui extends JPanel {
         aumentaQuantitaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(riga_ordine == null){
+                    JOptionPane.showMessageDialog(mainPanel,ErrorType.PRODOTTO_NON_PRESENTE_ORDINE,"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 Ordine ordine = (Ordine) ordineComboBoxModel.getSelectedItem();
-                mainGui.get_cliente_controller().aumenta_quantita_prodotto(ordine,riga_ordine);
+                main.get_cliente_controller().aumenta_quantita_prodotto(ordine,riga_ordine);
                 quantitaProdottoLabel.setText(String.valueOf(riga_ordine.get_quantita()));
             }
         });
@@ -80,9 +77,14 @@ public class ProdottoClienteGui extends JPanel {
         diminuisciQuantitaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(riga_ordine == null) {
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.PRODOTTO_NON_PRESENTE_ORDINE, "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 Ordine ordine = (Ordine) ordineComboBoxModel.getSelectedItem();
                 try {
-                    mainGui.get_cliente_controller().diminuisci_quantita_prodotto(ordine,riga_ordine);
+                    main.get_cliente_controller().diminuisci_quantita_prodotto(ordine,riga_ordine);
                 }
                 catch(BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
@@ -93,19 +95,32 @@ public class ProdottoClienteGui extends JPanel {
         });
 
         //________________________________________________________________________________________________________________________________________________
-        // ActionListener Gestione del Ordine
+        // ActionListener Gestione Ordine
 
         creaOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainGui.get_cliente_controller().crea_ordine(indirizzoTextField.getText(),ristorante);
+                String indirizzo = indirizzoTextField.getText();
+                if(indirizzo.isEmpty()){
+                    JOptionPane.showMessageDialog(mainPanel,ErrorType.converti_error_to_message(ErrorType.INPUT_NULL),"Error",JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                main.get_cliente_controller().crea_ordine(indirizzo,ristorante);
                 aggiorna_combo_box_ordini();
             }
         });
 
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione RigheOrdine
+
         aggiungiAllOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(prodotto == null){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 Object obj = ordiniComboBox.getSelectedItem();
                 if(obj == null){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
@@ -113,7 +128,7 @@ public class ProdottoClienteGui extends JPanel {
                 }
                 try {
                     Ordine ordine = (Ordine) obj;
-                    mainGui.get_cliente_controller().aggiungi_riga(ordine, prodotto);
+                    riga_ordine = main.get_cliente_controller().aggiungi_riga(ordine, prodotto);
                 }
                 catch(BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
@@ -125,26 +140,38 @@ public class ProdottoClienteGui extends JPanel {
         rimuoviDalOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(riga_ordine == null){
+                    JOptionPane.showMessageDialog(mainPanel,ErrorType.PRODOTTO_NON_PRESENTE_ORDINE,"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 Object obj = ordiniComboBox.getSelectedItem();
                 if(obj == null){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 Ordine ordine = (Ordine) obj;
-                mainGui.get_cliente_controller().rimuovi_riga(ordine,riga_ordine);
+                main.get_cliente_controller().rimuovi_riga(ordine,riga_ordine);
             }
         });
     }
 
     //________________________________________________________________________________________________________________________________________________
-
+    // Metodi Aggiornamento Lista
 
     public void aggiorna_combo_box_ordini(){
         ordineComboBoxModel.removeAllElements();
-        ArrayList<Ordine> ordini = mainGui.get_cliente_controller().get_ordini();
+        ArrayList<Ordine> ordini = main.get_cliente_controller().get_ordini();
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)
             ordineComboBoxModel.addElement(ordine);
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+    // Metodi Set
+
+    public void set_prodotto(Prodotto prodotto){
+        this.prodotto = prodotto;
     }
 }

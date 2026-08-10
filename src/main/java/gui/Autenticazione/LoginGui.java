@@ -1,6 +1,6 @@
 package gui.Autenticazione;
 
-import gui.MainGui;
+import gui.CanvasGui;
 import controller.UtenteController;
 import exception.BusinessError;
 import exception.ErrorType;
@@ -29,7 +29,7 @@ public class LoginGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public LoginGui(MainGui mainGui){
+    public LoginGui(CanvasGui canvasGui){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
@@ -45,9 +45,9 @@ public class LoginGui extends JPanel {
                 }
 
                 try {
-                    mainGui.set_utente_controller(new UtenteController());
-                    mainGui.get_utente_controller().login(email, password);
-                    mainGui.set_pagina(new ClienteGui(mainGui));
+                    canvasGui.main.set_utente_controller(new UtenteController());
+                    canvasGui.main.get_utente_controller().login(email, password);
+                    canvasGui.set_pagina(new ClienteGui(canvasGui));
                 }
                 catch (BusinessError error) {
                     JOptionPane.showMessageDialog(mainPanel, error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -58,7 +58,7 @@ public class LoginGui extends JPanel {
         registratiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainGui.set_pagina(new SignInGui(mainGui));
+                canvasGui.set_pagina(new SignInGui(canvasGui));
             }
         });
     }

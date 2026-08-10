@@ -1,8 +1,8 @@
 package gui.Dipedente;
 
+import gui.MainGui;
 import exception.BusinessError;
 import exception.ErrorType;
-import gui.MainGui;
 import model.Dipendente;
 import model.Ruolo;
 import model.Utente;
@@ -32,14 +32,18 @@ public class GestioneDipedenteGui extends JPanel {
     private JScrollPane subordinatiJscrollPane;
     private DefaultListModel<Dipendente> subordinatiListModel = new DefaultListModel<Dipendente>();
 
+    private MainGui mainGui;
+
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
     public GestioneDipedenteGui(MainGui mainGui){
+        this.mainGui = mainGui;
+
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        aggiorna_subordinati_lista(mainGui.get_dipendente_controller().get_dipendente());
+        aggiorna_subordinati_lista();
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione (Dipendenti) Subordinati
@@ -54,7 +58,7 @@ public class GestioneDipedenteGui extends JPanel {
                 }
                 try {
                     mainGui.get_dipendente_controller().licenzia_dipendente(dipendente);
-                    aggiorna_subordinati_lista(mainGui.get_dipendente_controller().get_dipendente());
+                    aggiorna_subordinati_lista();
                 }
                 catch (BusinessError error) {
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -87,7 +91,7 @@ public class GestioneDipedenteGui extends JPanel {
                 catch (BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                aggiorna_subordinati_lista(mainGui.get_dipendente_controller().get_dipendente());
+                aggiorna_subordinati_lista();
             }
         });
     }
@@ -95,9 +99,9 @@ public class GestioneDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
 
 
-    public void aggiorna_subordinati_lista(Dipendente dipendente){
+    public void aggiorna_subordinati_lista(){
         subordinatiListModel.clear();
-        ArrayList<Dipendente> subordinati = dipendente.get_subordinati();
+        ArrayList<Dipendente> subordinati = mainGui.get_dipendente_controller().get_subordinati();
         if(subordinati == null) return;
 
         for(Dipendente subordinato : subordinati)

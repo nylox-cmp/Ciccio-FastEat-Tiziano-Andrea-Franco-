@@ -16,35 +16,6 @@
         </properties>
         <border type="none"/>
         <children>
-          <grid id="7c032" binding="topPanelClienti" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints border-constraint="North"/>
-            <properties>
-              <background color="-262657"/>
-            </properties>
-            <border type="none"/>
-            <children>
-              <component id="52d77" class="javax.swing.JButton" binding="tornaIndietroClienteButton">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <background color="-13881804"/>
-                  <foreground color="-262657"/>
-                  <text value="Torna Indietro"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <component id="87fbe" class="javax.swing.JLabel" binding="infoPrdottoClienteLabel">
-            <constraints border-constraint="Center"/>
-            <properties>
-              <background color="-262657"/>
-              <foreground color="-16448233"/>
-              <horizontalAlignment value="0"/>
-              <text value="Nome + Prezzo "/>
-            </properties>
-          </component>
           <grid id="e9984" binding="clientiButtonPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints border-constraint="South"/>

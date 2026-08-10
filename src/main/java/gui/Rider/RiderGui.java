@@ -1,8 +1,8 @@
 package gui.Rider;
 
+import gui.MainGui;
 import controller.RiderController;
 import exception.ErrorType;
-import gui.MainGui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,8 +37,8 @@ public class RiderGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.INPUT_NULL), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                mainGui.get_utente_controller().registrazione_rider(mezzo_trasporto);
-                mainGui.set_rider_controller(new RiderController(mainGui.get_utente_controller()));
+                mainGui.get_utente_controller().registra_rider(mezzo_trasporto);
+                mainGui.set_rider_controller(new RiderController());
                 mainGui.set_pagina(new OrdiniRiderGui(mainGui));
             }
         });

@@ -12,7 +12,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="d78d3" binding="topPanelClienti" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="d78d3" binding="topPanelClienti" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints border-constraint="North"/>
             <properties>
@@ -20,20 +20,9 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="dc86d" class="javax.swing.JButton" binding="tornaIndietroClientiButton">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <background color="-13881804"/>
-                  <enabled value="true"/>
-                  <foreground color="-262657"/>
-                  <text value="Torna Indietro"/>
-                </properties>
-              </component>
               <component id="d854f" class="javax.swing.JLabel" binding="infoRistoranteClienteLabel">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <background color="-16448233"/>
@@ -48,7 +37,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="5ccb" class="javax.swing.JList" binding="menuClientiLista">
+              <component id="5ccb" class="javax.swing.JList" binding="menuLista">
                 <constraints/>
                 <properties>
                   <background color="-2894377"/>
@@ -57,6 +46,33 @@
               </component>
             </children>
           </scrollpane>
+          <grid id="fff00" binding="buttonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="South"/>
+            <properties>
+              <background color="-262657"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="9d65f" class="javax.swing.JButton" binding="tornaIndietroButton">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <enabled value="true"/>
+                  <foreground color="-262657"/>
+                  <text value="torna indietro "/>
+                </properties>
+              </component>
+              <component id="c6297" class="javax.swing.JButton" binding="apriButton">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <enabled value="true"/>
+                  <foreground color="-262657"/>
+                  <text value="apri menu"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
     </children>

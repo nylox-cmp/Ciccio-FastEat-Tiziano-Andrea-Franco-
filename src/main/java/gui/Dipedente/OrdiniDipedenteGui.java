@@ -1,9 +1,9 @@
 package gui.Dipedente;
 
+import gui.MainGui;
 import controller.DipendenteController;
 import exception.BusinessError;
 import exception.ErrorType;
-import gui.MainGui;
 import gui.customWidget.ContenutoOrdineGui;
 import gui.customWidget.DashboardDipedenteGui;
 import model.Ordine;
@@ -40,17 +40,15 @@ public class OrdiniDipedenteGui extends JPanel {
     private DefaultListModel<Rider> riderPropostiListModel = new DefaultListModel<Rider>();
     private JList<Rider> riderPropostiLista;
 
+    private MainGui mainGui;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
     public OrdiniDipedenteGui(MainGui mainGui){
+        this.mainGui = mainGui;
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
-
-        mainGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(mainGui));
-        mainGui.set_dipendente_controller(new DipendenteController());
-        mainGui.mostra_dashboard_dipedenti(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
 
         ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui();
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
@@ -73,7 +71,7 @@ public class OrdiniDipedenteGui extends JPanel {
             }
         });
 
-        aggiorna_ordiniLista(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
+        aggiorna_ordiniLista();
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Ordini
@@ -87,7 +85,7 @@ public class OrdiniDipedenteGui extends JPanel {
                     return;
                 }
                 mainGui.get_dipendente_controller().annulla_ordine(ordine);
-                aggiorna_ordiniLista(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
+                aggiorna_ordiniLista();
             }
         });
 
@@ -101,7 +99,7 @@ public class OrdiniDipedenteGui extends JPanel {
                 }
                 try {
                     mainGui.get_dipendente_controller().segnala_ordine_pronto_ritiro(ordine);
-                    aggiorna_ordiniLista(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
+                    aggiorna_ordiniLista();
                 }
                 catch (BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -123,7 +121,7 @@ public class OrdiniDipedenteGui extends JPanel {
                 }
                 mainGui.get_dipendente_controller().accetta_rider(ordine,rider);
                 aggiorna_riderPropostiLista(ordine);
-                aggiorna_ordiniLista(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
+                aggiorna_ordiniLista();
             }
         });
 
@@ -147,16 +145,16 @@ public class OrdiniDipedenteGui extends JPanel {
 
     public void aggiorna_riderPropostiLista(Ordine ordine){
         riderPropostiListModel.clear();
-        ArrayList<Rider> rider_proposti = ordine.get_rider_proposti();
+        ArrayList<Rider> rider_proposti = mainGui.get_dipendente_controller().get_rider_proposti_consegna(ordine);
         if(rider_proposti == null) return;
 
         for(Rider rider : rider_proposti)
             riderPropostiListModel.addElement(rider);
     }
 
-    public void aggiorna_ordiniLista(Ristorante ristorante){
+    public void aggiorna_ordiniLista(){
         ordiniListModel.clear();
-        ArrayList<Ordine> ordini = ristorante.get_ordini();
+        ArrayList<Ordine> ordini = mainGui.get_dipendente_controller().get_ordini();
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)

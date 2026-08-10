@@ -2,149 +2,40 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.Dipedente.MenuDipedentiGui">
   <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="808" height="400"/>
+      <xy x="20" y="20" width="886" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="b189c" binding="bottomPanel" layout-manager="FormLayout">
-        <rowspec value="center:d:noGrow"/>
-        <rowspec value="top:4dlu:noGrow"/>
-        <rowspec value="center:max(d;4px):noGrow"/>
-        <rowspec value="top:4dlu:noGrow"/>
-        <rowspec value="center:max(d;4px):noGrow"/>
-        <rowspec value="top:4dlu:noGrow"/>
-        <rowspec value="center:d:grow"/>
-        <colspec value="fill:d:grow"/>
+      <grid id="1cec8" binding="infoPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="North"/>
+        <properties>
+          <background color="-262657"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="2fed7" class="javax.swing.JLabel" binding="nomeMenuLabel">
+            <constraints/>
+            <properties>
+              <foreground color="-16448233"/>
+              <text value="nome menu"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="7f205" binding="prodottiListPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties>
           <background color="-262657"/>
         </properties>
         <border type="none"/>
         <children>
-          <grid id="befb5" binding="infoPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <forms/>
-            </constraints>
-            <properties>
-              <background color="-262657"/>
-            </properties>
-            <border type="none"/>
-            <children>
-              <component id="4a514" class="javax.swing.JLabel" binding="nomeMenuLabel">
-                <constraints/>
-                <properties>
-                  <foreground color="-16448233"/>
-                  <text value="nome menu"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <grid id="208cc" binding="modificaMenuPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <forms/>
-            </constraints>
-            <properties>
-              <background color="-262657"/>
-            </properties>
-            <border type="none"/>
-            <children>
-              <component id="39738" class="javax.swing.JLabel" binding="nomeModificaMenuLabel">
-                <constraints/>
-                <properties>
-                  <background color="-16448233"/>
-                  <foreground color="-16448233"/>
-                  <text value="nome"/>
-                </properties>
-              </component>
-              <component id="8a8d3" class="javax.swing.JTextField" binding="nomeMenuTextField">
-                <constraints/>
-                <properties>
-                  <background color="-13881804"/>
-                  <columns value="10"/>
-                  <foreground color="-262657"/>
-                </properties>
-              </component>
-              <component id="d597e" class="javax.swing.JButton" binding="modificaMenuButton">
-                <constraints/>
-                <properties>
-                  <background color="-13881804"/>
-                  <foreground color="-262657"/>
-                  <text value="modifica menu"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <grid id="5c8a" binding="prodottiPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-            <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <forms/>
-            </constraints>
-            <properties>
-              <background color="-262657"/>
-            </properties>
-            <border type="none"/>
-            <children>
-              <component id="6e86e" class="javax.swing.JLabel" binding="nomeProdottoLabel">
-                <constraints/>
-                <properties>
-                  <background color="-16448233"/>
-                  <foreground color="-16448233"/>
-                  <text value="nome"/>
-                </properties>
-              </component>
-              <component id="c2bf4" class="javax.swing.JTextField" binding="nomeProdottoTextField">
-                <constraints/>
-                <properties>
-                  <background color="-13881804"/>
-                  <columns value="10"/>
-                  <foreground color="-262657"/>
-                </properties>
-              </component>
-              <component id="77d29" class="javax.swing.JLabel" binding="prezzoLabel">
-                <constraints/>
-                <properties>
-                  <foreground color="-16448233"/>
-                  <text value="prezzo"/>
-                </properties>
-              </component>
-              <component id="ca331" class="javax.swing.JTextField" binding="prezzoTextField">
-                <constraints/>
-                <properties>
-                  <background color="-13881804"/>
-                  <columns value="10"/>
-                  <foreground color="-262657"/>
-                </properties>
-              </component>
-              <component id="f7aac" class="javax.swing.JButton" binding="creaProdottoButton">
-                <constraints/>
-                <properties>
-                  <background color="-13881804"/>
-                  <foreground color="-262657"/>
-                  <text value="crea prodotto"/>
-                </properties>
-              </component>
-              <component id="5be20" class="javax.swing.JButton" binding="cancellaProdottoButton">
-                <constraints/>
-                <properties>
-                  <background color="-13881804"/>
-                  <foreground color="-262657"/>
-                  <text value="cancella prodotto"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <scrollpane id="20655" binding="prodottoJScrollPane">
-            <constraints>
-              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <forms defaultalign-vert="false"/>
-            </constraints>
+          <scrollpane id="dabf1" binding="prodottoJScrollPane">
+            <constraints border-constraint="Center"/>
             <properties/>
             <border type="etched" title="Prodotti"/>
             <children>
-              <component id="7038e" class="javax.swing.JList" binding="prodottiLista">
+              <component id="cb89f" class="javax.swing.JList" binding="prodottiLista">
                 <constraints/>
                 <properties>
                   <background color="-2500135"/>
@@ -154,14 +45,146 @@
               </component>
             </children>
           </scrollpane>
+          <grid id="de201" binding="buttonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="South"/>
+            <properties>
+              <background color="-262657"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="65ac5" class="javax.swing.JButton" binding="tornaIndietroButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <foreground color="-262657"/>
+                  <text value="torna indietro"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
-      <hspacer id="59ded">
-        <constraints border-constraint="East"/>
-      </hspacer>
-      <hspacer id="564b4">
+      <grid id="9d9a6" binding="settingPanel" layout-manager="FormLayout">
+        <rowspec value="center:max(d;4px):noGrow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="center:max(d;4px):noGrow"/>
+        <colspec value="fill:d:grow"/>
+        <colspec value="left:4dlu:noGrow"/>
+        <colspec value="fill:max(d;4px):noGrow"/>
         <constraints border-constraint="West"/>
-      </hspacer>
+        <properties>
+          <background color="-262657"/>
+        </properties>
+        <border type="etched" title="Impostazioni">
+          <font style="1"/>
+          <title-color color="-13881804"/>
+        </border>
+        <children>
+          <grid id="f21e1" binding="prodottiPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints>
+              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <background color="-262657"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="71814" class="javax.swing.JLabel" binding="nomeProdottoLabel">
+                <constraints/>
+                <properties>
+                  <background color="-16448233"/>
+                  <foreground color="-16448233"/>
+                  <text value="nome"/>
+                </properties>
+              </component>
+              <component id="c40e1" class="javax.swing.JTextField" binding="nomeProdottoTextField">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <columns value="10"/>
+                  <foreground color="-262657"/>
+                </properties>
+              </component>
+              <component id="4a593" class="javax.swing.JLabel" binding="prezzoLabel">
+                <constraints/>
+                <properties>
+                  <foreground color="-16448233"/>
+                  <text value="prezzo"/>
+                </properties>
+              </component>
+              <component id="35f5" class="javax.swing.JTextField" binding="prezzoTextField">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <columns value="10"/>
+                  <foreground color="-262657"/>
+                </properties>
+              </component>
+              <component id="43e85" class="javax.swing.JButton" binding="creaProdottoButton">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <foreground color="-262657"/>
+                  <text value="crea prodotto"/>
+                </properties>
+              </component>
+              <component id="42883" class="javax.swing.JButton" binding="cancellaProdottoButton">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <foreground color="-262657"/>
+                  <text value="cancella prodotto"/>
+                </properties>
+              </component>
+              <component id="b778e" class="javax.swing.JButton" binding="modificaButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <foreground color="-262657"/>
+                  <text value="Modifica prodotto"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="8cfbe" binding="modificaMenuPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <background color="-262657"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="4654b" class="javax.swing.JLabel" binding="nomeModificaMenuLabel">
+                <constraints/>
+                <properties>
+                  <background color="-16448233"/>
+                  <foreground color="-16448233"/>
+                  <text value="nome"/>
+                </properties>
+              </component>
+              <component id="f664c" class="javax.swing.JTextField" binding="nomeMenuTextField">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <columns value="10"/>
+                  <foreground color="-262657"/>
+                </properties>
+              </component>
+              <component id="c3151" class="javax.swing.JButton" binding="modificaMenuButton">
+                <constraints/>
+                <properties>
+                  <background color="-13881804"/>
+                  <foreground color="-262657"/>
+                  <text value="modifica menu"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>

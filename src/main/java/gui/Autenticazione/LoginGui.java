@@ -1,10 +1,10 @@
 package gui.Autenticazione;
 
+import gui.MainGui;
 import controller.UtenteController;
 import exception.BusinessError;
 import exception.ErrorType;
 import gui.Cliente.ClienteGui;
-import gui.MainGui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +37,7 @@ public class LoginGui extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String email = emailTextField.getText();
-                String password = emailTextField.getText();
+                String password = passwordPasswordField.getText();
 
                 if(email.isEmpty() || password.isEmpty()){
                     JOptionPane.showMessageDialog(mainPanel,ErrorType.converti_error_to_message(ErrorType.INPUT_NULL),"Error",JOptionPane.ERROR_MESSAGE);

@@ -18,10 +18,8 @@ public class Menu {
         this.ristorante = ristorante;
     }
 
-    public Menu(String nome,Ristorante ristorante,ArrayList<Prodotto> prodotti){
+    public Menu(String nome){
         this.nome = nome;
-        this.ristorante = ristorante;
-        this.prodotti = prodotti;
     }
 
     //________________________________________________________________________________________________________________________________________________

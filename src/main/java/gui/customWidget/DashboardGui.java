@@ -1,11 +1,14 @@
 package gui.customWidget;
 
+import controller.DipendenteController;
+import controller.RiderController;
+import controller.RistoranteController;
+import gui.MainGui;
 import gui.Autenticazione.LoginGui;
 import gui.Cliente.ClienteGui;
 import gui.Cliente.OrdiniClientiGui;
 import gui.Dipedente.DipedenteGui;
 import gui.Dipedente.OrdiniDipedenteGui;
-import gui.MainGui;
 import gui.Rider.OrdiniRiderGui;
 import gui.Rider.RiderGui;
 
@@ -50,30 +53,43 @@ public class DashboardGui extends JPanel {
        areaRiderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainGui.nascondi_dashboard_dipedenti();
                 if(mainGui.get_utente_controller().utente_is_rider() == false){
                     mainGui.get_utente_controller().load_dati_rider();
 
-                    if(mainGui.get_utente_controller().utente_is_rider() == false)
+                    if(mainGui.get_utente_controller().utente_is_rider() == false) {
                         mainGui.set_pagina(new RiderGui(mainGui));
+                        return;
+                    }
+                    else{
+                        mainGui.set_rider_controller(new RiderController());
+                    }
                 }
-                else mainGui.set_pagina(new OrdiniRiderGui(mainGui));
+                mainGui.nascondi_dashboard_dipedenti();
+                mainGui.set_pagina(new OrdiniRiderGui(mainGui));
             }
         });
 
         areaDipendentiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                mainGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(mainGui));
+
                 if(mainGui.get_utente_controller().utente_is_dipendente() == false){
                     mainGui.get_utente_controller().load_dati_dipedente();
 
-                    if(mainGui.get_utente_controller().utente_is_dipendente() == false)
+                    if(mainGui.get_utente_controller().utente_is_dipendente() == false) {
                         mainGui.set_pagina(new DipedenteGui(mainGui));
+                        return;
+                    }
+                    else{
+                        mainGui.set_dipendente_controller(new DipendenteController());
+                        mainGui.set_ristorante_controller(new RistoranteController(mainGui.get_dipendente_controller()));
+                    }
                 }
-                else {
-                    mainGui.get_dashboardDipedenteGui().aggiorna_ruolo_label(mainGui);
-                    mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
-                }
+
+                mainGui.mostra_dashboard_dipedenti(mainGui.get_dipendente_controller().get_dipendente().get_ristorante());
+                mainGui.get_dashboardDipedenteGui().aggiorna_ruolo_label(mainGui);
+                mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
             }
         });
 

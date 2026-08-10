@@ -1,5 +1,4 @@
 package gui;
-
 import controller.*;
 import gui.Autenticazione.SignInGui;
 import gui.customWidget.DashboardDipedenteGui;
@@ -59,10 +58,6 @@ public class MainGui {
     public void nascondi_dashboard_dipedenti(){
         if(dashboardDipedenteGui == null) return;
         dashboardDipedenteGui.setVisible(false);
-    }
-
-    public void print_controller(){
-        System.out.println(utente_controller + " " +  cliente_controller + " " + rider_controller + " " + dipendente_controller + " " + ristorante_controller);
     }
 
     public void distruggi_controller(){
@@ -151,8 +146,6 @@ public class MainGui {
 
         SignInGui signInGui = new SignInGui(mainGui);
         mainGui.set_pagina(signInGui);
-
-
 
     }
 }

@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.Cliente.MenuClienteGui">
   <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="126" height="400"/>
+      <xy x="20" y="20" width="250" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -12,7 +12,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="81315" binding="topPanelClienti" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="81315" binding="topPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints border-constraint="North"/>
             <properties>
@@ -20,24 +20,14 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="cf68b" class="javax.swing.JButton" binding="tornaIndietroButton">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <background color="-13881804"/>
-                  <foreground color="-262657"/>
-                  <text value="Torna indietro"/>
-                </properties>
-              </component>
               <component id="9af7c" class="javax.swing.JLabel" binding="infoMenuLabel">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <background color="-16448233"/>
                   <foreground color="-16448233"/>
-                  <text value="nome"/>
+                  <text value="nome Menu"/>
                 </properties>
               </component>
             </children>
@@ -45,7 +35,9 @@
           <scrollpane id="cb68d" binding="prodottiJSrollPane">
             <constraints border-constraint="Center"/>
             <properties/>
-            <border type="none"/>
+            <border type="line">
+              <color color="-3025959"/>
+            </border>
             <children>
               <component id="71d71" class="javax.swing.JList" binding="prodottiLista">
                 <constraints/>
@@ -57,6 +49,24 @@
               </component>
             </children>
           </scrollpane>
+        </children>
+      </grid>
+      <grid id="1bf88" binding="buttonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="South"/>
+        <properties>
+          <background color="-262657"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="1856b" class="javax.swing.JButton" binding="tornaIndietroButton">
+            <constraints/>
+            <properties>
+              <background color="-13881804"/>
+              <enabled value="true"/>
+              <foreground color="-262657"/>
+              <text value="torna indietro "/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>

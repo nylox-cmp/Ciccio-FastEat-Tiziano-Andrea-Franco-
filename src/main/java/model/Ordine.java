@@ -33,36 +33,13 @@ public class Ordine {
         this.ristorante = ristorante;
     }
 
-    public Ordine(String codice_ordine,double costo,StatoOrdine stato_ordine,String indirizzo,LocalDate data,Ristorante ristorante,ArrayList<RigaOrdine> righe_ordine){
+    public Ordine(String codice_ordine,double costo,StatoOrdine stato_ordine,String indirizzo,LocalDate data){
         this.codice_ordine = codice_ordine;
         this.costo = costo;
         this.stato_ordine = stato_ordine;
         this.indirizzo = indirizzo;
         this.data = data;
         this.ristorante = ristorante;
-        this.righe_ordine = righe_ordine;
-    }
-
-    public Ordine(String codice_ordine,double costo,StatoOrdine stato_ordine,String indirizzo,LocalDate data,Ristorante ristorante,ArrayList<RigaOrdine> righe_ordine,Rider rider){
-        this.codice_ordine = codice_ordine;
-        this.costo = costo;
-        this.stato_ordine = StatoOrdine.PREPARAZIONE;
-        this.indirizzo = indirizzo;
-        this.data = data;
-        this.ristorante = ristorante;
-        this.righe_ordine = righe_ordine;
-        this.rider = rider;
-    }
-
-    public Ordine(String codice_ordine,double costo,StatoOrdine stato_ordine,String indirizzo,LocalDate data,Ristorante ristorante,ArrayList<RigaOrdine> righe_ordine,ArrayList<Rider> rider_proposti){
-        this.codice_ordine = codice_ordine;
-        this.costo = costo;
-        this.stato_ordine = StatoOrdine.PREPARAZIONE;
-        this.indirizzo = indirizzo;
-        this.data = data;
-        this.ristorante = ristorante;
-        this.righe_ordine = righe_ordine;
-        this.rider_proposti = rider_proposti;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -119,15 +96,6 @@ public class Ordine {
         this.costo = totale;
         return totale;
     }
-
-    public void applica_sconto(int punti_fedelta) {
-        if(punti_fedelta <= MAX_PUNTI_FEDELTA_SCONTO){
-            this.costo = this.costo - ((this.costo * punti_fedelta) / 100);
-            return;
-        }
-        throw new BusinessError(ErrorType.INPUT_NULL);
-    }
-
 
     //________________________________________________________________________________________________________________________________________________
     // Get and Set

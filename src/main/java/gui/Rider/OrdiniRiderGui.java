@@ -1,8 +1,8 @@
 package gui.Rider;
 
+import gui.MainGui;
 import exception.BusinessError;
 import exception.ErrorType;
-import gui.MainGui;
 import gui.customWidget.ContenutoOrdineGui;
 import model.Ordine;
 import model.Rider;
@@ -29,13 +29,17 @@ public class OrdiniRiderGui extends JPanel{
     private DefaultListModel<Ordine> ordiniPropostiListModel = new DefaultListModel<Ordine>();
     private JList<Ordine> ordiniPropostiLista;
 
-    private JButton richiestaOrdineButton;
+    private JButton creaRichiestaOrdineButton;
     private JButton confermaConsegnaButton;
+    private JButton cancellaRichiestaOrdineButton;
+
+    private MainGui mainGui;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
     public OrdiniRiderGui(MainGui mainGui){
+        this.mainGui = mainGui;
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
@@ -47,6 +51,8 @@ public class OrdiniRiderGui extends JPanel{
 
         mainGui.get_dashboardGui().nascondi_area_OrdiniClienti();
 
+        aggiorna_OrdiniDaConsegnare();
+        aggiorna_OrdiniProposti();
 
         //________________________________________________________________________________________________________________________________________________
         // ListSelectionListener per poter visualizzare il cotenuto del OrdineProposto
@@ -62,7 +68,7 @@ public class OrdiniRiderGui extends JPanel{
         //________________________________________________________________________________________________________________________________________________
         // ActionListener che Gestiscono lo StatoOrdine
 
-        richiestaOrdineButton.addActionListener(new ActionListener() {
+        creaRichiestaOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Ordine ordine = ordiniPropostiLista.getSelectedValue();
@@ -72,8 +78,28 @@ public class OrdiniRiderGui extends JPanel{
                 }
 
                 try {
-                    mainGui.get_rider_controller().richiedi_approvazione_consegna(ordine);
-                    aggiorna_OrdiniProposti(mainGui.get_rider_controller().get_rider());
+                    mainGui.get_rider_controller().crea_richiesta_approvazione_consegna(ordine);
+                    aggiorna_OrdiniProposti();
+                }
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel, error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+        });
+
+        cancellaRichiestaOrdineButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ordine ordine = ordiniDaConsegnareLista.getSelectedValue();
+                if(ordine == null){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try{
+                    mainGui.get_rider_controller().cancella_richiesta_approvazione_consegna(ordine);
+                    aggiorna_OrdiniDaConsegnare();
                 }
                 catch (BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel, error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
@@ -91,7 +117,7 @@ public class OrdiniRiderGui extends JPanel{
                     return;
                 }
                 mainGui.get_rider_controller().conferma_consegna_ordine(ordine);
-                aggiorna_OrdiniDaConsegnare(mainGui.get_rider_controller().get_rider());
+                aggiorna_OrdiniDaConsegnare();
             }
         });
     }
@@ -99,22 +125,22 @@ public class OrdiniRiderGui extends JPanel{
     //________________________________________________________________________________________________________________________________________________
     // Gestione ListeOrdini
 
-    public void aggiorna_OrdiniProposti(Rider rider){
-        ArrayList<Ordine> ordini = rider.get_ordini();
+    public void aggiorna_OrdiniProposti(){
+        ordiniPropostiListModel.clear();
+        ArrayList<Ordine> ordini = mainGui.get_rider_controller().get_ordini_proposti();
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)
             ordiniPropostiListModel.addElement(ordine);
     }
 
-    public void aggiorna_OrdiniDaConsegnare(Rider rider){
-        ArrayList<Ordine> ordini = rider.get_ordini();
+    public void aggiorna_OrdiniDaConsegnare(){
+        ordiniDaConsegnareListModel.clear();
+        ArrayList<Ordine> ordini = mainGui.get_rider_controller().get_ordini_da_consegnare();
         if(ordini == null) return;
 
-        for(Ordine ordine : ordini) {
-            if(ordine.get_rider() == rider)
-                ordiniPropostiListModel.addElement(ordine);
-        }
+        for(Ordine ordine : ordini)
+                ordiniDaConsegnareListModel.addElement(ordine);
     }
 
 }

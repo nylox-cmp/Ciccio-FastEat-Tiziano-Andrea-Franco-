@@ -10,6 +10,8 @@ public class RigaOrdine {
 
     private Ordine ordine;
 
+    public static final int QUANTITA_CREAZIONE_RIGA_ORDINE = 0;
+
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
@@ -62,7 +64,7 @@ public class RigaOrdine {
             calcola_prezzo_totale();
             return;
         }
-        throw new BusinessError(ErrorType.INPUT_NULL);
+        throw new BusinessError(ErrorType.INPUT_NUMERICO_NEGATIVO);
     }
 
     //________________________________________________________________________________________________________________________________________________

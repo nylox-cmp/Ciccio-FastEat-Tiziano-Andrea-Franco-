@@ -8,8 +8,8 @@ public class Prodotto {
     private double prezzo_unitario;
     private Menu menu;
 
-    //____________________________________________________________________________________
-    //Costruttore
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
 
     public Prodotto(String nome, double prezzo_unitario,Menu menu) {
         this.nome = nome;
@@ -17,7 +17,13 @@ public class Prodotto {
         this.menu = menu;
     }
 
-    //____________________________________________________________________________________
+    public Prodotto(String nome, double prezzo_unitario) {
+        this.nome = nome;
+        set_prezzo_unitario(prezzo_unitario);
+        this.menu = menu;
+    }
+
+    //________________________________________________________________________________________________________________________________________________
     // Override
 
     @Override
@@ -35,9 +41,8 @@ public class Prodotto {
         return (prodotto.get_menu().equals(menu) && prodotto.get_nome().equals(this.get_nome()));
     }
 
-
-    //____________________________________________________________________________________
-    //
+    //________________________________________________________________________________________________________________________________________________
+    // Prodotto
 
     public void modifica_prodotto(String nome,double prezzo_unitario){
         if(menu.esiste_prodotto_stesso_nome(nome))
@@ -48,7 +53,7 @@ public class Prodotto {
     }
 
     //____________________________________________________________________________________
-    //Get and Set
+    // Metodi Get and Set
 
     public String get_nome(){
         return nome;

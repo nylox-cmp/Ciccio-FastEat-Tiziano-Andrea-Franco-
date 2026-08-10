@@ -24,7 +24,7 @@ public class Ristorante {
         this.indirizzo = indirizzo;
     }
 
-    public Ristorante(String codice_ristorante, String nome, String indirizzo, ArrayList<Dipendente> dipendenti, ArrayList<Menu> menu){
+    public Ristorante(String codice_ristorante, String nome, String indirizzo){
         this.codice_ristorante = codice_ristorante;
         this.nome = nome;
         this.indirizzo = indirizzo;
@@ -53,7 +53,7 @@ public class Ristorante {
     //________________________________________________________________________________________________________________________________________________
     // Generazione Codice
 
-    protected static String genera_codice_univoco(){
+    public static String genera_codice_univoco(){
         return UUID.randomUUID().toString().replace("-", "").substring(0, 12);
     }
 

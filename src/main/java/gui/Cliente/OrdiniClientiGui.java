@@ -1,8 +1,8 @@
 package gui.Cliente;
 
+import gui.MainGui;
 import exception.BusinessError;
 import exception.ErrorType;
-import gui.MainGui;
 import gui.customWidget.ContenutoOrdineGui;
 import model.Cliente;
 import model.Ordine;
@@ -39,10 +39,13 @@ public class OrdiniClientiGui extends JPanel {
     private JTextField puntiFedeltaTextField;
     private JScrollPane ordiniJScrollPane;
 
+    private MainGui mainGui;
+
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
     public OrdiniClientiGui(MainGui mainGui){
+        this.mainGui = mainGui;
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
@@ -50,6 +53,8 @@ public class OrdiniClientiGui extends JPanel {
         ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniLista);
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
         quantitaLabel.setText(String.valueOf(mainGui.get_cliente_controller().get_cliente().get_punti_fedelta()));
+
+        aggiorna_ordiniLista();
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListner Gestione Stato Ordine
@@ -63,7 +68,7 @@ public class OrdiniClientiGui extends JPanel {
                     return;
                 }
                 mainGui.get_cliente_controller().conferma_consegna_ordine(ordine);
-                aggiorna_ordiniLista(mainGui.get_cliente_controller().get_cliente());
+                aggiorna_ordiniLista();
             }
         });
 
@@ -76,7 +81,7 @@ public class OrdiniClientiGui extends JPanel {
                     return;
                 }
                 mainGui.get_cliente_controller().annulla_ordine(ordine);
-                aggiorna_ordiniLista(mainGui.get_cliente_controller().get_cliente());
+                aggiorna_ordiniLista();
             }
         });
 
@@ -89,7 +94,7 @@ public class OrdiniClientiGui extends JPanel {
                     return;
                 }
                 mainGui.get_cliente_controller().conferma_creazione_ordine(ordine);
-                aggiorna_ordiniLista(mainGui.get_cliente_controller().get_cliente());
+                aggiorna_ordiniLista();
             }
         });
 
@@ -114,7 +119,7 @@ public class OrdiniClientiGui extends JPanel {
                 int punti_fedelta  = Integer.parseInt(puntiFedeltaTextField.getText());
                 try {
                     mainGui.get_cliente_controller().applica_sconto(ordine, punti_fedelta);
-                    aggiorna_ordiniLista(mainGui.get_cliente_controller().get_cliente());
+                    aggiorna_ordiniLista();
 
                 }
                 catch (BusinessError error){
@@ -145,10 +150,9 @@ public class OrdiniClientiGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Gestione OrdiniLista
 
-    public void aggiorna_ordiniLista(Cliente cliente){
+    public void aggiorna_ordiniLista(){
         ordiniListModel.clear();
-        ArrayList<Ordine> ordini = cliente.get_ordini();
-        if(ordini == null) return;
+        ArrayList<Ordine> ordini = mainGui.get_cliente_controller().get_ordini();
 
         for(Ordine ordine : ordini)
             ordiniListModel.addElement(ordine);

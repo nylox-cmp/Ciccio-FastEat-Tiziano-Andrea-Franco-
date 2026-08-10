@@ -7,7 +7,7 @@ import model.Ruolo;
 
 import java.util.ArrayList;
 
-public interface DipedenteDAO {
+public interface DipendenteDAO {
 
     public void licenziati(String nickname);
 
@@ -20,7 +20,7 @@ public interface DipedenteDAO {
     public void modifica_ruolo_dipedente(String nickaname_dipedente, Ruolo ruolo);
     public void licenzia_dipedente(String nickname_dipedente);
 
-    public ArrayList<Dipendente> get_subordinati(String codice_ristorante);
+    public ArrayList<Dipendente> get_subordinati(String nickname);
     public ArrayList<Ordine> get_ordini_ristorante(String codice_ristorante);
-    public ArrayList<Rider> get_rider_proposti_consegna(String codice_ristorante);
+    public ArrayList<Rider> get_rider_proposti_consegna(String codice_ordine);
 }

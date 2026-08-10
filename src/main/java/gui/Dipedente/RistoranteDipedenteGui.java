@@ -1,12 +1,13 @@
 package gui.Dipedente;
 
+import gui.MainGui;
 import controller.RistoranteController;
 import exception.BusinessError;
 import exception.ErrorType;
 import gui.Cliente.ClienteGui;
-import gui.MainGui;
 import model.Menu;
 import model.Ristorante;
+import model.Ruolo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,13 +17,17 @@ import java.util.ArrayList;
 
 public class RistoranteDipedenteGui extends JPanel {
     private JPanel mainPanel;
-    private JPanel infoPanel;
-    private JPanel modificaRistorantePanel;
+    private JPanel settingPanel;
+    private JPanel menuListPanel;
+    private JPanel inoPanel;
+    private JPanel menuButtonPanel;
     private JPanel menuPanel;
+    private JPanel modificaRistorantePanel;
 
-    private JLabel infoRistoranteLabel;
-    private JLabel nomeRistoranteLabel;
     private JLabel indirizzoLabel;
+    private JLabel infoRistoranteLabel;
+    private JLabel nomeMenuLabel;
+    private JLabel nomeRistoranteLabel;
 
     private JTextField nomeMenuTextField;
     private JTextField indirizzoTextField;
@@ -32,25 +37,31 @@ public class RistoranteDipedenteGui extends JPanel {
     private JButton creaMenuButton;
     private JButton cancellaMenuButton;
     private JButton cancellaRistoranteButton;
+    private JButton apriButton;
+    private JButton tornaIndietroButton;
 
+    private JScrollPane menuJScrollPane;
     private JList<Menu> menuLista;
     private DefaultListModel<Menu> menuListModel = new DefaultListModel<Menu>();
-    private JLabel nomeMenuLabel;
-    private JScrollPane menuJScrollPane;
+
+    private MainGui mainGui;
+    private Ristorante ristorante;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
     public RistoranteDipedenteGui(MainGui mainGui, Ristorante ristorante){
+        this.mainGui = mainGui;
+        this.ristorante = ristorante;
+
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
         mainGui.set_ristorante_controller(new RistoranteController(mainGui.get_dipendente_controller()));
-        mainGui.get_dashboardDipedenteGui().aggiungi_pulsanti_ristorante(mainGui,ristorante,menuLista);
-        infoRistoranteLabel.setText(ristorante.toString() + " codice ristorante: "  + ristorante.get_codice_ristorante());
+        aggiorna_infoLabel();
 
         menuLista.setModel(menuListModel);
-        aggiorna_lista_menu(ristorante);
+        aggiorna_lista_menu();
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Ristorante
@@ -109,7 +120,7 @@ public class RistoranteDipedenteGui extends JPanel {
 
                try {
                    mainGui.get_ristorante_controller().crea_menu(nome);
-                   aggiorna_lista_menu(ristorante);
+                   aggiorna_lista_menu();
                }
                catch (BusinessError error) {
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Errore", JOptionPane.ERROR_MESSAGE);
@@ -131,7 +142,7 @@ public class RistoranteDipedenteGui extends JPanel {
 
                    try {
                        mainGui.get_ristorante_controller().cancella_menu(menu);
-                       aggiorna_lista_menu(ristorante);
+                       aggiorna_lista_menu();
 
                    }
                    catch(BusinessError error) {
@@ -140,18 +151,50 @@ public class RistoranteDipedenteGui extends JPanel {
                 }
             }
         });
+
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener di navigazione
+
+        apriButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Menu menu = menuLista.getSelectedValue();
+                if (menu == null) {
+                    JOptionPane.showMessageDialog(mainGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                mainGui.set_pagina(new MenuDipedentiGui(mainGui, ristorante, menu));
+            }
+        });
+
+        tornaIndietroButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
+            }
+        });
     }
 
     //________________________________________________________________________________________________________________________________________________
+    // Metodo Aggiornamento Lista
 
-    public void aggiorna_lista_menu(Ristorante ristorante){
+    public void aggiorna_lista_menu(){
         menuListModel.clear();
-        ArrayList<Menu> menus = ristorante.get_menu();
-        if(ristorante != null && menus!= null){
-            for(Menu menu : menus){
+        ArrayList<Menu> menu_list = mainGui.get_ristorante_controller().get_menu();
+        if(menu_list == null) return;
+
+        for(Menu menu : menu_list)
                 menuListModel.addElement(menu);
-            }
-        }
     }
 
+    //________________________________________________________________________________________________________________________________________________
+    // Metdoto Aggiornmaneto infoLabel
+
+    public void aggiorna_infoLabel(){
+        if(mainGui.get_dipendente_controller().get_dipendente().get_ruolo().ordinal() >= Ruolo.GESTIONALE.ordinal()) {
+            infoRistoranteLabel.setText(ristorante.toString() + " codice ristorante: " + ristorante.get_codice_ristorante());
+            return;
+        }
+        infoRistoranteLabel.setText(ristorante.toString());
+    }
 }

@@ -41,25 +41,8 @@
               <model>
                 <item value="Ordini"/>
                 <item value="Ristorante"/>
-                <item value="Dipedenti"/>
+                <item value="Dipendenti"/>
               </model>
-            </properties>
-          </component>
-          <component id="e4a39" class="javax.swing.JButton" binding="tornaIndietroButton" default-binding="true">
-            <constraints/>
-            <properties>
-              <background color="-2894377"/>
-              <foreground color="-16448233"/>
-              <text value="torna indietro"/>
-            </properties>
-          </component>
-          <component id="3a14c" class="javax.swing.JButton" binding="apriButton" default-binding="true">
-            <constraints/>
-            <properties>
-              <background color="-2500135"/>
-              <enabled value="true"/>
-              <foreground color="-16448233"/>
-              <text value="apri"/>
             </properties>
           </component>
           <component id="85111" class="javax.swing.JButton" binding="licenziatiButton">

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Rider extends Utente{
     private String mezzo_trasporto;
-    private ArrayList<Ordine> ordini = new ArrayList<Ordine>();
+    private ArrayList<Ordine> ordini_da_consegnare = new ArrayList<Ordine>();
 
     public static int MAX_ORDINI_PER_RIDER = 3;
 
@@ -32,11 +32,15 @@ public class Rider extends Utente{
     //________________________________________________________________________________________________________________________________________________
     // Operazioni su Ordine
 
-    public void richiedi_approvazione_consegna(Ordine ordine){
-        if(ordine.get_stato_ordine().ordinal() < StatoOrdine.IN_CONSEGNA.ordinal()){
-            if(ordini.size() >= MAX_ORDINI_PER_RIDER) throw new BusinessError(ErrorType.RIDER_SUPERA_MAX_NUM_ORDINI);
+    public void crea_richiesta_approvazione_consegna(Ordine ordine){
+        if(ordine.get_stato_ordine() == StatoOrdine.PREPARAZIONE){
             ordine.get_rider_proposti().add(this);
         }
+    }
+
+    public void cancella_richiesta_approvazione_consegna(Ordine ordine){
+        if(ordini_da_consegnare.contains(ordine))
+            ordini_da_consegnare.remove(ordine);
     }
 
     public void conferma_consegna_ordine(Ordine ordine){
@@ -54,7 +58,7 @@ public class Rider extends Utente{
     public String get_mezzo_trasporto() { return mezzo_trasporto; }
     public void set_mezzo_trasporto(String mezzo_trasporto) { this.mezzo_trasporto = mezzo_trasporto; }
 
-    public ArrayList<Ordine> get_ordini() { return ordini; }
-    public void set_ordini(ArrayList<Ordine> ordini) { this.ordini = ordini; }
+    public ArrayList<Ordine> get_ordini_da_consegnare() { return ordini_da_consegnare; }
+    public void set_ordini_da_consegnare(ArrayList<Ordine> ordini_da_consegnare) { this.ordini_da_consegnare = ordini_da_consegnare; }
 
 }

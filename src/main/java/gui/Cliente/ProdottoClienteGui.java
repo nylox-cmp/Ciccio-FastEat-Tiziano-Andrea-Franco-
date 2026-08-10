@@ -1,9 +1,10 @@
 package gui.Cliente;
 
+import gui.MainGui;
 import exception.BusinessError;
 import exception.ErrorType;
-import gui.MainGui;
-import model.Ordine;
+import model.*;
+import model.Menu;
 import model.Prodotto;
 import model.RigaOrdine;
 import model.Ristorante;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 public class ProdottoClienteGui extends JPanel {
     private JPanel mainPanel;
     private JPanel bottomPanel;
-    private JPanel topPanelClienti;
     private JPanel ordinmeButtonPanel;
     private JPanel clientiButtonPanel;
     private JPanel quantitaButtonPanel;
@@ -31,24 +31,32 @@ public class ProdottoClienteGui extends JPanel {
 
 
     private JLabel quantitaProdottoLabel;
-    private JLabel infoPrdottoClienteLabel;
     private JLabel indirizzoLabel;
 
     private JTextField indirizzoTextField;
     private DefaultComboBoxModel<Ordine> ordineComboBoxModel = new DefaultComboBoxModel<Ordine>();
     private JComboBox<Ordine> ordiniComboBox;
 
+    private MainGui mainGui;
+    private Ristorante ristorante;
+    private Menu menu;
+    private Prodotto prodotto;
+
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public ProdottoClienteGui(MainGui mainGui, Ristorante ristorante, Menu menu, Prodotto prodotto){
+    public ProdottoClienteGui(MainGui mainGui, Ristorante ristorante, model.Menu menu, Prodotto prodotto){
+        this.mainGui = mainGui;
+        this.ristorante = ristorante;
+        this.menu = menu;
+        this.prodotto = prodotto;
+
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
         RigaOrdine riga_ordine = new RigaOrdine(prodotto,1);
-        aggiorna_combo_box_ordini(mainGui.get_cliente_controller().get_cliente().get_ordini());
+        aggiorna_combo_box_ordini();
 
-        indirizzoLabel.setText(prodotto.toString());
 
         tornaIndietroClienteButton.addActionListener(new ActionListener() {
             @Override
@@ -63,7 +71,8 @@ public class ProdottoClienteGui extends JPanel {
         aumentaQuantitaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainGui.get_cliente_controller().aumenta_quantita_prodotto(riga_ordine);
+                Ordine ordine = (Ordine) ordineComboBoxModel.getSelectedItem();
+                mainGui.get_cliente_controller().aumenta_quantita_prodotto(ordine,riga_ordine);
                 quantitaProdottoLabel.setText(String.valueOf(riga_ordine.get_quantita()));
             }
         });
@@ -71,8 +80,9 @@ public class ProdottoClienteGui extends JPanel {
         diminuisciQuantitaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Ordine ordine = (Ordine) ordineComboBoxModel.getSelectedItem();
                 try {
-                    mainGui.get_cliente_controller().diminuisci_quantita_prodotto(riga_ordine);
+                    mainGui.get_cliente_controller().diminuisci_quantita_prodotto(ordine,riga_ordine);
                 }
                 catch(BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
@@ -89,7 +99,7 @@ public class ProdottoClienteGui extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainGui.get_cliente_controller().crea_ordine(indirizzoTextField.getText(),ristorante);
-                aggiorna_combo_box_ordini(mainGui.get_cliente_controller().get_cliente().get_ordini());
+                aggiorna_combo_box_ordini();
             }
         });
 
@@ -129,8 +139,9 @@ public class ProdottoClienteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
 
 
-    public void aggiorna_combo_box_ordini(ArrayList<Ordine> ordini){
+    public void aggiorna_combo_box_ordini(){
         ordineComboBoxModel.removeAllElements();
+        ArrayList<Ordine> ordini = mainGui.get_cliente_controller().get_ordini();
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)

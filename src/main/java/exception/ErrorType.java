@@ -11,11 +11,16 @@ public enum ErrorType {
     INPUT_NUMERICO_NEGATIVO,
     INPUT_NON_UNIVOCO,
     ELEMENTO_SELEZIONATO_NULL,
+    CODICE_RISTORANTE_INESISTENTE,
     PERMESSI_NON_SUFFICIENTI,
     ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO,
     ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO,
+    PUNTI_FEDLELTA_NON_SUFFICIENTI,
     PUNTI_FEDLELTA_SUPERANO_MAX,
-    RIDER_SUPERA_MAX_NUM_ORDINI;
+    RIDER_SUPERA_MAX_NUM_ORDINI,
+    ORDINE_VUOTO,
+    CANCELLAZIONE_RISTORANTE_ANNULATA_ORDINI_IN_CONSEGNA,
+    CANCELLAZIONE_ACCOUNT_ANNULATA_ORDINI_IN_CONSEGNA;
 
     public static String converti_error_to_message(ErrorType error) {
         String messaggio = "";
@@ -42,6 +47,9 @@ public enum ErrorType {
             case ELEMENTO_SELEZIONATO_NULL:
                 messaggio = "Nessun elemento selezionato. Seleziona una voce dalla lista per procedere con l'operazione.";
                 break;
+            case CODICE_RISTORANTE_INESISTENTE:
+                messaggio = "Il codice inserito è inesistente.Riprova con un'altro codice";
+                break;
             case PERMESSI_NON_SUFFICIENTI:
                 messaggio = "Operazione non consentita. Il tuo account non dispone dei permessi necessari per eseguire questa azione.";
                 break;
@@ -51,11 +59,22 @@ public enum ErrorType {
             case ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO:
                 messaggio = "Questo prodotto è già presente all'interno dell'ordine corrente.";
                 break;
+            case PUNTI_FEDLELTA_NON_SUFFICIENTI:
+                messaggio = "Impossibile applicare lo sconto richiesto. Il non hia abbastanza punti fedeltà";
+                break;
             case PUNTI_FEDLELTA_SUPERANO_MAX:
                 messaggio = "Impossibile applicare lo sconto richiesto. Il limite massimo di punti fedeltà utilizzabili per singolo ordine è di " + Ordine.MAX_PUNTI_FEDELTA_SCONTO + " punti.";
                 break;
+            case ORDINE_VUOTO:
+                messaggio = "Impossibile inviare l'ordine al ristorante un'ordine deve  almeno contenere al suo interno un prodotto";
             case RIDER_SUPERA_MAX_NUM_ORDINI:
                 messaggio = "Impossibile assegnare l'ordine. Un rider può gestire contemporaneamente un massimo di " + Rider.MAX_ORDINI_PER_RIDER + " consegne.";
+                break;
+            case CANCELLAZIONE_RISTORANTE_ANNULATA_ORDINI_IN_CONSEGNA:
+                messaggio = "Impossibile cancellare il Ristorante con degli ordini in consegna";
+                break;
+            case CANCELLAZIONE_ACCOUNT_ANNULATA_ORDINI_IN_CONSEGNA:
+                messaggio = "Impossibile cancellare l'account con degli ordini in consegna come rider o come cliente";
                 break;
             }
             return messaggio;

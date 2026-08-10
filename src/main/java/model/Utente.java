@@ -1,6 +1,6 @@
 package model;
 
-import controller.SessionManager;
+
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -12,7 +12,7 @@ public class Utente {
     private String nome;
     private String cognome;
 
-    private ArrayList<Utente> profili_utente = new ArrayList<>();
+    private ArrayList<Utente> ruoli_utente = new ArrayList<>();
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -47,24 +47,35 @@ public class Utente {
     // Gestione Profili Utente
 
     public <Tipo extends Utente> Optional<Tipo> get_ruolo_utente(Class<Tipo> tipo_ruolo_cercato){
-        for(Utente ruolo : profili_utente){
+        for(Utente ruolo : ruoli_utente){
             if(tipo_ruolo_cercato.isInstance(ruolo))
                 return Optional.of(tipo_ruolo_cercato.cast(ruolo));
         }
         return Optional.empty();
     }
 
+    public void aggiungi_ruolo_utente(Utente ruolo){
+        get_profili_utente().add(ruolo);
+    }
+
     //________________________________________________________________________________________________________________________________________________
     // Operazione di Aggiunta Ruolo Utente
 
-    // Operazione per diventare Dipendente (piattaforma)
-    public void crea_ristorante(String nome,String indirizzo){
-       Ristorante ristorante = new Ristorante(nome,indirizzo);
-       this.profili_utente.add(new Dipendente(this,Ruolo.MANAGER,ristorante));
+    public void registra_cliente(){
+        aggiungi_ruolo_utente(new Cliente(this,Cliente.PUNTI_FEDELTA_REGISTRAZIONE));
     }
 
-    public void sign_in_come_rider(String mezzo_trasporto){
-        SessionManager.instance.get_utente().get_profili_utente().add(new Rider(SessionManager.instance.get_utente(), mezzo_trasporto));
+    public void crea_ristorante(String nome,String indirizzo){
+       Ristorante ristorante = new Ristorante(nome,indirizzo);
+       aggiungi_ruolo_utente(new Dipendente(this,Dipendente.RUOLO_DIPEDENTE_CREATORE_RISTORANTE,ristorante));
+    }
+
+    public void registra_dipedente_ristorante(Dipendente dipendente){
+        aggiungi_ruolo_utente(new Dipendente(this,dipendente.get_ruolo()));
+    }
+
+    public void registra_rider(String mezzo_trasporto){
+        aggiungi_ruolo_utente(new Rider(this, mezzo_trasporto));
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -85,6 +96,6 @@ public class Utente {
     public String get_cognome(){ return cognome; }
     public void set_cognome(String cognome){ this.cognome = cognome; }
 
-    public ArrayList<Utente> get_profili_utente(){return profili_utente;}
-    public void set_profili_utente(ArrayList<Utente> profili_utente){this.profili_utente = profili_utente;}
+    public ArrayList<Utente> get_profili_utente(){return ruoli_utente;}
+    public void set_profili_utente(ArrayList<Utente> profili_utente){this.ruoli_utente = profili_utente;}
 }

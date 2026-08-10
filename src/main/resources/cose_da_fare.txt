@@ -1,20 +1,16 @@
 
 
-1.Aggiornare le liste delle Gui non appena entri all'interno di quella gui, non appena finiti i controller è gestite tutte le sue operazini
-2.separare la logica dei metodi utente_is presenti all'interno della classe UtenteController in due metodi separati
-uno che controlli che la classe model sia presente all'interno del controller , è una che verifichi l'utente abbia quel profilo_utente/ruolo
-tramite un operazione all'interno del database, utilizzare questi metodi per rindirizzare l'utente alla registrazione del ruolo nel caso di rider/dipedente
-mentre per il caso di dipedente se l'utente non è mai stato cliente potremmo creare subito il ruolo utente senza registrazione
-3.implementare la modifica del richiesta_assunzione in cui non appena inviata la richiesta e a quel codice_ristorante l'utente diventera dipedente automatimaticamente per quel ristorante
-4.implementare il database
-5.Fare un triggger che impedisca la cancellazzione del ristorante se ci sono ordini in sospeso non in stato CONSEGNATO O ANNULATO
 6.Mostrare il codice ristorante solo a gli utenti con ruolo >= Gestionale
 7.commentare il codice tramite javadoc e fare un controllo grammaticale extra + controllare se abbia separato il codice bene in chunk
 8.finire il class diagramm
 9.finire la documentazione
-10.verificare come debba aggiungere i punti fedelta all'utente? tramite trigger per semplificarmi la vita?
-11.aggiungere i metodi di salvataggio dei dati prima della chisura dell'app
-
+16.Verifica che tutti i metodi rispettino l'integrita dei dati
+22.controllare i dati.sql
+23.Sistemerare la dashboard
+24.Separare i metodi di navigazione dalla dashboard dipendenti
+25.Sistemare Contenuto Prodotto
 
 //Dipedente
 //Sistemare ErrorType
+//modificare nome registra_cliente in registrazione_cliente
+//fare un metodo per prendere il ristorante per il metodo get del dipedente UtenteImpDAO

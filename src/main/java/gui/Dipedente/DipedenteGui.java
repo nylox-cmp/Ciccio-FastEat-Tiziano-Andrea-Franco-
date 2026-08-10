@@ -1,9 +1,9 @@
 package gui.Dipedente;
 
+import gui.MainGui;
 import controller.DipendenteController;
 import exception.BusinessError;
 import exception.ErrorType;
-import gui.MainGui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,6 +68,7 @@ public class DipedenteGui extends JPanel {
 
                 try {
                     mainGui.get_utente_controller().registrazione_dipedente_ristorante(codice_ristorante);
+                    mainGui.set_pagina(new OrdiniDipedenteGui(mainGui));
                 }
                 catch (BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel, error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);

@@ -1,5 +1,8 @@
 package database;
 
+import exception.BusinessError;
+import exception.ErrorType;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,7 +11,7 @@ public class ConnessioneDatabase {
     private static ConnessioneDatabase instance;
     public Connection connection = null;
     private String nome = "postgres";
-    private String password = "nylox";
+    private String password = "root";
     private String url = "jdbc:postgresql://localhost:5432/FoodDelivery";
     private String driver = "org.postgresql.Driver";
 
@@ -18,12 +21,11 @@ public class ConnessioneDatabase {
             connection = DriverManager.getConnection(url, nome, password);
 
         } catch (ClassNotFoundException ex) {
-            System.out.println("Database Connection Creation Failed : " + ex.getMessage());
             ex.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
         }
 
     }
-
 
     public static ConnessioneDatabase getInstance() throws SQLException {
         if (instance == null) {
@@ -32,5 +34,17 @@ public class ConnessioneDatabase {
             instance = new ConnessioneDatabase();
         }
         return instance;
+    }
+
+    public Connection getConnection(){
+        try {
+            if(connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(url, nome, password);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
+        return connection;
     }
 }

@@ -5,26 +5,47 @@
       <xy x="20" y="20" width="537" height="400"/>
     </constraints>
     <properties>
-      <background color="-2500135"/>
+      <background color="-262657"/>
     </properties>
-    <border type="none"/>
+    <border type="etched" title="Ristoranti">
+      <font style="1"/>
+      <title-color color="-13881804"/>
+    </border>
     <children>
-      <scrollpane id="c53e3" binding="ristorantiJScrollPane">
+      <scrollpane id="40382" binding="ristorantiJScrollPane">
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="648f1" class="javax.swing.JList" binding="ristorantiLista">
+          <component id="1cd62" class="javax.swing.JList" binding="ristorantiLista">
             <constraints/>
             <properties>
               <background color="-2894377"/>
-              <foreground color="-16448233"/>
+              <foreground color="-13881804"/>
               <model/>
               <selectionMode value="0"/>
             </properties>
           </component>
         </children>
       </scrollpane>
+      <grid id="7d2f9" binding="buttonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="South"/>
+        <properties>
+          <background color="-262657"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="2768a" class="javax.swing.JButton" binding="apriButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <background color="-13881804"/>
+              <enabled value="true"/>
+              <foreground color="-262657"/>
+              <text value="Apri ristorante"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
     </children>
   </grid>
 </form>

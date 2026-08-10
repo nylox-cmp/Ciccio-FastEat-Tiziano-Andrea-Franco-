@@ -1,10 +1,16 @@
 package model;
 
+import exception.BusinessError;
+import exception.ErrorType;
+
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 
 public class Cliente extends Utente{
     private int punti_fedelta;
     private ArrayList<Ordine> ordini;
+
+    public static final int PUNTI_FEDELTA_REGISTRAZIONE = 0;
 
 
     //________________________________________________________________________________________________________________________________________________
@@ -12,7 +18,7 @@ public class Cliente extends Utente{
 
     public Cliente(Utente utente) {
         super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
-        this.punti_fedelta = 0;
+        this.punti_fedelta = PUNTI_FEDELTA_REGISTRAZIONE;
     }
 
     public Cliente(Utente utente,int punti_fedelta) {
@@ -23,10 +29,11 @@ public class Cliente extends Utente{
     //________________________________________________________________________________________________________________________________________________
     //Gestione Ordini
 
-    public void crea_ordine(String indirizzo,Ristorante ristorante){
+    public Ordine crea_ordine(String indirizzo,Ristorante ristorante){
         Ordine ordine = new Ordine(indirizzo,ristorante);
         ordine.set_indirizzo(indirizzo);
         this.ordini.add(ordine);
+        return ordine;
     }
 
     public void annulla_ordine(Ordine ordine){
@@ -40,21 +47,21 @@ public class Cliente extends Utente{
         if (ordine.get_stato_ordine() == StatoOrdine.IN_CONSEGNA)
             ordine.set_stato_ordine(StatoOrdine.CONFERMA_CONSEGNA_CLIENTE);
 
-        if(ordine.get_stato_ordine() == StatoOrdine.CONFERMA_CONSEGNA_RIDER) {
+        if(ordine.get_stato_ordine() == StatoOrdine.CONFERMA_CONSEGNA_RIDER)
             ordine.set_stato_ordine(StatoOrdine.CONSEGNATO);
-            aggiungi_punti_fedelta(ordine);
-        }
     }
 
     public void conferma_creazione_ordine(Ordine ordine){
         if(get_ordini().contains(ordine) && ordine.get_stato_ordine() == StatoOrdine.BOZZA)
             ordine.set_stato_ordine(StatoOrdine.PREPARAZIONE);
-
     }
 
-    public void aggiungi_punti_fedelta(Ordine ordine){
-        if (ordine.get_costo() >= Ordine.MIN_COSTO_ORDINE_PER_PUNTI)
-            punti_fedelta += 1;
+    public void applica_sconto(int punti_fedelta,Ordine ordine) {
+        if (this.punti_fedelta < punti_fedelta)  throw new BusinessError(ErrorType.PUNTI_FEDLELTA_NON_SUFFICIENTI);
+        if (punti_fedelta > Ordine.MAX_PUNTI_FEDELTA_SCONTO) throw new BusinessError(ErrorType.PUNTI_FEDLELTA_SUPERANO_MAX);
+
+        ordine.set_costo(ordine.get_costo() - ((ordine.get_costo() * punti_fedelta) / 100));
+        this.punti_fedelta -= punti_fedelta;
     }
 
     //________________________________________________________________________________________________________________________________________________

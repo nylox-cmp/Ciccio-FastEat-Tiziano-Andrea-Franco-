@@ -12,6 +12,9 @@ public class Dipendente extends Utente{
     private Ruolo ruolo;
     private Ristorante ristorante;
 
+    public static final Ruolo RUOLO_DIPEDENTE_CREATORE_RISTORANTE = Ruolo.MANAGER;
+    public static final Ruolo RUOLO_DIPEDENTE_RISTORANTE = Ruolo.BASE;
+
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
@@ -19,6 +22,11 @@ public class Dipendente extends Utente{
         super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
         this.ruolo = ruolo;
         this.ristorante = ristorante;
+    }
+
+    public Dipendente(Utente utente,Ruolo ruolo){
+        super(utente.get_email(), utente.get_password(), utente.get_nickname(), utente.get_nome(), utente.get_cognome());
+        this.ruolo = ruolo;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -41,15 +49,17 @@ public class Dipendente extends Utente{
     }
 
     //________________________________________________________________________________________________________________________________________________
-    //Gestione Dipendenti
+    //Gestione Permessi
 
     public boolean puo_eseguire(Ruolo ruolo_richiesto){
         return (ruolo.ordinal() <= ruolo_richiesto.ordinal());
     }
 
+    //________________________________________________________________________________________________________________________________________________
+    //Gestione Dipedenti
 
     public void licenzia_dipendente(Dipendente dipendente){
-        if(ruolo.ordinal() <= Ruolo.GESTIONALE.ordinal())
+        if(puo_eseguire(Ruolo.GESTIONALE))
             throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         if((dipendente.equals(dipendente) == false) && (puo_eseguire(Ruolo.GESTIONALE))){
@@ -59,7 +69,7 @@ public class Dipendente extends Utente{
     }
 
     public void modifica_ruolo_dipendente(Dipendente dipendente, Ruolo ruolo){
-        if(ruolo.ordinal() < Ruolo.MANAGER.ordinal())
+        if(puo_eseguire(Ruolo.MANAGER))
             throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         if((dipendente.equals(dipendente) == false) && (puo_eseguire(Ruolo.MANAGER))){
@@ -72,14 +82,13 @@ public class Dipendente extends Utente{
     //Gestione Ristorante
 
     public void cancella_ristorante(Ristorante ristorante){
-        if(ruolo != Ruolo.MANAGER && this.ristorante != ristorante)
+        if(puo_eseguire(Ruolo.MANAGER))
             throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         for(int i=0;i<subordinati.size();i += 1){
             licenzia_dipendente(subordinati.get(i));
         }
         ristorante = null;
-
     }
 
     //________________________________________________________________________________________________________________________________________________

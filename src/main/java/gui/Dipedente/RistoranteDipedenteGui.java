@@ -178,7 +178,7 @@ public class RistoranteDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Metodo Aggiornamento Lista
 
-    public void aggiorna_lista_menu(){
+    private void aggiorna_lista_menu(){
         menuListModel.clear();
         ArrayList<Menu> menu_list = canvasGui.main.get_ristorante_controller().get_menu();
         if(menu_list == null) return;
@@ -190,7 +190,7 @@ public class RistoranteDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Metdoto Aggiornmaneto infoLabel
 
-    public void aggiorna_infoLabel(){
+    private void aggiorna_infoLabel(){
         if(canvasGui.main.get_dipendente_controller().get_dipendente().get_ruolo().ordinal() >= Ruolo.GESTIONALE.ordinal()) {
             infoRistoranteLabel.setText(ristorante.toString() + " codice ristorante: " + ristorante.get_codice_ristorante());
             return;

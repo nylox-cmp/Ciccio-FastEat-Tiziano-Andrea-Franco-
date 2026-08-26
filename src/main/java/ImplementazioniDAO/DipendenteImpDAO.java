@@ -205,7 +205,7 @@ public class DipendenteImpDAO implements DipendenteDAO {
     @Override
     public ArrayList<Ordine> get_ordini_ristorante(String codice_ristorante){
         ArrayList<Ordine> ordini = new ArrayList<Ordine>();
-        String sql = "SELECT * FROM Ordine WHERE codice_ristorante = ? AND stato in (1,2,3,4,5,6,7) ORDER BY stato ASC;";
+        String sql = "SELECT * FROM Ordine o JOIN Ristorante r on o.codice_ristorante = r.codice_ristorante WHERE o.codice_ristorante = ? AND stato in (1,2,3,4,5,6,7) ORDER BY stato ASC;";
 
         try(PreparedStatement query = connection.prepareStatement(sql)){
             query.setString(1,codice_ristorante);

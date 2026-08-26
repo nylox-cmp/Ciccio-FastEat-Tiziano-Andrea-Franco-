@@ -118,7 +118,6 @@ public class RistoranteController {
         ristorante.set_menu(menu);
 
         for(int i=0;i<menuMap.ids.size();i++){
-            System.out.println(menuMap.entitys + " " + menuMap.ids.get(i));
             id_menu.put(menuMap.entitys.get(i),menuMap.ids.get(i));
             menuMap.entitys.get(i).set_ristorante(ristorante);
         }

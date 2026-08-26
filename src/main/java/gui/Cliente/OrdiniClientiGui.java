@@ -46,6 +46,8 @@ public class OrdiniClientiGui extends JPanel {
 
     public OrdiniClientiGui(CanvasGui canvasGui){
         this.canvasGui = canvasGui;
+        this.main = canvasGui.main;
+
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
@@ -150,7 +152,7 @@ public class OrdiniClientiGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Gestione OrdiniLista
 
-    public void aggiorna_ordiniLista(){
+    private void aggiorna_ordiniLista(){
         ordiniListModel.clear();
         ArrayList<Ordine> ordini = main.get_cliente_controller().get_ordini();
 

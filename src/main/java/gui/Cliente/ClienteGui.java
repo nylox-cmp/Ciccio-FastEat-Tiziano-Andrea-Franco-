@@ -17,9 +17,14 @@ public class ClienteGui extends JPanel {
 
     private DefaultListModel<Ristorante> ristoranteListModel = new DefaultListModel<Ristorante>();
     private JList<Ristorante> ristorantiLista;
-    private JScrollPane ristorantiJScrollPane;
-    private JPanel buttonPanel;
     private JButton apriButton;
+    private JPanel ristorantiPanel;
+    private JPanel buttonPanel;
+    private JScrollPane ristorantiJScrollPane;
+    private JPanel ricercaPanel;
+    private JTextField searchTextField;
+    private JButton searchButton;
+    private JLabel nomeIndrizzoLabel;
 
     private CanvasGui canvasGui;
 
@@ -40,16 +45,22 @@ public class ClienteGui extends JPanel {
         canvasGui.main.set_cliente_controller(new ClienteController());
         canvasGui.set_dashboardGui(new DashboardGui(canvasGui));
 
-
         canvasGui.mostra_dashboard();
         canvasGui.get_dashboardGui().mostra_area_ordiniClienti();
         canvasGui.get_dashboardGui().aggiorna_nickname_label(canvasGui);
 
         ristorantiLista.setModel(ristoranteListModel);
-        aggiorna_lista_ristoranti();
+        aggiorna_lista_ristoranti(get_search_text());
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener di navigazione
+
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aggiorna_lista_ristoranti(get_search_text());
+            }
+        });
 
         apriButton.addActionListener(new ActionListener() {
             @Override
@@ -67,13 +78,19 @@ public class ClienteGui extends JPanel {
 
     //________________________________________________________________________________________________________________________________________________
 
-    public void aggiorna_lista_ristoranti(){
+    private void aggiorna_lista_ristoranti(String search){
         ristoranteListModel.clear();
-        ArrayList<Ristorante> ristoranti = canvasGui.main.get_cliente_controller().get_ristoranti();
+        ArrayList<Ristorante> ristoranti = canvasGui.main.get_cliente_controller().get_ristoranti(search);
         if(ristoranti == null) return;
 
         for(Ristorante ristorante : ristoranti)
             ristoranteListModel.addElement(ristorante);
+    }
+
+    private String get_search_text(){
+        String search = searchTextField.getText();
+        if(search.isEmpty()) search = "";
+        return search;
     }
 }
 

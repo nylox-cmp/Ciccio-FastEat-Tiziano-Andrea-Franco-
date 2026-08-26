@@ -58,6 +58,7 @@ public class DipedenteGui extends JPanel {
                 main.get_utente_controller().crea_ristorante(nome,indirizzo);
                 main.set_dipendente_controller(new DipendenteController());
                 canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui));
+                canvasGui.mostra_dashboard_dipedenti(main.get_dipendente_controller().get_dipendente().get_ristorante());
                 canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
             }
         });

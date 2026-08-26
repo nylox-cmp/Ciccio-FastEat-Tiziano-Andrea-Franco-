@@ -43,7 +43,10 @@ CREATE TABLE Rider(
 CREATE TABLE Ristorante(
     codice_ristorante varchar(12) PRIMARY KEY,
     nome varchar(64) NOT NULL,
-    indirizzo varchar(128) NOT NULL
+    indirizzo varchar(128) NOT NULL,
+    nickname_manager varchar(32) NOT NULL,
+
+    FOREIGN KEY (nickname_manager) REFERENCES Dipendente(nickname) ON DELETE CASCADE
 );
 
 CREATE TABLE Menu(

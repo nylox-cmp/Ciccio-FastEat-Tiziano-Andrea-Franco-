@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Cliente extends Utente{
     private int punti_fedelta;
-    private ArrayList<Ordine> ordini;
+    private ArrayList<Ordine> ordini = new ArrayList<Ordine>();
 
     public static final int PUNTI_FEDELTA_REGISTRAZIONE = 0;
 

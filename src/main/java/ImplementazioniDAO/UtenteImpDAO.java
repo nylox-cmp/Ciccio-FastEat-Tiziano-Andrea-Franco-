@@ -143,7 +143,6 @@ public class UtenteImpDAO implements UtenteDAO {
         }
     }
 
-
     @Override
     public void crea_ristorante(String nome,String indirizzo,String codice_ristorante){
         String sql = " INSERT INTO Ristorante(codice_ristorante,nome,indirizzo) VALUES(?,?,?);";

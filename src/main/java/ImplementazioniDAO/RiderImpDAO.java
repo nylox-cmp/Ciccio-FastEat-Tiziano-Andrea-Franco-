@@ -56,7 +56,6 @@ public class RiderImpDAO implements RiderDAO{
         //operazione che deve cancellare la richiesta del rider
     }
 
-
     //________________________________________________________________________________________________________________________________________________
     // Metodi Get
 

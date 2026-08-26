@@ -13,8 +13,7 @@ import java.util.ArrayList;
 
 public class RistoranteClienteGui extends JPanel {
     private JPanel mainPanel;
-    private JPanel BottomPanel;
-    private JPanel topPanelClienti;
+    private JPanel MenuPanel;
     private JPanel buttonPanel;
 
     private JButton tornaIndietroButton;
@@ -22,8 +21,9 @@ public class RistoranteClienteGui extends JPanel {
 
     private JLabel infoRistoranteClienteLabel;
     private DefaultListModel<Menu> menuListModel = new DefaultListModel<Menu>();
-    private JList<Menu> menuLista;
+    private JList<Menu> menuJlist;
     private JScrollPane menuScrollPane;
+    private JPanel topPanelClienti;
 
     private CanvasGui canvasGui;
     private Ristorante ristorante;
@@ -38,6 +38,7 @@ public class RistoranteClienteGui extends JPanel {
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
+        menuJlist.setModel(menuListModel);
         infoRistoranteClienteLabel.setText(ristorante.toString());
         aggiorna_menu_lista();
 
@@ -54,7 +55,7 @@ public class RistoranteClienteGui extends JPanel {
         apriButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Menu menu = menuLista.getSelectedValue();
+                Menu menu = menuJlist.getSelectedValue();
                 if(menu == null){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;

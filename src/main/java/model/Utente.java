@@ -62,7 +62,7 @@ public class Utente {
     // Operazione di Aggiunta Ruolo Utente
 
     public void registra_cliente(){
-        aggiungi_ruolo_utente(new Cliente(this,Cliente.PUNTI_FEDELTA_REGISTRAZIONE));
+        aggiungi_ruolo_utente(new Cliente(this));
     }
 
     public void crea_ristorante(String nome,String indirizzo){

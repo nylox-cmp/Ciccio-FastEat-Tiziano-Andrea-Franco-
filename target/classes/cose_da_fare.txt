@@ -4,9 +4,5 @@
 8.finire il class diagramm
 9.finire la documentazione
 16.Verifica che tutti i metodi rispettino l'integrita dei dati
-23.Sistemerare la dashboard
-
-//Dipedente
-//Sistemare ErrorType
-//modificare nome registra_cliente in registrazione_cliente
-//fare un metodo per prendere il ristorante per il metodo get del dipedente UtenteImpDAO
+17.modiicare i metodi get_ordini aggiungendo i ristoranti
+18.aggiungere un trigger per la cancellazione del ristorante una volta cancellato con un successo l'utente

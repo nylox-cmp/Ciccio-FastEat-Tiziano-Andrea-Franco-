@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class ClienteController {
+public class ClienteController{
     private Cliente cliente;
     private ClienteImpDAO clienteDB = new ClienteImpDAO();
 
@@ -41,7 +41,7 @@ public class ClienteController {
         Ordine ordine = cliente.crea_ordine(indirizzo, ristorante);
         gestisci_collissioni_codice_ordine(ordine);
 
-        clienteDB.crea_ordine(ordine.get_codice_ordine(),ordine.get_costo(),ordine.get_stato_ordine(),ordine.get_indirizzo(),ordine.get_data());
+        clienteDB.crea_ordine(ordine.get_codice_ordine(), ordine.get_costo(),ordine.get_stato_ordine(),ordine.get_indirizzo(),ordine.get_data(),ristorante.get_codice_ristorante());
     }
 
     public void annulla_ordine(Ordine ordine) {
@@ -100,7 +100,7 @@ public class ClienteController {
         return ordini;
     }
 
-    public ArrayList<RigaOrdine>  get_righeOrdine(Ordine ordine) {
+    public ArrayList<RigaOrdine> get_righeOrdine(Ordine ordine) {
         EntityWitchId<RigaOrdine, ArrayList<String>> righeOrdineMap = clienteDB.get_contenuto_ordine(ordine.get_codice_ordine());
 
         righe_ordine = righeOrdineMap.entitys;
@@ -111,8 +111,8 @@ public class ClienteController {
         return righe_ordine;
     }
 
-    public ArrayList<Ristorante> get_ristoranti(){
-        return clienteDB.get_ristoranti();
+    public ArrayList<Ristorante> get_ristoranti(String search_nome_o_indirizzo){
+        return clienteDB.get_ristoranti(cliente.get_nickname(),search_nome_o_indirizzo);
     }
 
     public ArrayList<Menu> get_menu(Ristorante ristorante){
@@ -122,6 +122,7 @@ public class ClienteController {
         for(int i=0;i<menuMap.entitys.size();i++){
             id_menu.put(menuMap.entitys.get(i),menuMap.ids.get(i));
         }
+
         return menuMap.entitys;
     }
 

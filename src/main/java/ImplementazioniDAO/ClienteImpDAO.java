@@ -2,6 +2,7 @@ package ImplementazioniDAO;
 
 import ImplementazioniDAO.Utils.EntityWitchId;
 import ImplementazioniDAO.Utils.ResultSetMapper;
+import controller.Utils.SessionManager;
 import dao.ClienteDAO;
 import database.ConnessioneDatabase;
 import exception.BusinessError;
@@ -55,13 +56,38 @@ public class ClienteImpDAO implements ClienteDAO {
     }
 
     @Override
-    public void crea_ordine(String codice_ordine, double costo, StatoOrdine stato_ordine, String indirizzo, LocalDate date){
-        //Operazione che deve creare l'ordine, se il tipo LocalDate da problemi convertilo in un tipo compatibile per il DBMS di postgres nel fare query.set
+    public void crea_ordine(String codice_ordine, double costo, StatoOrdine stato_ordine, String indirizzo, LocalDate date, String codice_ristorante){
+        String sql = "INSERT INTO Ordine(codice_ordine,costo,stato,indirizzo,data_ordine,nickname_cliente,codice_ristorante) VALUES(?,?,?,?,?,?,?);";
+
+        try(PreparedStatement query = connection.prepareStatement(sql)){
+            query.setString(1,codice_ordine);
+            query.setDouble(2,costo);
+            query.setInt(3,stato_ordine.ordinal());
+            query.setString(4,indirizzo);
+            query.setDate(5, java.sql.Date.valueOf(date));
+            query.setString(6,SessionManager.instance.get_utente().get_nickname());
+            query.setString(7,codice_ristorante);
+            query.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
     }
 
     @Override
     public void annulla_ordine(String codice_ordine){
-        //operazione di UPDATE dello Ordine allo StatoOrdine.ANNULATO
+        String sql = "UPDATE Ordine SET stato = ? WHERE codice_ordine = ?;";
+
+        try(PreparedStatement query = connection.prepareStatement(sql)){
+            query.setInt(1,StatoOrdine.ANNULLATO.ordinal());
+            query.setString(2,codice_ordine);
+            query.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
     }
 
     @Override
@@ -82,12 +108,32 @@ public class ClienteImpDAO implements ClienteDAO {
 
     @Override
     public void conferma_consegna_ordine(String codice_ordine,StatoOrdine stato){
-        //operazione che deve aggiornare lo stato del ordine
+        String sql = "UPDATE Ordine SET stato = ? WHERE codice_ordine = ?;";
+
+        try(PreparedStatement query = connection.prepareStatement(sql)){
+            query.setInt(1,stato.ordinal());
+            query.setString(2,codice_ordine);
+            query.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
     }
 
     @Override
     public void applica_sconto(String codice_ordine,double costo){
-        //operazione che deve aggiornare il costo dell'ordine
+        String sql = "UPDATE Ordine SET costo = ? WHERE codice_ordine = ?;";
+
+        try(PreparedStatement query = connection.prepareStatement(sql)){
+            query.setDouble(1,costo);
+            query.setString(2,codice_ordine);
+            query.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -95,57 +141,94 @@ public class ClienteImpDAO implements ClienteDAO {
 
     @Override
     public void aggiungi_riga(String codice_ordine,int id_prodotto,int quantita){
-        //operazione in cui dovrai inserire una nuova RigaOrdine
+        String sql = "INSERT INTO RigaOrdine(id_prodotto,codice_ordine,quantita) VALUES(?,?,?);";
+
+        try(PreparedStatement query = connection.prepareStatement(sql)){
+            query.setInt(1,id_prodotto);
+            query.setString(2,codice_ordine);
+            query.setInt(3,quantita);
+            query.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
     }
 
     @Override
     public void rimuovi_riga(String codice_ordine,int id_prodotto){
-        //operazione in cui dovrai cancellare la RigaOrdine
+        String sql = "DELETE FROM RigaOrdine WHERE codice_ordine = ? AND id_prodotto = ?;";
+
+        try(PreparedStatement query = connection.prepareStatement(sql)){
+            query.setString(1,codice_ordine);
+            query.setInt(2,id_prodotto);
+            query.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
     }
 
     @Override
     public void aggiorna_quantita_rigaOrdine(String codice_ordine,int id_prodotto,int quantita){
-        //operazione in cui dovrai fare un update della quantita della RigaOrdine
+        String sql = "UPDATE RigaOrdine SET quantita = ? WHERE codice_ordine = ? AND id_prodotto = ?;";
+
+        try(PreparedStatement query = connection.prepareStatement(sql)){
+            query.setInt(1,quantita);
+            query.setString(2,codice_ordine);
+            query.setInt(3,id_prodotto);
+            query.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
     }
-
-
 
     //________________________________________________________________________________________________________________________________________________
     // Metodi Get
 
     @Override
-    public ArrayList<Ristorante> get_ristoranti(){
-        //operazione in cui dovrai prendere una lista di ristoranti in cui esiste almeno un prodotto
-        //per la conversione del ResultSet in una Classe utilizzare il metodo presente all'interno della Classe ResultSetMapper cosi anche per l'ordine
-        return null;
+    public ArrayList<Ristorante> get_ristoranti(String nickname,String search_nome_o_indirizzo){
+        ArrayList<Ristorante> ristoranti = new ArrayList<Ristorante>();
+        String sql = "SELECT DISTINCT r.* FROM Ristorante r JOIN Menu m ON r.codice_ristorante = m.codice_ristorante JOIN Prodotto p ON p.id_menu = m.id_menu " +
+                     "WHERE r.codice_ristorante NOT IN (SELECT codice_ristorante FROM Dipendente WHERE nickname = ?) AND  (r.nome LIKE ? OR r.indirizzo LIKE ?);";
+
+        search_nome_o_indirizzo = "%" + search_nome_o_indirizzo + "%";
+
+        try(PreparedStatement query = connection.prepareStatement(sql)){
+            query.setString(1,nickname);
+            query.setString(2,search_nome_o_indirizzo);
+            query.setString(3,search_nome_o_indirizzo);
+
+            try(ResultSet result = query.executeQuery()){
+                while(result.next()){
+                    ristoranti.add(ResultSetMapper.converti_result_into_ristorante(result));
+                }
+            }
+            return ristoranti;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
     }
 
     @Override
     public ArrayList<Ordine> get_ordini_cliente(String nickname){
-        //operazione in cui dovrai prendere tutti gli ordini del Cliente (in tutti gli StatiOrdine) e ordinarli in ordine crescente
-        //per la conversione del ResultSet in una Classe utilizzare il metodo presente all'interno della Classe ResultSetMapper cosi anche per l'ordine
-        return null;
-    }
-
-    public EntityWitchId<RigaOrdine,ArrayList<String>> get_contenuto_ordine(String codice_ordine){
-        EntityWitchId<RigaOrdine,ArrayList<String>> rigaOrdineMap = new EntityWitchId<RigaOrdine,ArrayList<String>>();
-
-        String sql = "SELECT * FROM RigaOrdine ro JOIN Prodotto p ON ro.id_prodotto = p.id_prodotto WHERE ro.codice_ordine = ?;";
+        ArrayList<Ordine> ordini = new ArrayList<Ordine>();
+        String sql = "SELECT * FROM Ordine o JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante WHERE nickname_cliente = ? ORDER BY stato ASC;";
 
         try(PreparedStatement query = connection.prepareStatement(sql)){
-            query.setString(1,codice_ordine);
+            query.setString(1,nickname);
 
             try(ResultSet result = query.executeQuery()){
                 while(result.next()){
-                    ArrayList<String> chiave_composta = new ArrayList<String>();
-                    rigaOrdineMap.entitys.add(ResultSetMapper.converti_result_into_rigaOrdine(result));
-
-                    chiave_composta.add(result.getString("codice_ordine"));
-                    chiave_composta.add(String.valueOf(result.getString("id_prodotto")));
-                    rigaOrdineMap.ids.add(chiave_composta);
+                    ordini.add(ResultSetMapper.converti_reuslt_into_ordine(result));
                 }
             }
-            return rigaOrdineMap;
+            return ordini;
         }
         catch(SQLException e){
             e.printStackTrace();

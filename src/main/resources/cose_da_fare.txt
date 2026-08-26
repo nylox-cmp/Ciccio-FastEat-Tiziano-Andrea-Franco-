@@ -4,3 +4,5 @@
 8.finire il class diagramm
 9.finire la documentazione
 16.Verifica che tutti i metodi rispettino l'integrita dei dati
+17.modiicare i metodi get_ordini aggiungendo i ristoranti
+18.aggiungere un trigger per la cancellazione del ristorante una volta cancellato con un successo l'utente

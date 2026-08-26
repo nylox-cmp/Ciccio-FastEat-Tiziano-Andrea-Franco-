@@ -33,7 +33,7 @@ public class Ordine {
         this.ristorante = ristorante;
     }
 
-    public Ordine(String codice_ordine,double costo,StatoOrdine stato_ordine,String indirizzo,LocalDate data){
+    public Ordine(String codice_ordine,double costo,StatoOrdine stato_ordine,String indirizzo,LocalDate data,Ristorante ristorante){
         this.codice_ordine = codice_ordine;
         this.costo = costo;
         this.stato_ordine = stato_ordine;
@@ -47,7 +47,7 @@ public class Ordine {
 
     @Override
     public String toString(){
-        String string = get_codice_ordine() + " " + get_costo() + " " + get_data() + " " + get_indirizzo() + " " + get_stato_ordine() + " " + get_ristorante().get_nome();
+        String string = get_codice_ordine() + " " + get_costo() + " " + get_data() + " " + get_indirizzo() + " " + get_stato_ordine() + " " + ristorante.toString();
         if(rider != null)
             string = string + get_rider().get_nickname();
         return string;

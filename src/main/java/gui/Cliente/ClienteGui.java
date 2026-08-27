@@ -3,6 +3,7 @@ package gui.Cliente;
 import controller.ClienteController;
 import exception.ErrorType;
 import gui.CanvasGui;
+import gui.customWidget.DashboardClienteGui;
 import gui.customWidget.DashboardGui;
 import model.Ristorante;
 
@@ -27,27 +28,31 @@ public class ClienteGui extends JPanel {
     private JLabel nomeIndrizzoLabel;
 
     private CanvasGui canvasGui;
+    private main.Main main;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
     public ClienteGui(CanvasGui canvasGui){
         this.canvasGui = canvasGui;
+        this.main = canvasGui.main;
+
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        if(canvasGui.main.get_utente_controller().utente_is_cliente() == false){
-            canvasGui.main.get_utente_controller().load_dati_cliente();
-            if(canvasGui.main.get_utente_controller().utente_is_cliente() == false)
-                canvasGui.main.get_utente_controller().registra_cliente();
+        if(main.get_utente_controller().utente_is_cliente() == false){
+            main.get_utente_controller().load_dati_cliente();
+            if(main.get_utente_controller().utente_is_cliente() == false)
+                main.get_utente_controller().registra_cliente();
         }
 
-        canvasGui.main.set_cliente_controller(new ClienteController());
-        canvasGui.set_dashboardGui(new DashboardGui(canvasGui));
+        main.set_cliente_controller(new ClienteController());
 
-        canvasGui.mostra_dashboard();
-        canvasGui.get_dashboardGui().mostra_area_ordiniClienti();
+        canvasGui.set_dashboardGui(new DashboardGui(canvasGui));
+        canvasGui.set_dashboardClienteGui(new DashboardClienteGui(canvasGui));
+
         canvasGui.get_dashboardGui().aggiorna_nickname_label(canvasGui);
+        canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label(main.get_cliente_controller().get_cliente().get_punti_fedelta());
 
         ristorantiLista.setModel(ristoranteListModel);
         aggiorna_lista_ristoranti(get_search_text());
@@ -80,7 +85,7 @@ public class ClienteGui extends JPanel {
 
     private void aggiorna_lista_ristoranti(String search){
         ristoranteListModel.clear();
-        ArrayList<Ristorante> ristoranti = canvasGui.main.get_cliente_controller().get_ristoranti(search);
+        ArrayList<Ristorante> ristoranti = main.get_cliente_controller().get_ristoranti(search);
         if(ristoranti == null) return;
 
         for(Ristorante ristorante : ristoranti)

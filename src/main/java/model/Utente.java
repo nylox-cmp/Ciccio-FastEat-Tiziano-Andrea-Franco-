@@ -67,7 +67,8 @@ public class Utente {
 
     public void crea_ristorante(String nome,String indirizzo){
        Ristorante ristorante = new Ristorante(nome,indirizzo);
-       aggiungi_ruolo_utente(new Dipendente(this,Dipendente.RUOLO_DIPEDENTE_CREATORE_RISTORANTE,ristorante));
+       Dipendente dipendente = new Dipendente(this,Dipendente.RUOLO_DIPEDENTE_CREATORE_RISTORANTE,ristorante);
+       aggiungi_ruolo_utente(dipendente);
     }
 
     public void registra_dipedente_ristorante(Dipendente dipendente){

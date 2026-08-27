@@ -45,14 +45,6 @@
               <text value="Area Dipendenti"/>
             </properties>
           </component>
-          <component id="c1c17" class="javax.swing.JButton" binding="areaOrdiniButton" default-binding="true">
-            <constraints/>
-            <properties>
-              <background color="-2500135"/>
-              <foreground color="-16448233"/>
-              <text value="Ordini Cliente"/>
-            </properties>
-          </component>
           <component id="80bfb" class="javax.swing.JButton" binding="logoutButton" default-binding="true">
             <constraints/>
             <properties>

@@ -57,7 +57,6 @@ public class RistoranteDipedenteGui extends JPanel {
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        canvasGui.main.set_ristorante_controller(new RistoranteController(canvasGui.main.get_dipendente_controller()));
         aggiorna_infoLabel();
 
         menuLista.setModel(menuListModel);
@@ -94,7 +93,7 @@ public class RistoranteDipedenteGui extends JPanel {
 
                     try {
                         canvasGui.main.get_ristorante_controller().cancella_ristorante();
-                        canvasGui.nascondi_dashboard_dipedenti();
+                        canvasGui.nascondi_dashbaord(canvasGui.get_dashboardDipedenteGui());
                         canvasGui.set_pagina(new ClienteGui(canvasGui));
                     }
                     catch (BusinessError error) {

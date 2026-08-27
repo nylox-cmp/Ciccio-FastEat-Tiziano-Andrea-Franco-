@@ -73,7 +73,7 @@ public class Ordine {
         return false;
     }
 
-    public RigaOrdine aggiungi_riga(Prodotto prodotto, int quantita,Ordine ordine) {
+    public void aggiungi_riga(Prodotto prodotto, int quantita,Ordine ordine) {
         if(stato_ordine != StatoOrdine.BOZZA) throw new BusinessError(ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO);
         if(contiene_prodotto(prodotto)) throw new BusinessError(ErrorType.ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO);
 
@@ -81,13 +81,12 @@ public class Ordine {
 
         this.righe_ordine.add(riga_ordine);
         calcola_costo_ordine();
-
-        return riga_ordine;
     }
 
-    public void rimuovi_riga(RigaOrdine riga_ordine) {
+    public void rimuovi_riga(Prodotto prodotto) {
         if(stato_ordine != StatoOrdine.BOZZA) throw new BusinessError(ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO);
 
+        RigaOrdine riga_ordine = get_riga_ordine_from_prodotto(prodotto);
         righe_ordine.remove(riga_ordine);
         calcola_costo_ordine();
     }
@@ -99,6 +98,14 @@ public class Ordine {
         }
         this.costo = totale;
         return totale;
+    }
+
+    public RigaOrdine get_riga_ordine_from_prodotto(Prodotto prodotto){
+        for(RigaOrdine riga_ordine : righe_ordine){
+            if(riga_ordine.get_prodotto().equals(prodotto))
+                return riga_ordine;
+        }
+        return null;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -150,7 +157,7 @@ public class Ordine {
     public ArrayList<RigaOrdine> get_rige_ordine() {
         return righe_ordine;
     }
-    public void set_rige_ordine(ArrayList<RigaOrdine> rige_ordine) {
+    public void set_righe_ordine(ArrayList<RigaOrdine> rige_ordine) {
         this.righe_ordine = rige_ordine;
         calcola_costo_ordine();
     }

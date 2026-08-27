@@ -32,6 +32,7 @@ public class Menu {
         if(o == null || o.getClass() != this.getClass()) return false;
 
         Menu menu = (Menu) o;
+        if(menu.get_ristorante() == null || this.get_ristorante() == null) return (menu.get_nome().equals(this.nome));
         return (menu.get_ristorante().equals(this.get_ristorante()) && menu.get_nome().equals(this.get_nome()));
     }
 

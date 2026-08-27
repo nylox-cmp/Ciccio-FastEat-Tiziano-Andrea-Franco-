@@ -12,6 +12,7 @@ public enum ErrorType {
     INPUT_NON_UNIVOCO,
     ELEMENTO_SELEZIONATO_NULL,
     PRODOTTO_NON_PRESENTE_ORDINE,
+    PRODOTTO_PRESENTE_ORDINE,
     CODICE_RISTORANTE_INESISTENTE,
     PERMESSI_NON_SUFFICIENTI,
     ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO,
@@ -50,6 +51,9 @@ public enum ErrorType {
                 break;
             case PRODOTTO_NON_PRESENTE_ORDINE:
                 messaggio = "Prodotto non presente nell'ordine. Prova add aggiungerlo all'orinde";
+                break;
+            case PRODOTTO_PRESENTE_ORDINE:
+                messaggio = "Non puoi inserire un prodotto già presente all'interno dell'ordine";
                 break;
             case CODICE_RISTORANTE_INESISTENTE:
                 messaggio = "Il codice inserito è inesistente.Riprova con un'altro codice";

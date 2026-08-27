@@ -5,6 +5,7 @@ import exception.BusinessError;
 import exception.ErrorType;
 import gui.Cliente.ClienteGui;
 import gui.Dipedente.*;
+import model.RigaOrdine;
 import model.Ristorante;
 import model.Ruolo;
 
@@ -28,9 +29,11 @@ public class DashboardDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public DashboardDipedenteGui(CanvasGui canvasGui) {
+    public DashboardDipedenteGui(CanvasGui canvasGui, Ristorante ristorante) {
         setLayout(new BorderLayout());
         add(mainPanel, BorderLayout.CENTER);
+
+        this.ristorante = ristorante;
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Selettore Gui
@@ -64,7 +67,7 @@ public class DashboardDipedenteGui extends JPanel {
                 if(scelta == JOptionPane.YES_OPTION) {
                     try {
                         canvasGui.main.get_dipendente_controller().licenziati();
-                        canvasGui.nascondi_dashboard_dipedenti();
+                        canvasGui.nascondi_dashbaord(canvasGui.get_dashboardDipedenteGui());
                         canvasGui.set_pagina(new ClienteGui(canvasGui));
                     }
                     catch(BusinessError error){
@@ -83,9 +86,4 @@ public class DashboardDipedenteGui extends JPanel {
         infoDipendente.setText(Ruolo.converti_ruolo_to_string(canvasGui.main.get_dipendente_controller().get_dipendente().get_ruolo()));
     }
 
-
-    //________________________________________________________________________________________________________________________________________________
-    // Metodi Set
-
-    public void set_ristorante(Ristorante ristorante){this.ristorante = ristorante;}
 }

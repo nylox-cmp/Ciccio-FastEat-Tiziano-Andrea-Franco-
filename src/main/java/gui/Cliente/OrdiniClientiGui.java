@@ -5,7 +5,6 @@ import exception.BusinessError;
 import exception.ErrorType;
 import gui.customWidget.ContenutoOrdineGui;
 import model.Ordine;
-import model.RigaOrdine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,17 +20,17 @@ public class OrdiniClientiGui extends JPanel {
     private JPanel contenutoOrdinePanel;
     private JPanel consegnaPanel;
     private JPanel puntiFedeltaPanel;
-    private JPanel ContenutoOrdinePanel;
+    private JPanel bottomContenutoOrdinePanel;
 
     private JButton applicaScontoButton;
     private JButton annulaOrdineButton;
     private JButton confermaConsegnaButton;
     private JButton rimuoviPrdottoOrdineButton;
-    private JButton spedisciOrdineRistorante;
+    private JButton confermaCreazioneOrdineButton;
 
 
     private DefaultListModel<Ordine> ordiniListModel = new DefaultListModel<Ordine>();
-    private JList<Ordine> ordiniLista;
+    private JList<Ordine> ordiniJList;
 
     private JLabel puntiFedeltaLabel;
     private JLabel quantitaLabel;
@@ -51,8 +50,8 @@ public class OrdiniClientiGui extends JPanel {
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        ordiniLista.setModel(ordiniListModel);
-        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniLista,canvasGui);
+        ordiniJList.setModel(ordiniListModel);
+        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniJList,canvasGui);
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
         quantitaLabel.setText(String.valueOf(main.get_cliente_controller().get_cliente().get_punti_fedelta()));
 
@@ -64,7 +63,7 @@ public class OrdiniClientiGui extends JPanel {
         confermaConsegnaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Ordine ordine = ordiniLista.getSelectedValue();
+                Ordine ordine = ordiniJList.getSelectedValue();
                 if(ordine == null){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -77,7 +76,7 @@ public class OrdiniClientiGui extends JPanel {
         annulaOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Ordine ordine = ordiniLista.getSelectedValue();
+                Ordine ordine = ordiniJList.getSelectedValue();
                 if(ordine == null){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -87,10 +86,10 @@ public class OrdiniClientiGui extends JPanel {
             }
         });
 
-        spedisciOrdineRistorante.addActionListener(new ActionListener() {
+        confermaCreazioneOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Ordine ordine = ordiniLista.getSelectedValue();
+                Ordine ordine = ordiniJList.getSelectedValue();
                 if(ordine == null){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -106,7 +105,7 @@ public class OrdiniClientiGui extends JPanel {
         applicaScontoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            Ordine ordine = ordiniLista.getSelectedValue();
+            Ordine ordine = ordiniJList.getSelectedValue();
 
             if(ordine == null){
                 JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
@@ -134,19 +133,6 @@ public class OrdiniClientiGui extends JPanel {
             }
         });
 
-        //________________________________________________________________________________________________________________________________________________
-        // ActionListener Gestione ContenutoOrdine
-
-        rimuoviPrdottoOrdineButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Ordine ordine = ordiniLista.getSelectedValue();
-                RigaOrdine riga_ordine = contenutoOrdine.get_contenutoOrdineLista().getSelectedValue();
-                if(ordine == null || riga_ordine == null) return;
-                main.get_cliente_controller().rimuovi_riga(ordine,riga_ordine);
-                contenutoOrdine.aggiorna_lista(ordine);
-            }
-        });
     }
 
     //________________________________________________________________________________________________________________________________________________

@@ -3,6 +3,8 @@ package model;
 import exception.BusinessError;
 import exception.ErrorType;
 
+import java.util.Objects;
+
 public class Prodotto {
     private String nome;
     private double prezzo_unitario;
@@ -20,7 +22,6 @@ public class Prodotto {
     public Prodotto(String nome, double prezzo_unitario) {
         this.nome = nome;
         set_prezzo_unitario(prezzo_unitario);
-        this.menu = menu;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -33,13 +34,22 @@ public class Prodotto {
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o == this) return true;
-        if(o == null || o.getClass() != this.getClass()) return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Prodotto)) return false;
+        Prodotto that = (Prodotto) o;
 
-        Prodotto prodotto = (Prodotto) o;
-        return (prodotto.get_menu().equals(menu) && prodotto.get_nome().equals(this.get_nome()));
+        if (this.menu == null || that.menu == null) return false;
+        return Objects.equals(this.nome, that.nome) && Objects.equals(this.menu.get_ristorante(), that.menu.get_ristorante());
     }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome);
+    }
+
+
 
     //________________________________________________________________________________________________________________________________________________
     // Prodotto

@@ -43,10 +43,7 @@ CREATE TABLE Rider(
 CREATE TABLE Ristorante(
     codice_ristorante varchar(12) PRIMARY KEY,
     nome varchar(64) NOT NULL,
-    indirizzo varchar(128) NOT NULL,
-    nickname_manager varchar(32) NOT NULL,
-
-    FOREIGN KEY (nickname_manager) REFERENCES Dipendente(nickname) ON DELETE CASCADE
+    indirizzo varchar(128) NOT NULL
 );
 
 CREATE TABLE Menu(
@@ -93,7 +90,7 @@ CREATE TABLE Ordine(
     codice_ordine varchar(12) PRIMARY KEY,
     costo DECIMAL(10,2) NOT NULL,
     stato int NOT NULL,
-    indirizzo varchar(128) NOT NULL,
+    indirizzo_consegna varchar(128) NOT NULL,
     data_ordine DATE NOT NULL, 
     nickname_cliente varchar(32) NOT NULL,
     codice_ristorante varchar(12) NOT NULL,
@@ -115,7 +112,7 @@ CREATE TABLE RigaOrdine(
 CREATE TABLE RiderPropostiConsegna(
     nickname_rider varchar(32) NOT NULL,
     codice_ordine varchar(12) NOT NULL,
-    ordine_preso_a_carico boolean NOT NULL DEFAULT (ordine_preso_a_carico = false),
+    ordine_preso_a_carico boolean NOT NULL DEFAULT false,
 	
     PRIMARY KEY(nickname_rider, codice_ordine),
 	FOREIGN KEY (nickname_rider) REFERENCES Rider(nickname) ON DELETE CASCADE,

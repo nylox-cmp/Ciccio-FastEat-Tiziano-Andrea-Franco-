@@ -25,7 +25,6 @@ public class DashboardGui extends JPanel {
     private JButton areaClientiButton;
     private JButton areaRiderButton;
     private JButton areaDipendentiButton;
-    private JButton areaOrdiniButton;
     private JButton logoutButton;
     private JButton cancellaAccountButton;
 
@@ -49,9 +48,9 @@ public class DashboardGui extends JPanel {
 
         areaClientiButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                mostra_area_ordiniClienti();
-                canvasGui.nascondi_dashboard_dipedenti();
+            public void actionPerformed(ActionEvent e){
+                canvasGui.nascondi_dashbaord(canvasGui.get_dashboardDipedenteGui());
+                canvasGui.mostra_dahsboard(canvasGui.get_dashboardClienteGui());
                 canvasGui.set_pagina(new ClienteGui(canvasGui));
             }
         });
@@ -59,6 +58,9 @@ public class DashboardGui extends JPanel {
        areaRiderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                canvasGui.nascondi_dashbaord(canvasGui.get_dashboardDipedenteGui());
+                canvasGui.nascondi_dashbaord(canvasGui.get_dashboardClienteGui());
+
                 if(main.get_utente_controller().utente_is_rider() == false){
                     main.get_utente_controller().load_dati_rider();
 
@@ -70,8 +72,7 @@ public class DashboardGui extends JPanel {
                         main.set_rider_controller(new RiderController());
                     }
                 }
-                nascondi_area_OrdiniClienti();
-                canvasGui.nascondi_dashboard_dipedenti();
+
                 canvasGui.set_pagina(new OrdiniRiderGui(canvasGui));
             }
         });
@@ -79,6 +80,8 @@ public class DashboardGui extends JPanel {
         areaDipendentiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                canvasGui.nascondi_dashbaord(canvasGui.get_dashboardClienteGui());
+
                 if(main.get_utente_controller().utente_is_dipendente() == false){
                     main.get_utente_controller().load_dati_dipedente();
 
@@ -87,22 +90,14 @@ public class DashboardGui extends JPanel {
                         return;
                     }
                     else{
-                        canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui));
                         main.set_dipendente_controller(new DipendenteController());
                         main.set_ristorante_controller(new RistoranteController(main.get_dipendente_controller()));
+                        canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente().get_ristorante()));
                     }
                 }
 
-                nascondi_area_OrdiniClienti();
-                canvasGui.mostra_dashboard_dipedenti(main.get_dipendente_controller().get_dipendente().get_ristorante());
+                canvasGui.mostra_dahsboard(canvasGui.get_dashboardDipedenteGui());
                 canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
-            }
-        });
-
-        areaOrdiniButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                canvasGui.set_pagina(new OrdiniClientiGui(canvasGui));
             }
         });
 
@@ -115,8 +110,7 @@ public class DashboardGui extends JPanel {
                 main.get_utente_controller().logout();
                 main.distruggi_controller();
 
-                canvasGui.nascondi_dashboard();
-                canvasGui.nascondi_dashboard_dipedenti();
+                canvasGui.distruggi_all_dashbaord();
                 canvasGui.set_pagina(new LoginGui(canvasGui));
             }
         });
@@ -129,8 +123,7 @@ public class DashboardGui extends JPanel {
                     main.get_utente_controller().cancella_account();
                     main.distruggi_controller();
 
-                    canvasGui.nascondi_dashboard();
-                    canvasGui.nascondi_dashboard_dipedenti();
+                    canvasGui.distruggi_all_dashbaord();
                     canvasGui.set_pagina(new LoginGui(canvasGui));
                 }
             }
@@ -142,13 +135,6 @@ public class DashboardGui extends JPanel {
 
     public void aggiorna_nickname_label(CanvasGui canvasGui){
         infoUtenteLabel.setText(main.get_utente_controller().get_utente().toString());
-    }
-
-    public void mostra_area_ordiniClienti(){
-        areaOrdiniButton.setVisible(true);
-    }
-    public void nascondi_area_OrdiniClienti(){
-        areaOrdiniButton.setVisible(false);
     }
 
 }

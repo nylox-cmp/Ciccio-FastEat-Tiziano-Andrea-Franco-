@@ -1,5 +1,6 @@
 package gui.Dipedente;
 
+import controller.RistoranteController;
 import gui.CanvasGui;
 import controller.DipendenteController;
 import exception.BusinessError;
@@ -56,9 +57,11 @@ public class DipedenteGui extends JPanel {
                     return;
                 }
                 main.get_utente_controller().crea_ristorante(nome,indirizzo);
+
                 main.set_dipendente_controller(new DipendenteController());
-                canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui));
-                canvasGui.mostra_dashboard_dipedenti(main.get_dipendente_controller().get_dipendente().get_ristorante());
+                main.set_ristorante_controller(new RistoranteController(main.get_dipendente_controller()));
+
+                canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente().get_ristorante()));
                 canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
             }
         });
@@ -74,7 +77,11 @@ public class DipedenteGui extends JPanel {
 
                 try {
                     main.get_utente_controller().registrazione_dipedente_ristorante(codice_ristorante);
-                    canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui));
+
+                    main.set_dipendente_controller(new DipendenteController());
+                    main.set_ristorante_controller(new RistoranteController(main.get_dipendente_controller()));
+
+                    canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente().get_ristorante()));
                     canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
                 }
                 catch (BusinessError error){

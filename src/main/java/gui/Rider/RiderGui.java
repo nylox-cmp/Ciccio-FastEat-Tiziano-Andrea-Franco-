@@ -30,8 +30,6 @@ public class RiderGui extends JPanel {
         setLayout(new BorderLayout());
         add(mainPanel, BorderLayout.CENTER);
 
-        canvasGui.get_dashboardGui().nascondi_area_OrdiniClienti();
-
         registratiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

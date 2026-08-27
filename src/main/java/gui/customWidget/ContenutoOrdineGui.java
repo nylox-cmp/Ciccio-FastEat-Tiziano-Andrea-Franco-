@@ -1,6 +1,7 @@
 package gui.customWidget;
 
 import controller.OrdiniController;
+import exception.ErrorType;
 import gui.CanvasGui;
 import model.Ordine;
 import model.RigaOrdine;
@@ -39,6 +40,10 @@ public class ContenutoOrdineGui extends JPanel {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 Ordine ordine = ordiniLista.getSelectedValue();
+                if(ordine == null){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 aggiorna_lista(ordine);
             }
         });
@@ -48,6 +53,7 @@ public class ContenutoOrdineGui extends JPanel {
     // Metodi Gestione Lista
 
     public void aggiorna_lista(Ordine ordine){
+
         contenutoOrdineListModel.clear();
         ArrayList<RigaOrdine> righe_ordine = canvasGui.main.get_ordini_controller().get_contenuto_ordine(ordine);
         if(righe_ordine == null) return;

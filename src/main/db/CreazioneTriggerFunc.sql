@@ -5,11 +5,14 @@
 --BOZZA 0,PREPARAZIONE 1,PRONTO_RITIRO_RIDER 2,IN_CONSEGNA 3,CONFERMA_CONSEGNA_RIDER 4,CONFERMA_CONSEGNA_CLIENTE 5,CONSEGNATO 6,ANNULLATO 7
 --BASE 0,GESTIONALE 2,MANAGER 3
 
---BEC (Buisness Error Code) errori generati da un trigger,da intercettare in java tramite i seguenti codici univoci:
+--un'OrdineInSospeso è un Ordine Presente in uno di questi StatiOrdine (PREPARAZIONE 1,PRONTO_RITIRO_RIDER 2,IN_CONSEGNA 3,CONFERMA_CONSEGNA_RIDER 4,CONFERMA_CONSEGNA_CLIENTE 5)
+--OrdineNonSospeso si Presenta in uno di questi StatiOrdine (BOZZA 0,CONSEGNATO 6,ANNULLATO 7)
+
+--BEC (Buisness Error Code) errori generati da un trigger da intercettare in java tramite i seguenti codici:
 --BEC0 controlla_ordine_vuoto_stato_preparazione_trigger
 --BEC1 controlla_numero_ordini_trasportati_rider_trigger
---BEC2 impedisci_cancellazione_utente_trigger
---BEC3 impedisci_cancellazione_ristorante_trigger
+--BEC2 (gestisci_cancellazione_cliente_trigger,gestisci_cancellazione_rider_trigger)
+--BEC3 gestici_cancellazione_ristorante
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---Trigger gestione della transazione dello statoOrdine Bozza -> Preparazione, che non permette la transizione allo stato Preparazione se l'ordine non contiene RigheOrdine
@@ -38,7 +41,8 @@ FOR EACH ROW
 EXECUTE FUNCTION controlla_ordine_vuoto_stato_preparazione();
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
----Trigger che non permette a un rider di prendere in carico più di 3 ordini contemporanamente
+---Trigger che non permette a un rider di prendere in carico più di 3 ordini contemporanamente controllando se ci siano
+--OrdiniInSospeso a carico del rider in uno di questi StatiOrdine (PREPARAZIONE 1,PRONTO_RITIRO_RIDER 2,IN_CONSEGNA 3,CONFERMA_CONSEGNA_RIDER 4,CONFERMA_CONSEGNA_CLIENTE 5)
 
 CREATE OR REPLACE FUNCTION controlla_numero_ordini_trasportati_rider()
 RETURNS TRIGGER LANGUAGE PLPGSQL
@@ -48,7 +52,7 @@ BEGIN
 	SELECT count(*) INTO NumeroOrdiniRider FROM RiderPropostiConsegna rpc
 	JOIN Ordine o ON rpc.codice_ordine = o.codice_ordine
 	WHERE rpc.nickname_rider = NEW.nickname_rider
-  	AND o.stato IN (1,2,3); --PREPARAZIONE,PRONTO_RITIRO_RIDER,IN_CONSEGNA
+  	AND o.stato IN (1,2,3,4,5);
 
 	IF NumeroOrdiniRider > 3 THEN
 		RAISE EXCEPTION 'BEC1: un rider non può trasportare più di 3 ordini alla volta';
@@ -65,27 +69,22 @@ FOR EACH ROW
 EXECUTE FUNCTION controlla_numero_ordini_trasportati_rider();
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
----Trigger che non permette a un Rider e un Cliente la cancellazione dell'account finche tutti gli ordini non sono nello stato di BOZZA,CONSEGNATO o ANNULATO
+---Trigger che non permetta la Cancellazione del Cliente se e solo se siano  presenti OrdiniInSospeso
+--Che siano nello StatoOrdine (PREPARAZIONE 1,PRONTO_RITIRO_RIDER 2,IN_CONSEGNA 3,CONFERMA_CONSEGNA_RIDER 4,CONFERMA_CONSEGNA_CLIENTE 5)
 
-CREATE OR REPLACE FUNCTION controlla_cancellazione_account()
+CREATE OR REPLACE FUNCTION gestisci_cancellazione_cliente()
 RETURNS TRIGGER LANGUAGE PLPGSQL
 AS $$
 DECLARE
-    NOrdiniRiderSospesi INT;
-	NOrdiniClienteSospesi INT;
 	NOrdiniSospesi INT;
 BEGIN
 
-    SELECT count(*) INTO NOrdiniRiderSospesi
-    FROM Ordine o
-    JOIN RiderPropostiConsegna rpc ON o.codice_ordine = rpc.codice_ordine
-    WHERE rpc.nickname_rider = OLD.nickname
-    AND o.stato IN (2,3); --PRONTO_RITIRO_RIDER,IN_CONSEGNA
 
-	SELECT count(*) INTO NOrdiniClienteSospesi
+
+	SELECT count(*) INTO NOrdiniSospesi
 	FROM Ordine o
 	WHERE o.nickname_cliente = OLD.nickname
-	AND o.stato IN (2,3); --PRONTO_RITIRO_RIDER,IN_CONSEGNA
+	AND o.stato IN (1,2,3,4,5);
 
 	NOrdiniSospesi := NOrdiniRiderSospesi + NOrdiniClienteSospesi;
 
@@ -97,15 +96,46 @@ BEGIN
 END;
 $$;
 
-CREATE TRIGGER impedisci_cancellazione_utente_trigger
-BEFORE DELETE ON Rider
+CREATE TRIGGER gestisci_cancellazione_cliente_trigger
+BEFORE DELETE ON Cliente
 FOR EACH ROW
-EXECUTE FUNCTION controlla_cancellazione_account();
+EXECUTE FUNCTION gestisci_cancellazione_cliente();
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
----Trigger che impedisce la cancellazione del Ristorante finche tutti gli ordini non sono nello stato di BOZZA,CONSEGNATO o ANNULATO
+---Trigger che non permetta la Cancellazione del Cliente se e solo se siano  presenti OrdiniInSospeso
+--Che siano nello StatoOrdine (PREPARAZIONE 1,PRONTO_RITIRO_RIDER 2,IN_CONSEGNA 3,CONFERMA_CONSEGNA_RIDER 4,CONFERMA_CONSEGNA_CLIENTE 5)
 
-CREATE OR REPLACE FUNCTION controlla_cancellazione_ristorante()
+CREATE OR REPLACE FUNCTION gestisci_cancellazione_rider()
+RETURNS TRIGGER LANGUAGE PLPGSQL
+AS $$
+DECLARE
+	NOrdiniSospesi INT;
+BEGIN
+
+    SELECT count(*) INTO NOrdiniSospesi
+    FROM Ordine o
+    JOIN RiderPropostiConsegna rpc ON o.codice_ordine = rpc.codice_ordine
+    WHERE rpc.nickname_rider = OLD.nickname
+    AND o.stato IN (1,2,3,4,5); --PRONTO_RITIRO_RIDER,IN_CONSEGNA
+
+    IF NOrdiniSospesi > 0 THEN
+        RAISE EXCEPTION 'BEC2: non puoi cancellare l''Account mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
+    END IF;
+
+RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER gestisci_cancellazione_rider_trigger
+BEFORE DELETE ON Rider
+FOR EACH ROW
+EXECUTE FUNCTION gestisci_cancellazione_rider();
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--Trigger che cancella il ristorante alla cancellazione del dipedente con il Ruolo "Manager" se e solo se siano presenti degli OrdiniInSospeso
+--che siano nello StatoOrdine (PREPARAZIONE 1,PRONTO_RITIRO_RIDER 2,IN_CONSEGNA 3,CONFERMA_CONSEGNA_RIDER 4,CONFERMA_CONSEGNA_CLIENTE 5)
+
+CREATE OR REPLACE FUNCTION gestisci_cancellazione_ristorante()
 RETURNS TRIGGER LANGUAGE PLPGSQL
 AS $$
 DECLARE
@@ -114,21 +144,21 @@ BEGIN
 
 	SELECT count(*) INTO NOrdiniSospesi
 	FROM Ordine o
-	WHERE o.codice_ristorante = OLD.codice_ristorante;
+	WHERE o.codice_ristorante = OLD.codice_ristorante AND o.stato IN (1,2,3,4,5);
 
 	IF NOrdiniSospesi > 0 THEN
 		RAISE EXCEPTION 'BEC3: non puoi cancellare il Ristorante mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
 	END IF;
 
-	
+	DELETE FROM Ristorante WHERE codice_ristorante = OLD.codice_ristorante;
+
 END;
 $$;
 
-CREATE TRIGGER impedisci_cancellazione_ristorante_trigger
-BEFORE DELETE ON Ristorante
+CREATE TRIGGER gestisci_cancellazione_ristorante_trigger
+BEFORE DELETE ON Dipendente
 FOR EACH ROW
-EXECUTE FUNCTION controlla_cancellazione_ristorante();
-
+EXECUTE FUNCTION gestici_cancellazione_ristorante();
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---Trigger che aggiunga un punto_fedeltà al cliente, una volta che l'ordine entrato nello StatoOrdine CONSEGNATO
@@ -136,14 +166,12 @@ EXECUTE FUNCTION controlla_cancellazione_ristorante();
 CREATE OR REPLACE FUNCTION aggiungi_punto_fedelta()
 RETURNS TRIGGER LANGUAGE PLPGSQL
 AS $$
- 
-BEGIN 
-	
+BEGIN
 	IF NEW.costo >= 20 THEN
 		UPDATE Cliente c SET punti_fedelta = punti_fedelta + 1 WHERE c.nickname = NEW.nickname_cliente;
 	END IF;
 	
-	return NEW;
+	RETURN NEW;
 END;
 $$;
 

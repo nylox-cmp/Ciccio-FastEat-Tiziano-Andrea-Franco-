@@ -1,6 +1,7 @@
 package gui;
 import com.sun.tools.javac.Main;
 import gui.Autenticazione.SignInGui;
+import gui.customWidget.DashboardClienteGui;
 import gui.customWidget.DashboardDipedenteGui;
 import gui.customWidget.DashboardGui;
 import model.Ristorante;
@@ -11,9 +12,12 @@ import java.awt.*;
 
 public class CanvasGui {
     private static JFrame mainFrame;
-    private JPanel topPanel;
+    private JPanel dashboardPanel;
+
     private DashboardGui dashboardGui;
     private DashboardDipedenteGui dashboardDipedenteGui;
+    private DashboardClienteGui dashboardClienteGui;
+
     private JPanel pagina;
 
     public main.Main main;
@@ -26,42 +30,45 @@ public class CanvasGui {
         set_mainFrame(new JFrame("FoodDelivery"));
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
-        crea_topPanel();
+
+        this.dashboardPanel = new JPanel(new BorderLayout());
+        mainFrame.add(dashboardPanel,BorderLayout.NORTH);
     }
 
     //________________________________________________________________________________________________________________________________________________
     // Gestione dashboard (si trovano nel package Custom Widget)
 
     public void aggiorna_finestra(){
+        mainFrame.pack();
         mainFrame.revalidate();
         mainFrame.repaint();
-        mainFrame.pack();
     }
 
-    private void crea_topPanel(){
-        this.topPanel = new JPanel(new BorderLayout());
-        mainFrame.add(topPanel,BorderLayout.NORTH);
+    public void distruggi_all_dashbaord(){
+        if(dashboardGui != null) {
+            dashboardPanel.remove(dashboardGui);
+            dashboardGui = null;
+        }
+
+        if(dashboardClienteGui != null) {
+            dashboardPanel.remove(dashboardClienteGui);
+            dashboardClienteGui = null;
+        }
+
+        if(dashboardDipedenteGui != null) {
+            dashboardPanel.remove(dashboardDipedenteGui);
+            dashboardDipedenteGui = null;
+        }
     }
 
-    public void mostra_dashboard(){
-        if(dashboardGui == null) return;
-        dashboardGui.setVisible(true);
+    public void nascondi_dashbaord(JPanel dashboard){
+        if(dashboard == null) return;
+        dashboard.setVisible(false);
     }
 
-    public void nascondi_dashboard(){
-        if(dashboardGui == null) return;
-        dashboardGui.setVisible(false);
-    }
-
-    public void mostra_dashboard_dipedenti(Ristorante ristorante){
-        if(dashboardDipedenteGui == null) return;
-        dashboardDipedenteGui.setVisible(true);
-        dashboardDipedenteGui.set_ristorante(ristorante);
-    }
-
-    public void nascondi_dashboard_dipedenti(){
-        if(dashboardDipedenteGui == null) return;
-        dashboardDipedenteGui.setVisible(false);
+    public void mostra_dahsboard(JPanel dashboard){
+        if(dashboard == null) return;
+        dashboard.setVisible(true);
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -92,7 +99,7 @@ public class CanvasGui {
     public void set_dashboardGui(DashboardGui dashboardGui){
         if(this.dashboardGui != null) return;
         this.dashboardGui = dashboardGui;
-        topPanel.add(dashboardGui,BorderLayout.NORTH);
+        dashboardPanel.add(dashboardGui,BorderLayout.NORTH);
     }
 
     public DashboardDipedenteGui get_dashboardDipedenteGui(){ return dashboardDipedenteGui;}
@@ -100,6 +107,14 @@ public class CanvasGui {
     public void set_dashboardDipedenteGui(DashboardDipedenteGui dashboardDipedenteGui){
         if(this.dashboardDipedenteGui != null) return;
         this.dashboardDipedenteGui = dashboardDipedenteGui;
-        topPanel.add(dashboardDipedenteGui,BorderLayout.SOUTH);
+        dashboardPanel.add(dashboardDipedenteGui,BorderLayout.SOUTH);
+    }
+
+    public DashboardClienteGui get_dashboardClienteGui(){ return dashboardClienteGui;}
+
+    public void set_dashboardClienteGui(DashboardClienteGui dashboardClienteGui){
+        if(this.dashboardClienteGui != null) return;
+        this.dashboardClienteGui = dashboardClienteGui;
+        dashboardPanel.add(dashboardClienteGui,BorderLayout.CENTER);
     }
 }

@@ -89,7 +89,7 @@ public class RistoranteController {
             throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         prodotto.modifica_prodotto(nome,prezzo_unitario);
-        ristoranteDB.modifica_prodotto(nome,prezzo_unitario, id_prodotti.get(prodotto));
+        ristoranteDB.modifica_prodotto(nome,prezzo_unitario,id_prodotti.get(prodotto));
     }
 
     public void cancella_prodotto(Menu menu,Prodotto prodotto){

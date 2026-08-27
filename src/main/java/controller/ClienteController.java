@@ -1,6 +1,7 @@
 package controller;
 
 import ImplementazioniDAO.ClienteImpDAO;
+import ImplementazioniDAO.OrdiniImpDAO;
 import ImplementazioniDAO.RistoranteImpDAO;
 import ImplementazioniDAO.Utils.EntityWitchId;
 import controller.Utils.SessionManager;
@@ -15,10 +16,10 @@ public class ClienteController{
     private ClienteImpDAO clienteDB = new ClienteImpDAO();
 
     private ArrayList<Ordine> ordini = new ArrayList<Ordine>();
-    private ArrayList<RigaOrdine> righe_ordine = new ArrayList<RigaOrdine>();
+    private ArrayList<Prodotto> prodotti = new ArrayList<Prodotto>();
 
     private HashMap<Menu,Integer> id_menu = new HashMap<Menu,Integer>();
-    private HashMap<RigaOrdine,ArrayList<String>> id_righeOrdine = new HashMap<RigaOrdine,ArrayList<String>>();
+    private HashMap<Prodotto,Integer> id_prodotto = new HashMap<Prodotto,Integer>();
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -67,25 +68,21 @@ public class ClienteController{
     //________________________________________________________________________________________________________________________________________________
     // Gestione RigaOrdine
 
-    public RigaOrdine aggiungi_riga(Ordine ordine, Prodotto prodotto) {
-        RigaOrdine riga_ordine = ordine.aggiungi_riga(prodotto,RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE,ordine);
-        clienteDB.aggiungi_riga(ordine.get_codice_ordine(),Integer.parseInt(id_righeOrdine.get(ordine).get(1)),RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE);
-        return riga_ordine;
+    public void aggiungi_riga(Ordine ordine, Prodotto prodotto) {
+        System.out.println( prodotto + " "  + id_prodotto + " " + id_prodotto.get(prodotto) + " " + prodotto.hashCode());
+        ordine.aggiungi_riga(prodotto,RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE,ordine);
+        clienteDB.aggiungi_riga(ordine.get_codice_ordine(),id_prodotto.get(prodotto),RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE);
     }
 
-    public void rimuovi_riga(Ordine ordine, RigaOrdine riga_ordine) {
-         ordine.rimuovi_riga(riga_ordine);
-         clienteDB.rimuovi_riga(ordine.get_codice_ordine(),Integer.parseInt(id_righeOrdine.get(ordine).get(1)));
+    public void rimuovi_riga(Ordine ordine, Prodotto prodotto) {
+        System.out.println( prodotto + " "  + id_prodotto + " " + id_prodotto.get(prodotto));
+         ordine.rimuovi_riga(prodotto);
+         clienteDB.rimuovi_riga(ordine.get_codice_ordine(),id_prodotto.get(prodotto));
     }
 
-    public void aumenta_quantita_prodotto(Ordine ordine,RigaOrdine riga_ordine) {
-        riga_ordine.aumenta_quantita();
-        clienteDB.aggiorna_quantita_rigaOrdine(ordine.get_codice_ordine(),Integer.parseInt(id_righeOrdine.get(ordine).get(1)),riga_ordine.get_quantita());
-    }
-
-    public void diminuisci_quantita_prodotto(Ordine ordine,RigaOrdine riga_ordine) {
-        riga_ordine.diminuisci_quantita();
-        clienteDB.aggiorna_quantita_rigaOrdine(ordine.get_codice_ordine(),Integer.parseInt(id_righeOrdine.get(ordine).get(1)),riga_ordine.get_quantita());
+    public void aggiorna_quantita_rigaOrdine(Ordine ordine,RigaOrdine riga_ordine,int quantita){
+        riga_ordine.aggiorna_quantita(quantita);
+        clienteDB.aggiorna_quantita_rigaOrdine(ordine.get_codice_ordine(),id_prodotto.get(riga_ordine.get_prodotto()),riga_ordine.get_quantita());
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -97,18 +94,12 @@ public class ClienteController{
 
     public ArrayList<Ordine> get_ordini(){
         ordini = clienteDB.get_ordini_cliente(cliente.get_nickname());
-        return ordini;
-    }
 
-    public ArrayList<RigaOrdine> get_righeOrdine(Ordine ordine) {
-        EntityWitchId<RigaOrdine, ArrayList<String>> righeOrdineMap = clienteDB.get_contenuto_ordine(ordine.get_codice_ordine());
-
-        righe_ordine = righeOrdineMap.entitys;
-
-        for(int i=0;i<righeOrdineMap.ids.size();i++){
-            id_righeOrdine.put(righe_ordine.get(i),righeOrdineMap.ids.get(i));
+        for(Ordine ordine : ordini){
+            ordine.set_righe_ordine(OrdiniImpDAO.get_righeOrdine(ordine.get_codice_ordine()).entitys);
         }
-        return righe_ordine;
+
+        return ordini;
     }
 
     public ArrayList<Ristorante> get_ristoranti(String search_nome_o_indirizzo){
@@ -121,12 +112,21 @@ public class ClienteController{
 
         for(int i=0;i<menuMap.entitys.size();i++){
             id_menu.put(menuMap.entitys.get(i),menuMap.ids.get(i));
+            menuMap.entitys.get(i).set_ristorante(ristorante);
         }
 
         return menuMap.entitys;
     }
 
     public ArrayList<Prodotto> get_prodotti(Menu menu){
-        return RistoranteImpDAO.get_prodotti(id_menu.get(menu)).entitys;
+        EntityWitchId<Prodotto,Integer> prodottiMap =  RistoranteImpDAO.get_prodotti(id_menu.get(menu));
+        if(prodottiMap == null) return null;
+
+        for(int i=0;i<prodottiMap.entitys.size();i++){
+            id_prodotto.put(prodottiMap.entitys.get(i),prodottiMap.ids.get(i));
+            prodottiMap.entitys.get(i).set_menu(menu);
+        }
+        this.prodotti = prodottiMap.entitys;
+        return prodotti;
     }
 }

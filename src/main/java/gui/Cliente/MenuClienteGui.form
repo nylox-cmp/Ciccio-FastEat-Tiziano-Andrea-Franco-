@@ -2,44 +2,38 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.Cliente.MenuClienteGui">
   <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="1025" height="400"/>
+      <xy x="20" y="20" width="889" height="400"/>
     </constraints>
     <properties>
       <background color="-262657"/>
     </properties>
-    <border type="none">
-      <font style="1"/>
-      <title-color color="-13881804"/>
-    </border>
+    <border type="none"/>
     <children>
-      <grid id="48929" binding="ProdottiPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="dc4bd" binding="infoPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="North"/>
+        <properties>
+          <background color="-262657"/>
+          <enabled value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="3a2e8" class="javax.swing.JLabel" binding="infoMenuLabel">
+            <constraints/>
+            <properties>
+              <foreground color="-13881804"/>
+              <text value="nome"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="a6a91" binding="prodottiPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties>
           <background color="-262657"/>
         </properties>
-        <border type="etched" title="Prodotti">
-          <font style="1"/>
-          <title-color color="-13881804"/>
-        </border>
+        <border type="none"/>
         <children>
-          <scrollpane id="11361" binding="prodottoScrollPane">
-            <constraints border-constraint="Center"/>
-            <properties>
-              <background color="-262657"/>
-            </properties>
-            <border type="etched"/>
-            <children>
-              <component id="67c69" class="javax.swing.JList" binding="prodottiJList">
-                <constraints/>
-                <properties>
-                  <background color="-2894377"/>
-                  <foreground color="-13881804"/>
-                  <selectionMode value="0"/>
-                </properties>
-              </component>
-            </children>
-          </scrollpane>
-          <grid id="e3efd" binding="ordinePanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="2b8dc" binding="buttonPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints border-constraint="South"/>
             <properties>
@@ -47,16 +41,50 @@
             </properties>
             <border type="none"/>
             <children>
-              <grid id="fcd4a" binding="quantitaButtonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+              <component id="645fc" class="javax.swing.JButton" binding="tornaIndietroButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-13881804"/>
+                  <foreground color="-262657"/>
+                  <text value="Torna Indietro "/>
+                </properties>
+              </component>
+              <grid id="fe0d7" binding="ordinePanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <background color="-262657"/>
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="20f11" class="javax.swing.JButton" binding="diminuisciQuantitaButton">
+                  <component id="e79dd" class="javax.swing.JLabel" binding="indrizzoConsegnaLabel">
+                    <constraints/>
+                    <properties>
+                      <foreground color="-13881804"/>
+                      <text value="indirizzo consegna "/>
+                    </properties>
+                  </component>
+                  <component id="dcfd6" class="javax.swing.JTextField" binding="indirizzoTextField">
+                    <constraints/>
+                    <properties>
+                      <background color="-13881804"/>
+                      <columns value="5"/>
+                      <editable value="true"/>
+                      <foreground color="-262657"/>
+                    </properties>
+                  </component>
+                  <component id="869b4" class="javax.swing.JButton" binding="creaOrdineButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <background color="-13881804"/>
+                      <foreground color="-262657"/>
+                      <text value="Crea Ordine"/>
+                    </properties>
+                  </component>
+                  <component id="ca18c" class="javax.swing.JButton" binding="diminuisciQuantitaButton">
                     <constraints/>
                     <properties>
                       <background color="-13881804"/>
@@ -64,14 +92,14 @@
                       <text value="-"/>
                     </properties>
                   </component>
-                  <component id="82476" class="javax.swing.JLabel" binding="quantitaProdottoLabel">
+                  <component id="c309f" class="javax.swing.JLabel" binding="quantitaProdottoLabel">
                     <constraints/>
                     <properties>
-                      <foreground color="-16448233"/>
+                      <foreground color="-13881804"/>
                       <text value="0"/>
                     </properties>
                   </component>
-                  <component id="4313d" class="javax.swing.JButton" binding="aumentaQuantitaButton">
+                  <component id="a6854" class="javax.swing.JButton" binding="aumentaQuantitaButton">
                     <constraints/>
                     <properties>
                       <background color="-13881804"/>
@@ -79,99 +107,48 @@
                       <text value="+"/>
                     </properties>
                   </component>
-                </children>
-              </grid>
-              <grid id="3349f" binding="ordinmeButtonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <background color="-262657"/>
-                </properties>
-                <border type="none"/>
-                <children>
-                  <component id="c9068" class="javax.swing.JLabel" binding="indirizzoLabel">
-                    <constraints/>
-                    <properties>
-                      <foreground color="-16448233"/>
-                      <text value="indirizzo consegna"/>
-                    </properties>
-                  </component>
-                  <component id="e962e" class="javax.swing.JTextField" binding="indirizzoTextField">
-                    <constraints/>
-                    <properties>
-                      <background color="-13881804"/>
-                      <columns value="10"/>
-                      <foreground color="-262657"/>
-                    </properties>
-                  </component>
-                  <component id="9fcc5" class="javax.swing.JButton" binding="creaOrdineButton" default-binding="true">
+                  <component id="f558c" class="javax.swing.JComboBox" binding="ordiniComboBox">
                     <constraints/>
                     <properties>
                       <background color="-13881804"/>
                       <foreground color="-262657"/>
-                      <preferredSize width="105" height="34"/>
-                      <text value="crea ordine"/>
                     </properties>
                   </component>
-                  <component id="153d0" class="javax.swing.JComboBox" binding="ordiniComboBox">
-                    <constraints/>
-                    <properties>
-                      <autoscrolls value="false"/>
-                      <background color="-13881804"/>
-                      <editable value="false"/>
-                      <foreground color="-262657"/>
-                      <minimumSize width="300" height="30"/>
-                    </properties>
-                  </component>
-                  <component id="10a01" class="javax.swing.JButton" binding="aggiungiAllOrdineButton" default-binding="true">
+                  <component id="673d6" class="javax.swing.JButton" binding="aggungiAllOrdineButton" default-binding="true">
                     <constraints/>
                     <properties>
                       <background color="-13881804"/>
                       <foreground color="-262657"/>
-                      <text value="Aggiungi all'ordine"/>
+                      <text value="Aggungi all'Ordine"/>
                     </properties>
                   </component>
-                  <component id="b6da2" class="javax.swing.JButton" binding="rimuoviDalOrdineButton">
+                  <component id="16493" class="javax.swing.JButton" binding="rimuoviDallOridneButton" default-binding="true">
                     <constraints/>
                     <properties>
                       <background color="-13881804"/>
                       <foreground color="-262657"/>
-                      <text value="rimuovi dal ordine&#10;"/>
+                      <text value="rimuovi dall'Oridne"/>
                     </properties>
                   </component>
                 </children>
               </grid>
-              <component id="1ce13" class="javax.swing.JButton" binding="tornaIndietroButton">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
+            </children>
+          </grid>
+          <scrollpane id="36395" binding="prodottiScrollPane">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <background color="-262657"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="d1409" class="javax.swing.JList" binding="prodottiJList">
+                <constraints/>
                 <properties>
-                  <background color="-13881804"/>
-                  <foreground color="-262657"/>
-                  <text value="torna indietro"/>
+                  <background color="-3025959"/>
                 </properties>
               </component>
             </children>
-          </grid>
-        </children>
-      </grid>
-      <grid id="e4621" binding="infoMenuPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-        <constraints border-constraint="North"/>
-        <properties>
-          <background color="-262657"/>
-        </properties>
-        <border type="none">
-          <font/>
-        </border>
-        <children>
-          <component id="d1205" class="javax.swing.JLabel" binding="infoMenuLabel">
-            <constraints/>
-            <properties>
-              <foreground color="-13881804"/>
-              <text value="nome"/>
-            </properties>
-          </component>
+          </scrollpane>
         </children>
       </grid>
     </children>

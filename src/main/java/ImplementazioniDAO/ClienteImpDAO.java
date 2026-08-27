@@ -57,7 +57,7 @@ public class ClienteImpDAO implements ClienteDAO {
 
     @Override
     public void crea_ordine(String codice_ordine, double costo, StatoOrdine stato_ordine, String indirizzo, LocalDate date, String codice_ristorante){
-        String sql = "INSERT INTO Ordine(codice_ordine,costo,stato,indirizzo,data_ordine,nickname_cliente,codice_ristorante) VALUES(?,?,?,?,?,?,?);";
+        String sql = "INSERT INTO Ordine(codice_ordine,costo,stato,indirizzo_consegna,data_ordine,nickname_cliente,codice_ristorante) VALUES(?,?,?,?,?,?,?);";
 
         try(PreparedStatement query = connection.prepareStatement(sql)){
             query.setString(1,codice_ordine);
@@ -151,6 +151,7 @@ public class ClienteImpDAO implements ClienteDAO {
         }
         catch(SQLException e){
             e.printStackTrace();
+            if ("23505".equals(e.getSQLState())) throw new BusinessError(ErrorType.PRODOTTO_PRESENTE_ORDINE);
             throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
         }
     }

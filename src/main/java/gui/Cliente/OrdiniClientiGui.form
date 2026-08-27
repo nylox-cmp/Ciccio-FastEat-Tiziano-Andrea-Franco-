@@ -58,12 +58,12 @@
                           <text value="Annula Ordine"/>
                         </properties>
                       </component>
-                      <component id="5a9e6" class="javax.swing.JButton" binding="spedisciOrdineRistorante">
+                      <component id="5a9e6" class="javax.swing.JButton" binding="confermaCreazioneOrdineButton">
                         <constraints/>
                         <properties>
                           <background color="-13881804"/>
                           <foreground color="-262657"/>
-                          <text value="Spedisci Ordine Ristorante"/>
+                          <text value="Conferma Creazione Ordine"/>
                         </properties>
                       </component>
                       <component id="6324f" class="javax.swing.JButton" binding="confermaConsegnaButton">
@@ -126,7 +126,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="a7e41" class="javax.swing.JList" binding="ordiniLista">
+                  <component id="a7e41" class="javax.swing.JList" binding="ordiniJList">
                     <constraints/>
                     <properties>
                       <background color="-2500135"/>
@@ -153,23 +153,14 @@
               <color color="-13881804"/>
             </border>
             <children>
-              <grid id="261c8" binding="ContenutoOrdinePanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+              <grid id="261c8" binding="bottomContenutoOrdinePanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                 <constraints border-constraint="South"/>
                 <properties>
                   <background color="-262657"/>
                   <foreground color="-262657"/>
                 </properties>
                 <border type="none"/>
-                <children>
-                  <component id="b08a2" class="javax.swing.JButton" binding="rimuoviPrdottoOrdineButton">
-                    <constraints/>
-                    <properties>
-                      <background color="-13881804"/>
-                      <foreground color="-262657"/>
-                      <text value="Rimuovi Prdotto Ordine"/>
-                    </properties>
-                  </component>
-                </children>
+                <children/>
               </grid>
             </children>
           </grid>

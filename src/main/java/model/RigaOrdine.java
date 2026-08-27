@@ -37,14 +37,16 @@ public class RigaOrdine {
         return string;
     }
 
+
     @Override
     public boolean equals(Object o){
         if(o == this) return true;
         if(o == null || o.getClass() == this.getClass()) return false;
 
         RigaOrdine riga_ordine = (RigaOrdine) o;
-        return (riga_ordine.get_ordine().equals(this.get_ordine()) && riga_ordine.get_prodotto().equals(this.get_prodotto())); //Stesso Ordine e Stesso Prodotto == True
+        return (riga_ordine.get_ordine().equals(this.get_ordine()) && riga_ordine.get_prodotto().equals(this.get_prodotto()));
     }
+
 
     //________________________________________________________________________________________________________________________________________________
     // Gestione riga Ordine
@@ -53,19 +55,12 @@ public class RigaOrdine {
         this.prezzo_totale = this.prodotto.get_prezzo_unitario() * this.quantita;
     }
 
-    public void aumenta_quantita(){
-        this.quantita += 1;
-        calcola_prezzo_totale();
+    public void aggiorna_quantita(int quantita){
+        if(quantita < 1) throw new BusinessError(ErrorType.INPUT_NUMERICO_NEGATIVO);
+        this.quantita = quantita;
     }
 
-    public void diminuisci_quantita(){
-        if (this.quantita > 1) {
-            this.quantita -= 1;
-            calcola_prezzo_totale();
-            return;
-        }
-        throw new BusinessError(ErrorType.INPUT_NUMERICO_NEGATIVO);
-    }
+
 
     //________________________________________________________________________________________________________________________________________________
     // Get and Set

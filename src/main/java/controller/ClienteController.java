@@ -19,7 +19,7 @@ public class ClienteController{
     private ArrayList<Prodotto> prodotti = new ArrayList<Prodotto>();
 
     private HashMap<Menu,Integer> id_menu = new HashMap<Menu,Integer>();
-    private HashMap<Prodotto,Integer> id_prodotto = new HashMap<Prodotto,Integer>();
+    private HashMap<String,Integer> id_prodotto = new HashMap<String, Integer>();
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -69,20 +69,18 @@ public class ClienteController{
     // Gestione RigaOrdine
 
     public void aggiungi_riga(Ordine ordine, Prodotto prodotto) {
-        System.out.println( prodotto + " "  + id_prodotto + " " + id_prodotto.get(prodotto) + " " + prodotto.hashCode());
         ordine.aggiungi_riga(prodotto,RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE,ordine);
-        clienteDB.aggiungi_riga(ordine.get_codice_ordine(),id_prodotto.get(prodotto),RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE);
+        clienteDB.aggiungi_riga(ordine.get_codice_ordine(),id_prodotto.get(prodotto.get_nome()),RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE);
     }
 
     public void rimuovi_riga(Ordine ordine, Prodotto prodotto) {
-        System.out.println( prodotto + " "  + id_prodotto + " " + id_prodotto.get(prodotto));
          ordine.rimuovi_riga(prodotto);
-         clienteDB.rimuovi_riga(ordine.get_codice_ordine(),id_prodotto.get(prodotto));
+         clienteDB.rimuovi_riga(ordine.get_codice_ordine(),id_prodotto.get(prodotto.get_nome()));
     }
 
     public void aggiorna_quantita_rigaOrdine(Ordine ordine,RigaOrdine riga_ordine,int quantita){
         riga_ordine.aggiorna_quantita(quantita);
-        clienteDB.aggiorna_quantita_rigaOrdine(ordine.get_codice_ordine(),id_prodotto.get(riga_ordine.get_prodotto()),riga_ordine.get_quantita());
+        clienteDB.aggiorna_quantita_rigaOrdine(ordine.get_codice_ordine(),id_prodotto.get(riga_ordine.get_prodotto().get_nome()),riga_ordine.get_quantita());
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -123,7 +121,7 @@ public class ClienteController{
         if(prodottiMap == null) return null;
 
         for(int i=0;i<prodottiMap.entitys.size();i++){
-            id_prodotto.put(prodottiMap.entitys.get(i),prodottiMap.ids.get(i));
+            id_prodotto.put(prodottiMap.entitys.get(i).get_nome(),prodottiMap.ids.get(i));
             prodottiMap.entitys.get(i).set_menu(menu);
         }
         this.prodotti = prodottiMap.entitys;

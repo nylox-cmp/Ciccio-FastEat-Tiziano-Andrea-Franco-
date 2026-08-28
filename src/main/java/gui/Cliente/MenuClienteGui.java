@@ -1,5 +1,6 @@
 package gui.Cliente;
 
+import controller.OrdiniController;
 import exception.BusinessError;
 import exception.ErrorType;
 import gui.CanvasGui;
@@ -7,8 +8,6 @@ import model.*;
 import model.Menu;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +50,8 @@ public class MenuClienteGui extends JPanel{
         this.canvasGui = canvasGui;
         this.main = canvasGui.main;
 
+        main.set_ordine_controller(new OrdiniController());
+
         this.ristorante = ristorante;
         this.menu = menu;
 
@@ -81,7 +82,7 @@ public class MenuClienteGui extends JPanel{
                 Ordine ordine = (Ordine) ordiniComboBoxModel.getSelectedItem();
                 int quantita = riga_ordine.get_quantita() + 1;
                 main.get_cliente_controller().aggiorna_quantita_rigaOrdine(ordine,riga_ordine,quantita);
-                quantitaProdottoLabel.setText(String.valueOf(riga_ordine.get_quantita()));
+                aggiorna_quantita_label(riga_ordine.get_quantita());
             }
         });
 
@@ -102,7 +103,7 @@ public class MenuClienteGui extends JPanel{
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                quantitaProdottoLabel.setText(String.valueOf(riga_ordine.get_quantita()));
+                aggiorna_quantita_label(riga_ordine.get_quantita());
             }
         });
 
@@ -142,6 +143,7 @@ public class MenuClienteGui extends JPanel{
                 try {
                     Ordine ordine = (Ordine) obj;
                     main.get_cliente_controller().aggiungi_riga(ordine, prodotto);
+                    aggiorna_riga_selezionata();
                 }
                 catch(BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
@@ -166,6 +168,7 @@ public class MenuClienteGui extends JPanel{
                 }
                 Ordine ordine = (Ordine) obj;
                 main.get_cliente_controller().rimuovi_riga(ordine,riga_ordine.get_prodotto());
+                aggiorna_riga_selezionata();
             }
         });
 
@@ -181,6 +184,13 @@ public class MenuClienteGui extends JPanel{
     }
 
     //________________________________________________________________________________________________________________________________________________
+    // Metodo Aggiornamento Label
+
+    public void aggiorna_quantita_label(int quantita){
+        quantitaProdottoLabel.setText(String.valueOf(quantita));
+    }
+
+    //________________________________________________________________________________________________________________________________________________
     // Metodi Aggiornamento Lista
 
     private void aggiorna_riga_selezionata() {
@@ -188,10 +198,12 @@ public class MenuClienteGui extends JPanel{
         Prodotto prodotto = prodottiJList.getSelectedValue();
         if(ordine == null || prodotto == null) return;
 
+        main.get_ordini_controller().get_contenuto_ordine(ordine);
         riga_ordine = ordine.get_riga_ordine_from_prodotto(prodotto);
-        if(riga_ordine == null) quantitaProdottoLabel.setText(String.valueOf(0));
-        else quantitaProdottoLabel.setText(String.valueOf(riga_ordine.get_quantita()));
-        System.out.println(riga_ordine);
+
+        if(riga_ordine == null) aggiorna_quantita_label(0);
+        else aggiorna_quantita_label(riga_ordine.get_quantita());
+        System.out.println(riga_ordine + " " + ordine.get_righe_ordine());
     }
 
     private void aggiorna_lista_prodotti(){

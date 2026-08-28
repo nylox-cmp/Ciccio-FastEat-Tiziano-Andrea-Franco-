@@ -68,9 +68,18 @@ public class Ordine {
 
     private boolean contiene_prodotto(Prodotto prodotto){
         for(RigaOrdine riga_ordine : righe_ordine){
-            if(prodotto == riga_ordine.get_prodotto()) return true;
+            if(prodotto.equals(riga_ordine.get_prodotto())) return true;
         }
         return false;
+    }
+
+    public RigaOrdine get_riga_ordine_from_prodotto(Prodotto prodotto){
+        for(RigaOrdine riga_ordine : righe_ordine){
+            System.out.println(riga_ordine + " " + riga_ordine.get_prodotto().equals(prodotto));
+            if(riga_ordine.get_prodotto().equals(prodotto))
+                return riga_ordine;
+        }
+        return null;
     }
 
     public void aggiungi_riga(Prodotto prodotto, int quantita,Ordine ordine) {
@@ -98,14 +107,6 @@ public class Ordine {
         }
         this.costo = totale;
         return totale;
-    }
-
-    public RigaOrdine get_riga_ordine_from_prodotto(Prodotto prodotto){
-        for(RigaOrdine riga_ordine : righe_ordine){
-            if(riga_ordine.get_prodotto().equals(prodotto))
-                return riga_ordine;
-        }
-        return null;
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -154,7 +155,7 @@ public class Ordine {
         this.rider = rider;
     }
 
-    public ArrayList<RigaOrdine> get_rige_ordine() {
+    public ArrayList<RigaOrdine> get_righe_ordine() {
         return righe_ordine;
     }
     public void set_righe_ordine(ArrayList<RigaOrdine> rige_ordine) {

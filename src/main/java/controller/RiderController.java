@@ -53,7 +53,7 @@ public class RiderController {
     public Rider get_rider() { return rider; }
 
     public ArrayList<Ordine> get_ordini_proposti(){
-       this.ordini_proposti = riderDB.get_ordini_proposti();
+       this.ordini_proposti = riderDB.get_ordini_proposti(rider.get_nickname());
        return ordini_proposti;
     }
 

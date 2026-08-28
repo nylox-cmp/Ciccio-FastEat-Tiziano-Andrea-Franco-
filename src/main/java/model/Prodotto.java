@@ -37,19 +37,11 @@ public class Prodotto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Prodotto)) return false;
-        Prodotto that = (Prodotto) o;
 
-        if (this.menu == null || that.menu == null) return false;
-        return Objects.equals(this.nome, that.nome) && Objects.equals(this.menu.get_ristorante(), that.menu.get_ristorante());
+        Prodotto prodotto = (Prodotto) o;
+        if (this.menu == null || prodotto.menu == null) return Objects.equals(this.get_nome(),prodotto.get_nome());
+        return Objects.equals(this.nome, prodotto.nome) && Objects.equals(this.menu.get_ristorante(), prodotto.menu.get_ristorante());
     }
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nome);
-    }
-
-
 
     //________________________________________________________________________________________________________________________________________________
     // Prodotto

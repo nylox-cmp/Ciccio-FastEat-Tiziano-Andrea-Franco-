@@ -4,7 +4,5 @@
 8.finire il class diagramm
 9.finire la documentazione
 16.Verifica che tutti i metodi rispettino l'integrita dei dati
-17.Sistemare la MenuClienteGui rendendo l'operazione della prendere la riga un'operazione sul database (la responsabilita dovrebbe essere di ClienteController o di OrdineController?)
-18.Aggiungere un Dashboard del Cliente
-19.Sistemare le hashMap contenti il prodotto (sono buggate forse per hashcode o equal meteotd?)
-20.Sistemare la CanvasGui
+17.Sistemare la MenuClienteGui rendendo l'operazione del prendere la riga un'operazione sul database (la responsabilita dovrebbe essere di ClienteController o di OrdineController?)
+19.fixare hashign del prodotto in clientecontroller

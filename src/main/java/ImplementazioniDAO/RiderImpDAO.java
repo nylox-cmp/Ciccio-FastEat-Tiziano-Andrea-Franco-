@@ -78,17 +78,18 @@ public class RiderImpDAO implements RiderDAO{
     // Metodi Get
 
     @Override
-    public ArrayList<Ordine> get_ordini_proposti() {
+    public ArrayList<Ordine> get_ordini_proposti(String nickname) {
         ArrayList<Ordine> ordini = new ArrayList<>();
         String sql = "SELECT o.codice_ordine, o.costo, o.stato, o.indirizzo_consegna, o.data_ordine, " +
-                "r.codice_ristorante, r.nome, r.indirizzo " +
-                "FROM Ordine o JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante " +
-                "WHERE o.stato = ?;";
+                     "r.codice_ristorante, r.nome, r.indirizzo " +
+                     "FROM Ordine o JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante " +
+                     "WHERE o.stato >= 1 AND o.stato < 6 AND o.codice_ordine NOT IN (SELECT codice_ordine FROM Ordine WHERE nickname_cliente = ?);";
 
-        try (PreparedStatement query = connection.prepareStatement(sql)) {
-            query.setInt(1, StatoOrdine.PREPARAZIONE.ordinal()); // intero, coerente con il DB
+        try (PreparedStatement query = connection.prepareStatement(sql)){
+            query.setString(1,nickname);
+
             try (ResultSet rs = query.executeQuery()) {
-                while (rs.next()) { // <-- iterazione
+                while (rs.next()) {
                     ordini.add(ResultSetMapper.converti_reuslt_into_ordine(rs));
                 }
             }

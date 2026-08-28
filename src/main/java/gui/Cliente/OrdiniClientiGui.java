@@ -77,6 +77,7 @@ public class OrdiniClientiGui extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Ordine ordine = ordiniJList.getSelectedValue();
+                System.out.println(ordine);
                 if(ordine == null){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -94,8 +95,15 @@ public class OrdiniClientiGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                main.get_cliente_controller().conferma_creazione_ordine(ordine);
-                aggiorna_ordiniLista();
+
+                try {
+                    main.get_cliente_controller().conferma_creazione_ordine(ordine);
+                    aggiorna_ordiniLista();
+                }
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
             }
         });
 
@@ -141,6 +149,7 @@ public class OrdiniClientiGui extends JPanel {
     private void aggiorna_ordiniLista(){
         ordiniListModel.clear();
         ArrayList<Ordine> ordini = main.get_cliente_controller().get_ordini();
+        if(ordini == null) return;
 
         for(Ordine ordine : ordini)
             ordiniListModel.addElement(ordine);

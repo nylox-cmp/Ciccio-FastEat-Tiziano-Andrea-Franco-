@@ -43,27 +43,16 @@ public class RiderImpDAO implements RiderDAO{
         }
         catch(SQLException e){
             e.printStackTrace();
-            if (e.getMessage() != null && e.getMessage().contains("BEC1")) throw new BusinessError(ErrorType.RIDER_SUPERA_MAX_NUM_ORDINI);
+            if ("23505".equals(e.getSQLState())) throw new BusinessError(ErrorType.RICHIESTA_GIA_EFFETTUATA);
             throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
         }
     }
 
-    @Override
-    public void conferma_consegna_ordine(String codice_ordine, StatoOrdine stato){
-        String sql = "UPDATE Ordine SET stato = ? WHERE codice = ?;";
-        try (PreparedStatement query = connection.prepareStatement(sql)) {
-            query.setString(1, stato.name());
-            query.setString(2, codice_ordine);
-            query.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
-        }
-    }
 
     @Override
     public void cancella_richiesta_approvazione_consegna(String nickname_rider,String codice_ordine){
         String sql = "DELETE FROM RiderPropostiConsegna WHERE nickname_rider = ? AND codice_ordine = ?;";
+
         try (PreparedStatement query = connection.prepareStatement(sql)) {
             query.setString(1, nickname_rider);
             query.setString(2, codice_ordine);
@@ -83,7 +72,8 @@ public class RiderImpDAO implements RiderDAO{
         String sql = "SELECT o.codice_ordine, o.costo, o.stato, o.indirizzo_consegna, o.data_ordine, " +
                      "r.codice_ristorante, r.nome, r.indirizzo " +
                      "FROM Ordine o JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante " +
-                     "WHERE o.stato >= 1 AND o.stato < 6 AND o.codice_ordine NOT IN (SELECT codice_ordine FROM Ordine WHERE nickname_cliente = ?);";
+                     "WHERE o.stato >= 1 AND o.stato < 6 AND o.codice_ordine NOT IN (SELECT codice_ordine FROM Ordine WHERE nickname_cliente = ?) " +
+                     "AND o.codice_ordine NOT IN (SELECT codice_ordine FROM RiderPropostiConsegna WHERE ordine_preso_a_carico = true)";;
 
         try (PreparedStatement query = connection.prepareStatement(sql)){
             query.setString(1,nickname);
@@ -103,14 +93,10 @@ public class RiderImpDAO implements RiderDAO{
     @Override
     public ArrayList<Ordine> get_ordini_da_consegnare(String nickname) {
         ArrayList<Ordine> ordini = new ArrayList<>();
-        String sql = "SELECT o.codice_ordine, o.costo, o.stato, o.indirizzo_consegna, o.data_ordine, " +
-                    "r.codice_ristorante, r.nome, r.indirizzo " +
-                    "FROM Ordine o " +
-                    "JOIN RiderPropostiConsegna rp ON o.codice_ordine = rp.codice_ordine " +
-                    "JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante " +
-                    "WHERE rp.nickname_rider = ? AND rp.ordine_preso_a_carico = true " +
-                    "AND o.stato IN (?, ?, ?, ?, ?) " +
-                    "ORDER BY o.stato ASC;";
+        String sql = "SELECT * FROM Ordine o JOIN RiderPropostiConsegna rp ON o.codice_ordine = rp.codice_ordine " +
+                     "JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante " +
+                     "WHERE rp.nickname_rider = ? AND rp.ordine_preso_a_carico = true AND o.stato IN (?, ?, ?, ?, ?) " +
+                     "ORDER BY o.stato ASC;";
 
         try (PreparedStatement query = connection.prepareStatement(sql)) {
             query.setString(1, nickname);

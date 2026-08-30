@@ -71,10 +71,6 @@ public class Utente {
        aggiungi_ruolo_utente(dipendente);
     }
 
-    public void registra_dipedente_ristorante(Dipendente dipendente){
-        aggiungi_ruolo_utente(new Dipendente(this,dipendente.get_ruolo()));
-    }
-
     public void registra_rider(String mezzo_trasporto){
         aggiungi_ruolo_utente(new Rider(this, mezzo_trasporto));
     }

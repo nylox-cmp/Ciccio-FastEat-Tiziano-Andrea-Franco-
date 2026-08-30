@@ -16,7 +16,7 @@ public class Ordine {
     private ArrayList<Rider> rider_proposti = new ArrayList<Rider>();
     private ArrayList<RigaOrdine> righe_ordine = new ArrayList<RigaOrdine>();
     private Ristorante ristorante;
-    private Rider rider;
+    private Rider rider = null;
 
     public static final double MIN_COSTO_ORDINE_PER_PUNTI = 20.0;
     public static final int MAX_PUNTI_FEDELTA_SCONTO = 15;
@@ -49,7 +49,7 @@ public class Ordine {
     public String toString(){
         String string = get_codice_ordine() + " " + get_costo() + " " + get_data() + " " + get_indirizzo() + " " + get_stato_ordine() + " " + ristorante.toString();
         if(rider != null)
-            string = string + get_rider().get_nickname();
+            string = string + " " + get_rider().toString();
         return string;
     }
 
@@ -75,7 +75,6 @@ public class Ordine {
 
     public RigaOrdine get_riga_ordine_from_prodotto(Prodotto prodotto){
         for(RigaOrdine riga_ordine : righe_ordine){
-            System.out.println(riga_ordine + " " + riga_ordine.get_prodotto().equals(prodotto));
             if(riga_ordine.get_prodotto().equals(prodotto))
                 return riga_ordine;
         }

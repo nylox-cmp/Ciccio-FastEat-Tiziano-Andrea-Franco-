@@ -71,16 +71,8 @@ CREATE TABLE Dipendente(
     ruolo int NOT NULL,
 	codice_ristorante varchar(12) NOT NULL,
 	
-	FOREIGN KEY (nickname) REFERENCES Utente(nickname) ON DELETE CASCADE 
-);
-
-CREATE TABLE GestioneDipendente(
-    superiore varchar(32) NOT NULL,
-    subordinato varchar(32) NOT NULL,
-	
-    PRIMARY KEY(superiore, subordinato),
-	FOREIGN KEY (superiore) REFERENCES  Dipendente(nickname) ON DELETE CASCADE,
-	FOREIGN KEY (subordinato) REFERENCES Utente(nickname) ON DELETE CASCADE
+	FOREIGN KEY (nickname) REFERENCES Utente(nickname) ON DELETE CASCADE,
+    FOREIGN KEY  (codice_ristorante) REFERENCES  Ristorante(codice_ristorante) ON DELETE CASCADE
 );
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

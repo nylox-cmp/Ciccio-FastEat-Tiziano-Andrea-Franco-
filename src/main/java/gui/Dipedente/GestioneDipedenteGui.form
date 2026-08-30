@@ -48,10 +48,6 @@
                     <properties>
                       <background color="-13881804"/>
                       <foreground color="-262657"/>
-                      <model>
-                        <item value="BASE"/>
-                        <item value="GESTIONALE"/>
-                      </model>
                     </properties>
                   </component>
                   <component id="71fb1" class="javax.swing.JButton" binding="licenziaButton" default-binding="true">

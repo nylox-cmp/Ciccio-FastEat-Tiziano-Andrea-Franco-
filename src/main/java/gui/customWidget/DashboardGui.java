@@ -3,6 +3,8 @@ package gui.customWidget;
 import controller.DipendenteController;
 import controller.RiderController;
 import controller.RistoranteController;
+import exception.BusinessError;
+import exception.ErrorType;
 import gui.CanvasGui;
 import gui.Autenticazione.LoginGui;
 import gui.Cliente.ClienteGui;
@@ -92,7 +94,7 @@ public class DashboardGui extends JPanel {
                     else{
                         main.set_dipendente_controller(new DipendenteController());
                         main.set_ristorante_controller(new RistoranteController(main.get_dipendente_controller()));
-                        canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente().get_ristorante()));
+                        canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente()));
                     }
                 }
 
@@ -120,9 +122,15 @@ public class DashboardGui extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int scelta = JOptionPane.showConfirmDialog(mainPanel, "sei sicuro di volere eliminare l'account? l'eliminazione dell'account comportera la cancellazione dei ristoranti in cui sei Manager e licenzimento dei dipedenti ", "FoodDelivery", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if(scelta == JOptionPane.YES_OPTION) {
-                    main.get_utente_controller().cancella_account();
-                    main.distruggi_controller();
+                    try {
+                        main.get_utente_controller().cancella_account();
+                    }
+                    catch (BusinessError error){
+                        JOptionPane.showMessageDialog(mainPanel, error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
 
+                    main.distruggi_controller();
                     canvasGui.distruggi_all_dashbaord();
                     canvasGui.set_pagina(new LoginGui(canvasGui));
                 }

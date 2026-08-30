@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.Rider.OrdiniRiderGui">
   <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="797" height="400"/>
+      <xy x="20" y="20" width="1017" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -35,7 +35,15 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="33837" class="javax.swing.JButton" binding="confermaConsegnaButton">
+                  <component id="c7876" class="javax.swing.JButton" binding="segnalaOrdineInConsegnaButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <background color="-13881804"/>
+                      <foreground color="-262657"/>
+                      <text value="Segnala Ordine In Consegna"/>
+                    </properties>
+                  </component>
+                  <component id="dc68a" class="javax.swing.JButton" binding="confermaConsegnaButton" default-binding="true">
                     <constraints/>
                     <properties>
                       <background color="-13881804"/>
@@ -87,7 +95,7 @@
                     <properties>
                       <background color="-13881804"/>
                       <foreground color="-262657"/>
-                      <text value="Crea Richiesta di Consegnare Ordine"/>
+                      <text value="Crea Richiesta di Consegnare l'Ordine"/>
                     </properties>
                   </component>
                   <component id="45aa6" class="javax.swing.JButton" binding="cancellaRichiestaOrdineButton">

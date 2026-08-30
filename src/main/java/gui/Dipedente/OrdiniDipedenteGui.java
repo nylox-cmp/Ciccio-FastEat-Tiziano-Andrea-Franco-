@@ -27,7 +27,6 @@ public class OrdiniDipedenteGui extends JPanel {
     private JScrollPane ordiniJScrollPane;
     private JScrollPane riderPropostiJScrollPane;
 
-    private JButton cancellaButton;
     private JButton segnalaProntoAlRitiroButton;
     private JButton rifiutaButton;
     private JButton accettaButton;
@@ -36,6 +35,7 @@ public class OrdiniDipedenteGui extends JPanel {
     private JList<Ordine> ordiniLista;
     private DefaultListModel<Rider> riderPropostiListModel = new DefaultListModel<Rider>();
     private JList<Rider> riderPropostiLista;
+    private JButton annullaOrdineButton;
 
     private CanvasGui canvasGui;
 
@@ -53,6 +53,8 @@ public class OrdiniDipedenteGui extends JPanel {
         ordiniLista.setModel(ordiniListModel);
         riderPropostiLista.setModel(riderPropostiListModel);
 
+        aggiorna_ordiniLista();
+
         //________________________________________________________________________________________________________________________________________________
         // ListSelectionListener che mostra il contenuto dell'ordine e mostra i rider proposti
 
@@ -66,12 +68,10 @@ public class OrdiniDipedenteGui extends JPanel {
             }
         });
 
-        aggiorna_ordiniLista();
-
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Ordini
 
-        cancellaButton.addActionListener(new ActionListener() {
+        annullaOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Ordine ordine = ordiniLista.getSelectedValue();

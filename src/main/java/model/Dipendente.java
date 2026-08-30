@@ -42,8 +42,8 @@ public class Dipendente extends Utente{
     // Operazione Dipendente
 
     public void licenziati(){
-        if(ruolo == Ruolo.MANAGER){
-            cancella_ristorante(ristorante);
+        if(ruolo.equals(Ruolo.MANAGER)){
+            cancella_ristorante();
         }
         ristorante = null;
     }
@@ -52,38 +52,14 @@ public class Dipendente extends Utente{
     //Gestione Permessi
 
     public boolean puo_eseguire(Ruolo ruolo_richiesto){
-        return (ruolo.ordinal() <= ruolo_richiesto.ordinal());
-    }
-
-    //________________________________________________________________________________________________________________________________________________
-    //Gestione Dipedenti
-
-    public void licenzia_dipendente(Dipendente dipendente){
-        if(puo_eseguire(Ruolo.GESTIONALE))
-            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
-
-        if((dipendente.equals(dipendente) == false) && (puo_eseguire(Ruolo.GESTIONALE))){
-            if(subordinati.contains(dipendente))
-                subordinati.remove(dipendente);
-        }
-    }
-
-    public void modifica_ruolo_dipendente(Dipendente dipendente, Ruolo ruolo){
-        if(puo_eseguire(Ruolo.MANAGER))
-            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
-
-        if((dipendente.equals(dipendente) == false) && (puo_eseguire(Ruolo.MANAGER))){
-            if(subordinati.contains(dipendente))
-                dipendente.ruolo = ruolo;
-        }
+        return (ruolo.ordinal() >= ruolo_richiesto.ordinal());
     }
 
     //________________________________________________________________________________________________________________________________________________
     //Gestione Ristorante
 
-    public void cancella_ristorante(Ristorante ristorante){
-        if(puo_eseguire(Ruolo.MANAGER))
-            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+    public void cancella_ristorante(){
+        if(puo_eseguire(Ruolo.MANAGER) == false) throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         for(int i=0;i<subordinati.size();i += 1){
             licenzia_dipendente(subordinati.get(i));
@@ -92,19 +68,41 @@ public class Dipendente extends Utente{
     }
 
     //________________________________________________________________________________________________________________________________________________
-    //Gestione Rider
+    //Gestione Dipedenti
 
-    public void accetta_rider(Ordine ordine,Rider rider){
-        if(ristorante.get_ordini().contains(ordine) && ordine.get_rider_proposti().contains(rider) && ordine.get_rider() != null) {
-            ordine.set_rider(rider);
-            ordine.get_rider_proposti().remove(rider);
+    public void licenzia_dipendente(Dipendente dipendente){
+        if(puo_eseguire(Ruolo.GESTIONALE) == false) throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+
+        for(Dipendente subordinato : subordinati){
+            if(subordinato.equals(dipendente)){
+                subordinato.set_ristorante(null);
+                subordinati.remove(subordinato);
+                break;
+            }
         }
     }
 
-    public void rifiuta_rider(Ordine ordine,Rider rider){
-        if(ristorante.get_ordini().contains(ordine)){
-            ordine.get_rider_proposti().remove(rider);
+    public void modifica_ruolo_dipendente(Dipendente dipendente, Ruolo ruolo){
+        if(puo_eseguire(Ruolo.MANAGER) == false) throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+
+        if((dipendente.equals(dipendente) == false)){
+            if(subordinati.contains(dipendente))
+                dipendente.ruolo = ruolo;
         }
+    }
+
+
+    //________________________________________________________________________________________________________________________________________________
+    //Gestione Rider
+
+    public void accetta_rider(Ordine ordine,Rider rider){
+        ordine.set_rider(rider);
+        ordine.get_rider_proposti().remove(rider);
+        System.out.println(rider + " " + ordine);
+    }
+
+    public void rifiuta_rider(Ordine ordine,Rider rider){
+        ordine.get_rider_proposti().remove(rider);
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -112,13 +110,17 @@ public class Dipendente extends Utente{
 
     public void segnala_ordine_pronto_ritiro(Ordine ordine){
         if((ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE) && (ristorante.get_ordini().contains(ordine) == false))
-            throw new BusinessError(ErrorType.ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO);
+            throw new BusinessError(ErrorType.IMPOSSIBBILE_CAMBIARE_STATO_AL_ORDINE);
 
-        ordine.set_stato_ordine(StatoOrdine.PRONTO_RITIRO_RIDER);
+        if(ristorante.get_ordini().contains(ordine))
+            ordine.set_stato_ordine(StatoOrdine.PRONTO_RITIRO_RIDER);
     }
 
     public void annulla_ordine(Ordine ordine) {
-        if (ristorante.get_ordini().contains(ordine) && ordine.get_stato_ordine() == StatoOrdine.PREPARAZIONE)
+        if(ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE)
+            throw new BusinessError(ErrorType.IMPOSSIBBILE_CAMBIARE_STATO_AL_ORDINE);
+
+        if(ordine.get_stato_ordine() == StatoOrdine.PREPARAZIONE && ristorante.get_ordini().contains(ordine))
             ordine.set_stato_ordine(StatoOrdine.ANNULLATO);
     }
 

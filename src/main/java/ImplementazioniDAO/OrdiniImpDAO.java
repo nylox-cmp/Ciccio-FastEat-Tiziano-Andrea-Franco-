@@ -6,6 +6,8 @@ import database.ConnessioneDatabase;
 import exception.BusinessError;
 import exception.ErrorType;
 import model.RigaOrdine;
+import model.StatoOrdine;
+import org.postgresql.core.SqlCommand;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,5 +61,29 @@ public class OrdiniImpDAO {
             throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
         }
     }
+
+    public static void aggiorna_stato_ordine(String codice_ordine, StatoOrdine stato){
+        Connection con;
+        String sql = "UPDATE Ordine SET stato = ? WHERE codice_ordine = ?;";
+
+        try{
+            con = ConnessioneDatabase.getInstance().connection;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
+
+        try(PreparedStatement query = con.prepareStatement(sql)){
+            query.setInt(1,stato.ordinal());
+            query.setString(2,codice_ordine);
+            query.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
+    }
+
 
 }

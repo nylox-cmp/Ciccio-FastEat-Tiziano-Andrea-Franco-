@@ -61,7 +61,7 @@ public class DipedenteGui extends JPanel {
                 main.set_dipendente_controller(new DipendenteController());
                 main.set_ristorante_controller(new RistoranteController(main.get_dipendente_controller()));
 
-                canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente().get_ristorante()));
+                canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente()));
                 canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
             }
         });
@@ -81,7 +81,7 @@ public class DipedenteGui extends JPanel {
                     main.set_dipendente_controller(new DipendenteController());
                     main.set_ristorante_controller(new RistoranteController(main.get_dipendente_controller()));
 
-                    canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente().get_ristorante()));
+                    canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente()));
                     canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
                 }
                 catch (BusinessError error){

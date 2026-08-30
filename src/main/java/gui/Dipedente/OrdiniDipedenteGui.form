@@ -38,20 +38,21 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="aa3c4" class="javax.swing.JButton" binding="cancellaButton" default-binding="true">
+                  <component id="e4226" class="javax.swing.JButton" binding="annullaOrdineButton" default-binding="true">
                     <constraints/>
                     <properties>
                       <background color="-13881804"/>
                       <foreground color="-262657"/>
-                      <text value="Cancella"/>
+                      <text value="Annulla Ordine"/>
                     </properties>
                   </component>
-                  <component id="caff4" class="javax.swing.JButton" binding="segnalaProntoAlRitiroButton">
+                  <component id="15db5" class="javax.swing.JButton" binding="segnalaProntoAlRitiroButton">
                     <constraints/>
                     <properties>
                       <background color="-13881804"/>
+                      <enabled value="true"/>
                       <foreground color="-262657"/>
-                      <text value="Sengla Pronto Al Ritiro"/>
+                      <text value="Segnala Ordine Pronto Ritiro Rider"/>
                     </properties>
                   </component>
                 </children>

@@ -31,6 +31,7 @@ public class OrdiniRiderGui extends JPanel{
     private JButton creaRichiestaOrdineButton;
     private JButton confermaConsegnaButton;
     private JButton cancellaRichiestaOrdineButton;
+    private JButton segnalaOrdineInConsegnaButton;
 
     private CanvasGui canvasGui;
     private main.Main main;
@@ -61,12 +62,13 @@ public class OrdiniRiderGui extends JPanel{
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 Ordine ordine = ordiniPropostiLista.getSelectedValue();
+                if(ordine == null) return;
                 contenutoOrdine.aggiorna_lista(ordine);
             }
         });
 
         //________________________________________________________________________________________________________________________________________________
-        // ActionListener che Gestiscono lo StatoOrdine
+        // ActionListener Richieste Consegna
 
         creaRichiestaOrdineButton.addActionListener(new ActionListener() {
             @Override
@@ -108,6 +110,28 @@ public class OrdiniRiderGui extends JPanel{
             }
         });
 
+        //________________________________________________________________________________________________________________________________________________
+        // ActionListener Gestione StatoOrdine OrdiniDaConsegnare
+
+        segnalaOrdineInConsegnaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ordine ordine = ordiniDaConsegnareLista.getSelectedValue();
+                if(ordine == null){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try{
+                    main.get_rider_controller().segnala_ordine_as_in_consegna(ordine);
+                    aggiorna_OrdiniDaConsegnare();
+                }
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         confermaConsegnaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -116,10 +140,17 @@ public class OrdiniRiderGui extends JPanel{
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                main.get_rider_controller().conferma_consegna_ordine(ordine);
-                aggiorna_OrdiniDaConsegnare();
+
+                try {
+                    main.get_rider_controller().conferma_consegna_ordine(ordine);
+                    aggiorna_OrdiniDaConsegnare();
+                }
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
+
     }
 
     //________________________________________________________________________________________________________________________________________________

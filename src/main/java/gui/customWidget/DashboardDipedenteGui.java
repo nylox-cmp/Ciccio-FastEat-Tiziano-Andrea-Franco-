@@ -5,6 +5,7 @@ import exception.BusinessError;
 import exception.ErrorType;
 import gui.Cliente.ClienteGui;
 import gui.Dipedente.*;
+import model.Dipendente;
 import model.RigaOrdine;
 import model.Ristorante;
 import model.Ruolo;
@@ -24,16 +25,20 @@ public class DashboardDipedenteGui extends JPanel {
     private JComboBox areaGestioneComboBox;
     private JButton licenziatiButton;
 
+    private Dipendente dipendente;
     private Ristorante ristorante;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public DashboardDipedenteGui(CanvasGui canvasGui, Ristorante ristorante) {
+    public DashboardDipedenteGui(CanvasGui canvasGui, Dipendente dipendente) {
         setLayout(new BorderLayout());
         add(mainPanel, BorderLayout.CENTER);
 
-        this.ristorante = ristorante;
+        this.dipendente = dipendente;
+        this.ristorante = dipendente.get_ristorante();
+
+        aggiorna_ruolo_label();
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Selettore Gui
@@ -54,6 +59,7 @@ public class DashboardDipedenteGui extends JPanel {
                         canvasGui.set_pagina(new GestioneDipedenteGui(canvasGui));
                         break;
                 }
+                aggiorna_ruolo_label();
             }
         });
 
@@ -71,7 +77,7 @@ public class DashboardDipedenteGui extends JPanel {
                         canvasGui.set_pagina(new ClienteGui(canvasGui));
                     }
                     catch(BusinessError error){
-                        JOptionPane.showMessageDialog(canvasGui.get_pagina(), ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(mainPanel, error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                 }
@@ -82,8 +88,8 @@ public class DashboardDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Metodo Aggiornamento Label
 
-    public void aggiorna_ruolo_label(CanvasGui canvasGui){
-        infoDipendente.setText(Ruolo.converti_ruolo_to_string(canvasGui.main.get_dipendente_controller().get_dipendente().get_ruolo()));
+    public void aggiorna_ruolo_label( ){
+        infoDipendente.setText(Ruolo.converti_ruolo_to_string(dipendente.get_ruolo()));
     }
 
 }

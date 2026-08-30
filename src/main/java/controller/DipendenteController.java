@@ -1,6 +1,7 @@
 package controller;
 
 import ImplementazioniDAO.DipendenteImpDAO;
+import ImplementazioniDAO.OrdiniImpDAO;
 import controller.Utils.SessionManager;
 import dao.DipendenteDAO;
 import model.*;
@@ -14,7 +15,6 @@ public class DipendenteController {
 
     private ArrayList<Dipendente> subordinati = new ArrayList<Dipendente>();
     private ArrayList<Ordine> ordini = new ArrayList<Ordine>();
-
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -54,12 +54,12 @@ public class DipendenteController {
 
     public void segnala_ordine_pronto_ritiro(Ordine ordine){
         dipendente.segnala_ordine_pronto_ritiro(ordine);
-        dipendenteDB.segnala_ordine_pronto_ritiro(ordine.get_codice_ordine());
+        OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
     }
 
     public void annulla_ordine(Ordine ordine){
         dipendente.annulla_ordine(ordine);
-        dipendenteDB.annula_ordine(ordine.get_codice_ordine());
+        OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -71,7 +71,7 @@ public class DipendenteController {
     }
 
     public void licenzia_dipendente(Dipendente subordinato){
-        dipendente.licenzia_dipendente(dipendente);
+        dipendente.licenzia_dipendente(subordinato);
         dipendenteDB.licenzia_dipedente(subordinato.get_nickname());
     }
 
@@ -82,16 +82,20 @@ public class DipendenteController {
 
 
     public ArrayList<Dipendente> get_subordinati(){
-        subordinati = dipendenteDB.get_subordinati(dipendente.get_nickname());
+        subordinati = dipendenteDB.get_subordinati(dipendente.get_ristorante().get_codice_ristorante(),dipendente.get_ruolo());
+        dipendente.set_subordinati(subordinati);
         return subordinati;
     }
 
     public ArrayList<Ordine> get_ordini(){
         ordini = dipendenteDB.get_ordini_ristorante(dipendente.get_ristorante().get_codice_ristorante());
+        dipendente.get_ristorante().set_ordini(ordini);
         return ordini;
     }
 
     public ArrayList<Rider> get_rider_proposti_consegna(Ordine ordine){
-        return dipendenteDB.get_rider_proposti_consegna(ordine.get_codice_ordine());
+         ArrayList<Rider> rider_proposti = dipendenteDB.get_rider_proposti_consegna(ordine.get_codice_ordine());
+         ordine.set_rider_proposti(rider_proposti);
+         return rider_proposti;
     }
 }

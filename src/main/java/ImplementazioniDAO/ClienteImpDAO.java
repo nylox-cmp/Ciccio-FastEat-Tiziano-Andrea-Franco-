@@ -76,52 +76,6 @@ public class ClienteImpDAO implements ClienteDAO {
     }
 
     @Override
-    public void annulla_ordine(String codice_ordine){
-        String sql = "UPDATE Ordine SET stato = ? WHERE codice_ordine = ?;";
-
-        try(PreparedStatement query = connection.prepareStatement(sql)){
-            query.setInt(1,StatoOrdine.ANNULLATO.ordinal());
-            query.setString(2,codice_ordine);
-            query.executeUpdate();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
-        }
-    }
-
-    @Override
-    public void conferma_creazione_ordine(String codice_ordine){
-        String sql = "UPDATE Ordine SET stato = ? WHERE codice_ordine = ?;";
-
-        try(PreparedStatement query = connection.prepareStatement(sql)){
-            query.setInt(1,StatoOrdine.PREPARAZIONE.ordinal());
-            query.setString(2,codice_ordine);
-            query.executeUpdate();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-            if (e.getMessage() != null && e.getMessage().contains("BEC0")) throw new BusinessError(ErrorType.ORDINE_VUOTO);
-            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
-        }
-    }
-
-    @Override
-    public void conferma_consegna_ordine(String codice_ordine,StatoOrdine stato){
-        String sql = "UPDATE Ordine SET stato = ? WHERE codice_ordine = ?;";
-
-        try(PreparedStatement query = connection.prepareStatement(sql)){
-            query.setInt(1,stato.ordinal());
-            query.setString(2,codice_ordine);
-            query.executeUpdate();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
-        }
-    }
-
-    @Override
     public void applica_sconto(String codice_ordine,double costo){
         String sql = "UPDATE Ordine SET costo = ? WHERE codice_ordine = ?;";
 
@@ -218,20 +172,24 @@ public class ClienteImpDAO implements ClienteDAO {
 
     @Override
     public ArrayList<Ordine> get_ordini_cliente(String nickname){
-        ArrayList<Ordine> ordini = new ArrayList<Ordine>();
-        String sql = "SELECT * FROM Ordine o JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante WHERE nickname_cliente = ? ORDER BY stato ASC;";
+        ArrayList<Ordine> ordini = new ArrayList<>();
+        String sql = "SELECT o.*, r.*, u.*, rid.* FROM Ordine o " +
+                     "JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante " +
+                     "LEFT JOIN RiderPropostiConsegna rpc ON o.codice_ordine = rpc.codice_ordine AND rpc.ordine_preso_a_carico = true " +
+                     "LEFT JOIN Utente u ON u.nickname = rpc.nickname_rider " +
+                     "LEFT JOIN Rider rid ON rid.nickname = u.nickname " +
+                     "WHERE o.nickname_cliente = ? " +
+                     "ORDER BY o.stato ASC;";
 
-        try(PreparedStatement query = connection.prepareStatement(sql)){
-            query.setString(1,nickname);
-
-            try(ResultSet result = query.executeQuery()){
-                while(result.next()){
+        try (PreparedStatement query = connection.prepareStatement(sql)) {
+            query.setString(1, nickname);
+            try (ResultSet result = query.executeQuery()) {
+                while (result.next()) {
                     ordini.add(ResultSetMapper.converti_reuslt_into_ordine(result));
                 }
             }
             return ordini;
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
         }

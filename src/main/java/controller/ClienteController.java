@@ -47,17 +47,18 @@ public class ClienteController{
 
     public void annulla_ordine(Ordine ordine) {
         cliente.annulla_ordine(ordine);
-        clienteDB.annulla_ordine(ordine.get_codice_ordine());
+        OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
     }
 
     public void conferma_creazione_ordine(Ordine ordine) {
         cliente.conferma_creazione_ordine(ordine);
-        clienteDB.conferma_creazione_ordine(ordine.get_codice_ordine());
+        System.out.println(ordine);
+        OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
     }
 
     public void conferma_consegna_ordine(Ordine ordine) {
         cliente.conferma_consegna_ordine(ordine);
-        clienteDB.conferma_creazione_ordine(ordine.get_codice_ordine());
+        OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
     }
 
     public void applica_sconto(Ordine ordine, int punti_fedelta) {
@@ -97,6 +98,7 @@ public class ClienteController{
             ordine.set_righe_ordine(OrdiniImpDAO.get_righeOrdine(ordine.get_codice_ordine()).entitys);
         }
 
+        cliente.set_ordini(ordini);
         return ordini;
     }
 

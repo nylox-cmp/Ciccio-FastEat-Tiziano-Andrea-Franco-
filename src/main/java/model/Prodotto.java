@@ -39,16 +39,17 @@ public class Prodotto {
         if (!(o instanceof Prodotto)) return false;
 
         Prodotto prodotto = (Prodotto) o;
-        if (this.menu == null || prodotto.menu == null) return Objects.equals(this.get_nome(),prodotto.get_nome());
-        return Objects.equals(this.nome, prodotto.nome) && Objects.equals(this.menu.get_ristorante(), prodotto.menu.get_ristorante());
+        if (this.menu == null || prodotto.menu == null) return prodotto.get_nome().equals(this.get_nome());
+        return prodotto.get_nome().equals(this.get_nome()) && prodotto.get_menu().equals(this.get_menu());
     }
 
     //________________________________________________________________________________________________________________________________________________
     // Prodotto
 
     public void modifica_prodotto(String nome,double prezzo_unitario){
-        if(menu.esiste_prodotto_stesso_nome(nome))
-            throw new BusinessError(ErrorType.INPUT_NON_UNIVOCO);
+        for(Prodotto prodotto : menu.get_prodotti()){
+            if(prodotto.equals(this) == false && prodotto.get_nome().equals(nome)) throw new BusinessError(ErrorType.INPUT_NON_UNIVOCO);
+        }
 
         this.nome = nome;
         set_prezzo_unitario(prezzo_unitario);

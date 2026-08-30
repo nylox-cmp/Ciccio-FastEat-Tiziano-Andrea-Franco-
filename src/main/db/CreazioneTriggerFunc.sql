@@ -41,34 +41,6 @@ FOR EACH ROW
 EXECUTE FUNCTION controlla_ordine_vuoto_stato_preparazione();
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
----Trigger che non permette a un rider di prendere in carico più di 3 ordini contemporanamente controllando se ci siano
---OrdiniInSospeso a carico del rider in uno di questi StatiOrdine (PREPARAZIONE 1,PRONTO_RITIRO_RIDER 2,IN_CONSEGNA 3,CONFERMA_CONSEGNA_RIDER 4,CONFERMA_CONSEGNA_CLIENTE 5)
-
-CREATE OR REPLACE FUNCTION controlla_numero_ordini_trasportati_rider()
-RETURNS TRIGGER LANGUAGE PLPGSQL
-AS $$
-DECLARE NumeroOrdiniRider INT;
-BEGIN
-	SELECT count(*) INTO NumeroOrdiniRider FROM RiderPropostiConsegna rpc
-	JOIN Ordine o ON rpc.codice_ordine = o.codice_ordine
-	WHERE rpc.nickname_rider = NEW.nickname_rider
-  	AND o.stato IN (1,2,3,4,5);
-
-	IF NumeroOrdiniRider > 3 THEN
-		RAISE EXCEPTION 'BEC1: un rider non può trasportare più di 3 ordini alla volta';
-	END IF;
-
-	RETURN NEW;
-END
-$$;
-
-
-CREATE TRIGGER controlla_numero_ordini_trasportati_rider_trigger
-BEFORE INSERT ON RiderPropostiConsegna
-FOR EACH ROW
-EXECUTE FUNCTION controlla_numero_ordini_trasportati_rider();
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---Trigger che non permetta la Cancellazione del Cliente se e solo se siano  presenti OrdiniInSospeso
 --Che siano nello StatoOrdine (PREPARAZIONE 1,PRONTO_RITIRO_RIDER 2,IN_CONSEGNA 3,CONFERMA_CONSEGNA_RIDER 4,CONFERMA_CONSEGNA_CLIENTE 5)
 
@@ -79,20 +51,16 @@ DECLARE
 	NOrdiniSospesi INT;
 BEGIN
 
-
-
 	SELECT count(*) INTO NOrdiniSospesi
 	FROM Ordine o
 	WHERE o.nickname_cliente = OLD.nickname
 	AND o.stato IN (1,2,3,4,5);
 
-	NOrdiniSospesi := NOrdiniRiderSospesi + NOrdiniClienteSospesi;
-
     IF NOrdiniSospesi > 0 THEN
         RAISE EXCEPTION 'BEC2: non puoi cancellare l''Account mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
     END IF;
 
-    RETURN NEW;
+    RETURN OLD;
 END;
 $$;
 
@@ -135,30 +103,32 @@ EXECUTE FUNCTION gestisci_cancellazione_rider();
 --Trigger che cancella il ristorante alla cancellazione del dipedente con il Ruolo "Manager" se e solo se siano presenti degli OrdiniInSospeso
 --che siano nello StatoOrdine (PREPARAZIONE 1,PRONTO_RITIRO_RIDER 2,IN_CONSEGNA 3,CONFERMA_CONSEGNA_RIDER 4,CONFERMA_CONSEGNA_CLIENTE 5)
 
-CREATE OR REPLACE FUNCTION gestisci_cancellazione_ristorante()
+CREATE OR REPLACE FUNCTION gestisci_cancellazione_dipendente()
 RETURNS TRIGGER LANGUAGE PLPGSQL
 AS $$
 DECLARE
-	NOrdiniSospesi INT;
-BEGIN 
+    NOrdiniSospesi INT;
+BEGIN
+	IF OLD.ruolo = 2 THEN
+        SELECT count(*) INTO NOrdiniSospesi
+        FROM Ordine o
+        WHERE o.codice_ristorante = OLD.codice_ristorante AND o.stato IN (1,2,3,4,5);
 
-	SELECT count(*) INTO NOrdiniSospesi
-	FROM Ordine o
-	WHERE o.codice_ristorante = OLD.codice_ristorante AND o.stato IN (1,2,3,4,5);
+        IF NOrdiniSospesi > 0 THEN
+                    RAISE EXCEPTION 'BEC3: non puoi cancellare il Ristorante mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
+        END IF;
 
-	IF NOrdiniSospesi > 0 THEN
-		RAISE EXCEPTION 'BEC3: non puoi cancellare il Ristorante mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
-	END IF;
+        DELETE FROM Ristorante WHERE codice_ristorante = OLD.codice_ristorante;
+    END IF;
 
-	DELETE FROM Ristorante WHERE codice_ristorante = OLD.codice_ristorante;
-
+	RETURN OLD;
 END;
 $$;
 
-CREATE TRIGGER gestisci_cancellazione_ristorante_trigger
+CREATE TRIGGER gestisci_cancellazione_dipendente_trigger
 BEFORE DELETE ON Dipendente
 FOR EACH ROW
-EXECUTE FUNCTION gestici_cancellazione_ristorante();
+EXECUTE FUNCTION gestisci_cancellazione_dipendente();
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---Trigger che aggiunga un punto_fedeltà al cliente, una volta che l'ordine entrato nello StatoOrdine CONSEGNATO
@@ -167,11 +137,13 @@ CREATE OR REPLACE FUNCTION aggiungi_punto_fedelta()
 RETURNS TRIGGER LANGUAGE PLPGSQL
 AS $$
 BEGIN
-	IF NEW.costo >= 20 THEN
-		UPDATE Cliente c SET punti_fedelta = punti_fedelta + 1 WHERE c.nickname = NEW.nickname_cliente;
-	END IF;
+
+    IF NEW.stato = 6 AND NEW.costo >= 20 THEN
+        UPDATE Cliente c SET punti_fedelta = punti_fedelta + 1
+        WHERE c.nickname = NEW.nickname_cliente;
+    END IF;
+    RETURN NEW;
 	
-	RETURN NEW;
 END;
 $$;
 
@@ -179,3 +151,5 @@ CREATE TRIGGER aggiungi_punto_fedelta_trigger
 AFTER UPDATE ON Ordine
 FOR EACH ROW
 EXECUTE FUNCTION aggiungi_punto_fedelta();
+
+SELECT * FROM RiderPropostiConsegna;

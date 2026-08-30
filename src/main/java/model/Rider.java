@@ -4,13 +4,13 @@ package model;
 import exception.BusinessError;
 import exception.ErrorType;
 
+import javax.print.attribute.standard.JobOriginatingUserName;
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 
 public class Rider extends Utente{
     private String mezzo_trasporto;
     private ArrayList<Ordine> ordini_da_consegnare = new ArrayList<Ordine>();
-
-    public static int MAX_ORDINI_PER_RIDER = 3;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -30,20 +30,34 @@ public class Rider extends Utente{
     }
 
     //________________________________________________________________________________________________________________________________________________
-    // Operazioni su Ordine
+    // Gestione Richieste Ordine
 
     public void crea_richiesta_approvazione_consegna(Ordine ordine){
-        if(ordine.get_stato_ordine() == StatoOrdine.PREPARAZIONE){
-            ordine.get_rider_proposti().add(this);
-        }
+        if(ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE && ordine.get_stato_ordine() != StatoOrdine.PRONTO_RITIRO_RIDER)
+            throw new BusinessError(ErrorType.IMPOSSIBBILE_CAMBIARE_STATO_AL_ORDINE);
+
+        ordine.get_rider_proposti().add(this);
     }
 
     public void cancella_richiesta_approvazione_consegna(Ordine ordine){
+        ordine.get_rider_proposti().remove(this);
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+    // Gestione Ordine
+
+    public void segnala_ordine_as_in_consegna(Ordine ordine){
+        if(ordine.get_stato_ordine() != StatoOrdine.PRONTO_RITIRO_RIDER)
+            throw new BusinessError(ErrorType.IMPOSSIBBILE_CAMBIARE_STATO_AL_ORDINE);
+
         if(ordini_da_consegnare.contains(ordine))
-            ordini_da_consegnare.remove(ordine);
+        ordine.set_stato_ordine(StatoOrdine.IN_CONSEGNA);
     }
 
     public void conferma_consegna_ordine(Ordine ordine){
+        if(ordine.get_stato_ordine() != StatoOrdine.IN_CONSEGNA && ordine.get_stato_ordine() != StatoOrdine.CONFERMA_CONSEGNA_CLIENTE)
+            throw new BusinessError(ErrorType.IMPOSSIBBILE_CAMBIARE_STATO_AL_ORDINE);
+
         if (ordine.get_stato_ordine() == StatoOrdine.IN_CONSEGNA)
             ordine.set_stato_ordine(StatoOrdine.CONFERMA_CONSEGNA_RIDER);
 

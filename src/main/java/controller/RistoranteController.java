@@ -33,14 +33,13 @@ public class RistoranteController {
     // Ristorante
 
     public void cancella_ristorante(){
+        dipendente.cancella_ristorante();
         ristoranteDB.cancella_ristorante(ristorante.get_codice_ristorante());
-        dipendente.cancella_ristorante(dipendente.get_ristorante());
         this.dipendente = null;
     }
 
     public void modifica_ristorante(String nome,String indirizzo){
-        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
-            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE) == false) throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         ristorante.modifica_ristorante(nome,indirizzo);
         ristoranteDB.modifica_ristorante(nome,indirizzo,ristorante.get_codice_ristorante());
@@ -50,24 +49,21 @@ public class RistoranteController {
     // Menu
 
     public void crea_menu(String nome){
-        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
-            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE) == false) throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         ristorante.crea_menu(nome);
         ristoranteDB.crea_menu(nome,get_ristorante().get_codice_ristorante());
     }
 
     public void modifica_menu(Menu menu,String nome){
-        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
-            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE) == false) throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         menu.modifica_menu(nome);
         ristoranteDB.modifica_menu(nome,id_menu.get(menu));
     }
 
     public void cancella_menu(Menu menu){
-        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
-            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE) == false) throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         ristorante.cancella_menu(menu);
         ristoranteDB.cancella_menu(id_menu.get(menu));
@@ -77,24 +73,21 @@ public class RistoranteController {
     // Prodotto
 
     public void crea_prodotto(Menu menu,String nome,double prezzo_unitario){
-        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
-            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE) == false) throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         menu.crea_prodotto(nome,prezzo_unitario);
         ristoranteDB.crea_prodotto(nome,prezzo_unitario,id_menu.get(menu));
     }
 
     public void modifica_prodotto(Prodotto prodotto,String nome,double prezzo_unitario){
-        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
-            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE) == false) throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         prodotto.modifica_prodotto(nome,prezzo_unitario);
         ristoranteDB.modifica_prodotto(nome,prezzo_unitario,id_prodotti.get(prodotto));
     }
 
     public void cancella_prodotto(Menu menu,Prodotto prodotto){
-        if(dipendente.puo_eseguire(Ruolo.GESTIONALE))
-            throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
+        if(dipendente.puo_eseguire(Ruolo.GESTIONALE) == false) throw new BusinessError(ErrorType.PERMESSI_NON_SUFFICIENTI);
 
         menu.cancella_prodotto(prodotto);
         ristoranteDB.cancella_prodotto(id_prodotti.get(prodotto));

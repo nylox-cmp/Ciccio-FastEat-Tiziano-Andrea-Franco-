@@ -43,39 +43,6 @@ public class DipendenteImpDAO implements DipendenteDAO {
     }
 
     //________________________________________________________________________________________________________________________________________________
-    // Operazione Ordine
-
-    @Override
-    public void segnala_ordine_pronto_ritiro(String codice_ordine){
-        String sql = "UPDATE Ordine SET stato = ? WHERE codice_ordine = ?;";
-
-        try(PreparedStatement query = connection.prepareStatement(sql)){
-            query.setInt(1, StatoOrdine.PRONTO_RITIRO_RIDER.ordinal());
-            query.setString(2,codice_ordine);
-            query.executeUpdate();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
-        }
-    }
-
-    @Override
-    public void annula_ordine(String codice_ordine){
-        String sql = "UPDATE Ordine SET stato = ? WHERE codice_ordine = ?;";
-
-        try(PreparedStatement query = connection.prepareStatement(sql)){
-            query.setInt(1, StatoOrdine.ANNULLATO.ordinal());
-            query.setString(2,codice_ordine);
-            query.executeUpdate();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
-        }
-    }
-
-    //________________________________________________________________________________________________________________________________________________
     // Gestione RiderPropostiOrdine
 
     @Override
@@ -146,7 +113,6 @@ public class DipendenteImpDAO implements DipendenteDAO {
 
     public Ristorante get_ristorante(String nickname){
         String codice_ristorante = get_codice_ristorante(nickname);
-
         String sql = "SELECT * FROM Ristorante WHERE codice_ristorante = ?;";
 
         try(PreparedStatement query = connection.prepareStatement(sql)){
@@ -182,19 +148,20 @@ public class DipendenteImpDAO implements DipendenteDAO {
     }
 
     @Override
-    public ArrayList<Dipendente> get_subordinati(String nickname){
+    public ArrayList<Dipendente> get_subordinati(String codice_ristorante,Ruolo ruolo){
         ArrayList<Dipendente> subordinati = new ArrayList<Dipendente>();
-        String sql = "SELECT nickname,ruolo FROM GestioneDipendente g JOIN Dipendente d ON d.nickname = g.subordinato WHERE superiore = ?;";
+        String sql = "SELECT * FROM Dipendente d JOIN Utente u ON d.nickname = u.nickname WHERE ruolo < ? AND codice_ristorante = ?;";
 
         try(PreparedStatement query = connection.prepareStatement(sql)){
-            query.setString(1,nickname);
+            query.setInt(1,ruolo.ordinal());
+            query.setString(2,codice_ristorante);
 
             try(ResultSet result = query.executeQuery()){
                 while(result.next()){
                     subordinati.add(ResultSetMapper.converti_result_into_dipedente(result));
                 }
             }
-            return null;
+            return subordinati;
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -205,7 +172,9 @@ public class DipendenteImpDAO implements DipendenteDAO {
     @Override
     public ArrayList<Ordine> get_ordini_ristorante(String codice_ristorante){
         ArrayList<Ordine> ordini = new ArrayList<Ordine>();
-        String sql = "SELECT * FROM Ordine o JOIN Ristorante r on o.codice_ristorante = r.codice_ristorante WHERE o.codice_ristorante = ? AND stato in (1,2,3,4,5,6,7) ORDER BY stato ASC;";
+        String sql = "SELECT o.*,ris.*,u.*,rid.* FROM Ordine o JOIN Ristorante ris on o.codice_ristorante = ris.codice_ristorante " +
+                     "JOIN RiderPropostiConsegna rpc ON o.codice_ordine = rpc.codice_ordine JOIN Utente u ON u.nickname = rpc.nickname_rider JOIN Rider rid ON rid.nickname = u.nickname " +
+                     "WHERE o.codice_ristorante = ? AND stato in (1,2,3,4,5,6,7) AND rpc.ordine_preso_a_carico = true ORDER BY o.stato ASC;";
 
         try(PreparedStatement query = connection.prepareStatement(sql)){
             query.setString(1,codice_ristorante);
@@ -226,7 +195,8 @@ public class DipendenteImpDAO implements DipendenteDAO {
     @Override
     public ArrayList<Rider> get_rider_proposti_consegna(String codice_ordine){
         ArrayList<Rider> rider_proposti = new ArrayList<Rider>();
-        String sql = "SELECT * FROM RiderPropostiConsegna WHERE codice_ordine = ?;";
+        String sql = "SELECT * FROM RiderPropostiConsegna rpc JOIN Utente u ON rpc.nickname_rider = u.nickname JOIN Rider r ON r.nickname = u.nickname " +
+                     "WHERE codice_ordine = ?;";
 
         try(PreparedStatement query = connection.prepareStatement(sql)){
             query.setString(1,codice_ordine);

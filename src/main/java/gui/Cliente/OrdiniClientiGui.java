@@ -58,34 +58,7 @@ public class OrdiniClientiGui extends JPanel {
         aggiorna_ordiniLista();
 
         //________________________________________________________________________________________________________________________________________________
-        // ActionListner Gestione Stato Ordine
-
-        confermaConsegnaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Ordine ordine = ordiniJList.getSelectedValue();
-                if(ordine == null){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                main.get_cliente_controller().conferma_consegna_ordine(ordine);
-                aggiorna_ordiniLista();
-            }
-        });
-
-        annulaOrdineButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Ordine ordine = ordiniJList.getSelectedValue();
-                System.out.println(ordine);
-                if(ordine == null){
-                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                main.get_cliente_controller().annulla_ordine(ordine);
-                aggiorna_ordiniLista();
-            }
-        });
+        // ActionListner Gestione StatoOrdine
 
         confermaCreazioneOrdineButton.addActionListener(new ActionListener() {
             @Override
@@ -102,7 +75,48 @@ public class OrdiniClientiGui extends JPanel {
                 }
                 catch (BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        confermaConsegnaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ordine ordine = ordiniJList.getSelectedValue();
+                if(ordine == null){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
+                }
+
+                try {
+                    main.get_cliente_controller().conferma_consegna_ordine(ordine);
+                    aggiorna_ordiniLista();
+                }
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                quantitaLabel.setText(String.valueOf(main.get_cliente_controller().get_cliente().get_punti_fedelta()));
+                canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label(main.get_cliente_controller().get_cliente().get_punti_fedelta());
+
+            }
+        });
+
+        annulaOrdineButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ordine ordine = ordiniJList.getSelectedValue();
+                if(ordine == null){
+                    JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    main.get_cliente_controller().annulla_ordine(ordine);
+                    aggiorna_ordiniLista();
+                }
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

@@ -152,6 +152,7 @@ public class MenuDipedentiGui extends JPanel {
                     double prezzo = Double.parseDouble(prezzo_string);
                     try {
                         canvasGui.main.get_ristorante_controller().modifica_prodotto(prodotto,nome, prezzo);
+                        aggiorna_lista_prodotti(menu);
                     }
                     catch (BusinessError error) {
                         JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Errore", JOptionPane.ERROR_MESSAGE);

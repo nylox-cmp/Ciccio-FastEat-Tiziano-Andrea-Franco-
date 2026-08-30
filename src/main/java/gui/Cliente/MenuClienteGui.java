@@ -203,7 +203,6 @@ public class MenuClienteGui extends JPanel{
 
         if(riga_ordine == null) aggiorna_quantita_label(0);
         else aggiorna_quantita_label(riga_ordine.get_quantita());
-        System.out.println(riga_ordine + " " + ordine.get_righe_ordine());
     }
 
     private void aggiorna_lista_prodotti(){

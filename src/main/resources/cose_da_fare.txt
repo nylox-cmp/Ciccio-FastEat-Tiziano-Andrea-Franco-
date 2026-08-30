@@ -4,5 +4,11 @@
 8.finire il class diagramm
 9.finire la documentazione
 16.Verifica che tutti i metodi rispettino l'integrita dei dati
-17.Sistemare la MenuClienteGui rendendo l'operazione del prendere la riga un'operazione sul database (la responsabilita dovrebbe essere di ClienteController o di OrdineController?)
-19.fixare hashign del prodotto in clientecontroller
+17.Sistemare i BCE code all'interno della creazione dei trigger all'interno delle implementazioni DAO
+
+//Da Testare OrdiniCliente,OrdiniDipendente,OrdiniRider,
+//Testate ClienteGui,RiderGui,DipendenteGui,RistoranteCliente,RistoranteDipendnete,MenuCLiente,MenuDipendente,GestioneDipendente
+//test punti fedelta
+
+
+//Bozza Preparazione (cliente) -> annulato

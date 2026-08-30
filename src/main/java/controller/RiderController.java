@@ -30,21 +30,29 @@ public class RiderController {
     }
 
     //________________________________________________________________________________________________________________________________________________
-    // operazioni Rider
+    // Gestione Richiesta Consegna
 
     public void crea_richiesta_approvazione_consegna(Ordine ordine){
         rider.crea_richiesta_approvazione_consegna(ordine);
         riderDB.crea_richiesta_approvazione_consegna(rider.get_nickname(),ordine.get_codice_ordine());
     }
 
-    public void conferma_consegna_ordine(Ordine ordine){
-      rider.conferma_consegna_ordine(ordine);
-      riderDB.conferma_consegna_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
-    }
-
     public void cancella_richiesta_approvazione_consegna(Ordine ordine){
         rider.cancella_richiesta_approvazione_consegna(ordine);
         riderDB.cancella_richiesta_approvazione_consegna(ordine.get_codice_ordine(),rider.get_nickname());
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+    // Gestione Ordine
+
+    public void conferma_consegna_ordine(Ordine ordine){
+      rider.conferma_consegna_ordine(ordine);
+      OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
+    }
+
+    public void segnala_ordine_as_in_consegna(Ordine ordine){
+        rider.segnala_ordine_as_in_consegna(ordine);
+        OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -59,6 +67,7 @@ public class RiderController {
 
     public ArrayList<Ordine> get_ordini_da_consegnare(){
         this.ordini_da_consegnare = riderDB.get_ordini_da_consegnare(rider.get_nickname());
+        rider.set_ordini_da_consegnare(ordini_da_consegnare);
         return ordini_da_consegnare;
     }
 

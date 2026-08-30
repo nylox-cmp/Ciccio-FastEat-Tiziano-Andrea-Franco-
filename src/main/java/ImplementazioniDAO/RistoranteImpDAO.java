@@ -52,6 +52,7 @@ public class RistoranteImpDAO implements RistoranteDAO {
         try(PreparedStatement query = connection.prepareStatement(sql)){
             query.setString(1,nome);
             query.setString(2,indirizzo);
+            query.setString(3,codice_ristorante);
 
             query.executeUpdate();
         }

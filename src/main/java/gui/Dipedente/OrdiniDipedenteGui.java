@@ -38,12 +38,15 @@ public class OrdiniDipedenteGui extends JPanel {
     private JButton annullaOrdineButton;
 
     private CanvasGui canvasGui;
+    private main.Main main;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
     public OrdiniDipedenteGui(CanvasGui canvasGui){
         this.canvasGui = canvasGui;
+        this.main = canvasGui.main;
+
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
@@ -114,9 +117,15 @@ public class OrdiniDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                canvasGui.main.get_dipendente_controller().accetta_rider(ordine,rider);
-                aggiorna_riderPropostiLista(ordine);
-                aggiorna_ordiniLista();
+
+                try{
+                    canvasGui.main.get_dipendente_controller().accetta_rider(ordine,rider);
+                    aggiorna_riderPropostiLista(ordine);
+                    aggiorna_ordiniLista();
+                }
+                catch(BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -129,8 +138,14 @@ public class OrdiniDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                canvasGui.main.get_dipendente_controller().rifiuta_rider(ordine,rider);
-                aggiorna_riderPropostiLista(ordine);
+
+                try {
+                    canvasGui.main.get_dipendente_controller().rifiuta_rider(ordine, rider);
+                    aggiorna_riderPropostiLista(ordine);
+                }
+                catch (BusinessError error){
+                    JOptionPane.showMessageDialog(mainPanel,error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }

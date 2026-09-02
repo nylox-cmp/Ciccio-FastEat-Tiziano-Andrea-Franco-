@@ -1,7 +1,6 @@
 package exception;
 
 import model.Ordine;
-import model.Rider;
 
 public enum ErrorType {
     IMPOSSIBILE_CONETTERSI_DATABASE,
@@ -15,6 +14,8 @@ public enum ErrorType {
     PRODOTTO_PRESENTE_ORDINE,
     CODICE_RISTORANTE_INESISTENTE,
     PERMESSI_NON_SUFFICIENTI,
+    ORDINE_GIA_POSSIEDE_RIDER_ACCETTATO,
+    IMPOSSIBBILE_RIFIUTARE_UN_RIDER_DOPO_AVERLO_ACCETTATO,
     ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO,
     IMPOSSIBBILE_CAMBIARE_STATO_AL_ORDINE,
     ORDINE_POSSIEDE_RIGAORDINE_CON_STESSO_PRODOTTO,
@@ -61,6 +62,12 @@ public enum ErrorType {
                 break;
             case PERMESSI_NON_SUFFICIENTI:
                 messaggio = "Operazione non consentita. Il tuo account non dispone dei permessi necessari per eseguire questa azione.";
+                break;
+            case ORDINE_GIA_POSSIEDE_RIDER_ACCETTATO:
+                messaggio = "Impossibile accettare un rider dopo averne accetato un'altro :C";
+                break;
+            case IMPOSSIBBILE_RIFIUTARE_UN_RIDER_DOPO_AVERLO_ACCETTATO:
+                messaggio = "Impossibile rifiutare un rider dopo averlo già accetato";
                 break;
             case ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO:
                 messaggio = "Impossibile modificare l'ordine nello stato attuale. Le modifiche sono consentite solo quando l'ordine è in 'BOZZA'.";

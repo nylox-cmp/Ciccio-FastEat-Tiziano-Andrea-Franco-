@@ -90,20 +90,20 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="e7055" class="javax.swing.JButton" binding="creaRichiestaOrdineButton">
-                    <constraints/>
-                    <properties>
-                      <background color="-13881804"/>
-                      <foreground color="-262657"/>
-                      <text value="Crea Richiesta di Consegnare l'Ordine"/>
-                    </properties>
-                  </component>
                   <component id="45aa6" class="javax.swing.JButton" binding="cancellaRichiestaOrdineButton">
                     <constraints/>
                     <properties>
                       <background color="-13881804"/>
                       <foreground color="-262657"/>
                       <text value="Cancella Richiesta di Consegna Ordine"/>
+                    </properties>
+                  </component>
+                  <component id="31128" class="javax.swing.JButton" binding="creaRichiestaOrdineButton">
+                    <constraints/>
+                    <properties>
+                      <background color="-13881804"/>
+                      <foreground color="-262657"/>
+                      <text value="Crea Richiesta di Consegnare l'Ordine"/>
                     </properties>
                   </component>
                 </children>

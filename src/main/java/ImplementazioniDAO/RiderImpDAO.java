@@ -57,6 +57,7 @@ public class RiderImpDAO implements RiderDAO{
             query.setString(1, nickname_rider);
             query.setString(2, codice_ordine);
             query.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
             throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
@@ -93,9 +94,9 @@ public class RiderImpDAO implements RiderDAO{
     @Override
     public ArrayList<Ordine> get_ordini_da_consegnare(String nickname) {
         ArrayList<Ordine> ordini = new ArrayList<>();
-        String sql = "SELECT * FROM Ordine o JOIN RiderPropostiConsegna rp ON o.codice_ordine = rp.codice_ordine " +
-                     "JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante " +
-                     "WHERE rp.nickname_rider = ? AND rp.ordine_preso_a_carico = true AND o.stato IN (?, ?, ?, ?, ?) " +
+        String sql = "SELECT o.*,ris.* FROM Ordine o JOIN RiderPropostiConsegna rpc ON o.codice_ordine = rpc.codice_ordine " +
+                     "JOIN Ristorante ris ON o.codice_ristorante = ris.codice_ristorante " +
+                     "WHERE rpc.nickname_rider = ? AND rpc.ordine_preso_a_carico = true AND o.stato IN (?, ?, ?, ?, ?) " +
                      "ORDER BY o.stato ASC;";
 
         try (PreparedStatement query = connection.prepareStatement(sql)) {

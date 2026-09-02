@@ -62,8 +62,8 @@ public class OrdiniImpDAO {
         }
     }
 
-    public static void aggiorna_stato_ordine(String codice_ordine, StatoOrdine stato){
-        Connection con;
+    public static  void aggiorna_stato_ordine(String codice_ordine, StatoOrdine stato){
+        Connection con = null;
         String sql = "UPDATE Ordine SET stato = ? WHERE codice_ordine = ?;";
 
         try{

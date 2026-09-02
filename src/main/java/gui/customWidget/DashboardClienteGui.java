@@ -14,10 +14,14 @@ public class DashboardClienteGui extends JPanel {
     private JLabel puntiFedeltaLabel;
     private JComboBox areaComboBox;
 
+    private main.Main main;
+
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
     public DashboardClienteGui(CanvasGui canvasGui){
+        this.main = canvasGui.main;
+
         setLayout(new BorderLayout());
         add(mainPanel, BorderLayout.CENTER);
 
@@ -34,6 +38,7 @@ public class DashboardClienteGui extends JPanel {
                         canvasGui.set_pagina(new OrdiniClientiGui(canvasGui));
                         break;
                 }
+                aggiorna_punti_fedelta_label();
             }
         });
     }
@@ -41,7 +46,7 @@ public class DashboardClienteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Metodo Aggiornamento Label
 
-    public void aggiorna_punti_fedelta_label(int quantita){
-        puntiFedeltaLabel.setText("punti fedelta: " + String.valueOf(quantita));
+    public void aggiorna_punti_fedelta_label(){
+        puntiFedeltaLabel.setText("punti fedelta: " + String.valueOf(main.get_cliente_controller().get_punti_fedelta()));
     }
 }

@@ -91,17 +91,19 @@ public class Dipendente extends Utente{
         }
     }
 
-
     //________________________________________________________________________________________________________________________________________________
     //Gestione Rider
 
     public void accetta_rider(Ordine ordine,Rider rider){
+        if(ordine.get_rider() != null) throw new BusinessError(ErrorType.ORDINE_GIA_POSSIEDE_RIDER_ACCETTATO);
+
         ordine.set_rider(rider);
         ordine.get_rider_proposti().remove(rider);
-        System.out.println(rider + " " + ordine);
     }
 
     public void rifiuta_rider(Ordine ordine,Rider rider){
+        if(ordine.get_rider().equals(rider)) throw new BusinessError(ErrorType.IMPOSSIBBILE_RIFIUTARE_UN_RIDER_DOPO_AVERLO_ACCETTATO);
+
         ordine.get_rider_proposti().remove(rider);
     }
 

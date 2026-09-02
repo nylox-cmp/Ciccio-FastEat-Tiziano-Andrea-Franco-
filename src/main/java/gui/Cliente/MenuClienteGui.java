@@ -49,8 +49,7 @@ public class MenuClienteGui extends JPanel{
     public MenuClienteGui(CanvasGui canvasGui, Ristorante ristorante, Menu menu){
         this.canvasGui = canvasGui;
         this.main = canvasGui.main;
-
-        main.set_ordine_controller(new OrdiniController());
+        this.main.set_ordine_controller(new OrdiniController());
 
         this.ristorante = ristorante;
         this.menu = menu;
@@ -215,7 +214,7 @@ public class MenuClienteGui extends JPanel{
 
     private void aggiorna_combo_box_ordini(){
         ordiniComboBoxModel.removeAllElements();
-        ArrayList<Ordine> ordini = main.get_cliente_controller().get_ordini();
+        ArrayList<Ordine> ordini = main.get_cliente_controller().get_ordini_ristorante(ristorante);
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)

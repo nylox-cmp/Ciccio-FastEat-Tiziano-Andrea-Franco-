@@ -24,10 +24,10 @@ public class ContenutoOrdineGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Costurttore
 
-    public ContenutoOrdineGui(JList<Ordine> ordiniLista, CanvasGui canvasGui){
+    public ContenutoOrdineGui(JList<Ordine> ordiniLista,CanvasGui canvasGui){
         this.canvasGui = canvasGui;
-
         canvasGui.main.set_ordine_controller(new OrdiniController());
+
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 

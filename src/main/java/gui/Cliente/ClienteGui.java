@@ -45,14 +45,13 @@ public class ClienteGui extends JPanel {
             if(main.get_utente_controller().utente_is_cliente() == false)
                 main.get_utente_controller().registra_cliente();
         }
-
         main.set_cliente_controller(new ClienteController());
 
         canvasGui.set_dashboardGui(new DashboardGui(canvasGui));
         canvasGui.set_dashboardClienteGui(new DashboardClienteGui(canvasGui));
 
         canvasGui.get_dashboardGui().aggiorna_nickname_label(canvasGui);
-        canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label(main.get_cliente_controller().get_cliente().get_punti_fedelta());
+        canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
 
         ristorantiLista.setModel(ristoranteListModel);
         aggiorna_lista_ristoranti(get_search_text());

@@ -58,6 +58,7 @@ public class RigaOrdine {
     public void aggiorna_quantita(int quantita){
         if(quantita < 1) throw new BusinessError(ErrorType.INPUT_NUMERICO_NEGATIVO);
         this.quantita = quantita;
+        calcola_prezzo_totale();
     }
 
 

@@ -80,7 +80,8 @@ public class UtenteImpDAO implements UtenteDAO {
         }
         catch (SQLException e) {
             e.printStackTrace();
-            if (e.getMessage() != null && e.getMessage().contains("BEC2")) throw new BusinessError(ErrorType.CANCELLAZIONE_ACCOUNT_ANNULATA_ORDINI_IN_CONSEGNA);
+            if (e.getMessage() != null && e.getMessage().contains("BEC1")) throw new BusinessError(ErrorType.CANCELLAZIONE_ACCOUNT_ANNULATA_ORDINI_IN_CONSEGNA);
+            if (e.getMessage() != null && e.getMessage().contains("BEC2")) throw new BusinessError(ErrorType.CANCELLAZIONE_RISTORANTE_ANNULATA_ORDINI_IN_CONSEGNA);
             throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
         }
     }

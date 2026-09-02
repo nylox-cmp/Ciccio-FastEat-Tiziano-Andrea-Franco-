@@ -85,7 +85,6 @@ public class OrdiniRiderGui extends JPanel{
                 }
                 catch (BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel, error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
-                    return;
                 }
             }
         });
@@ -93,7 +92,7 @@ public class OrdiniRiderGui extends JPanel{
         cancellaRichiestaOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Ordine ordine = ordiniDaConsegnareLista.getSelectedValue();
+                Ordine ordine = ordiniPropostiLista.getSelectedValue();
                 if(ordine == null){
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -101,11 +100,10 @@ public class OrdiniRiderGui extends JPanel{
 
                 try{
                     main.get_rider_controller().cancella_richiesta_approvazione_consegna(ordine);
-                    aggiorna_OrdiniDaConsegnare();
+                    aggiorna_OrdiniProposti();
                 }
                 catch (BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel, error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);
-                    return;
                 }
             }
         });

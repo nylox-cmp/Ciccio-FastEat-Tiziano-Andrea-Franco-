@@ -4,11 +4,13 @@
 8.finire il class diagramm
 9.finire la documentazione
 16.Verifica che tutti i metodi rispettino l'integrita dei dati
-17.Sistemare i BCE code all'interno della creazione dei trigger all'interno delle implementazioni DAO
 
-//Da Testare OrdiniCliente,OrdiniDipendente,OrdiniRider,
-//Testate ClienteGui,RiderGui,DipendenteGui,RistoranteCliente,RistoranteDipendnete,MenuCLiente,MenuDipendente,GestioneDipendente
+//Da Testare OrdiniCliente,
+//Testate ClienteGui,RiderGui,DipendenteGui,RistoranteCliente,RistoranteDipendnete,MenuCLiente,MenuDipendente,GestioneDipendente,OrdiniDipendente,OrdiniRider
 //test punti fedelta
+
+//PRENERE I PUNTI FEDELTA IN MANIERA SEMPLICE
+
 
 
 //Bozza Preparazione (cliente) -> annulato

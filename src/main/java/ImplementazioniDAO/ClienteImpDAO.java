@@ -76,6 +76,21 @@ public class ClienteImpDAO implements ClienteDAO {
     }
 
     @Override
+    public void aggiorna_costo_ordine(String codice_ordine, double costo){
+        String sql = "UPDATE Ordine SET costo = ? WHERE codice_ordine = ?;";
+
+        try(PreparedStatement query = connection.prepareStatement(sql)){
+            query.setDouble(1,costo);
+            query.setString(2,codice_ordine);
+            query.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
+    }
+
+    @Override
     public void applica_sconto(String codice_ordine,double costo){
         String sql = "UPDATE Ordine SET costo = ? WHERE codice_ordine = ?;";
 
@@ -89,6 +104,21 @@ public class ClienteImpDAO implements ClienteDAO {
             throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
         }
     }
+
+    public void salva_punti_fedelta_cliente(String nickname,int punti_fedelta){
+        String sql = "UPDATE Cliente SET punti_fedelta = ? WHERE nickname = ?;";
+
+        try(PreparedStatement query = connection.prepareStatement(sql)){
+            query.setInt(1,punti_fedelta);
+            query.setString(2,nickname);
+            query.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
+    }
+
 
     //________________________________________________________________________________________________________________________________________________
     // Operazione Gestione RigheOrdine
@@ -171,18 +201,20 @@ public class ClienteImpDAO implements ClienteDAO {
     }
 
     @Override
-    public ArrayList<Ordine> get_ordini_cliente(String nickname){
+    public ArrayList<Ordine> get_ordini_cliente_ristorante(String nickname, String codice_ristorante){
         ArrayList<Ordine> ordini = new ArrayList<>();
-        String sql = "SELECT o.*, r.*, u.*, rid.* FROM Ordine o " +
-                     "JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante " +
-                     "LEFT JOIN RiderPropostiConsegna rpc ON o.codice_ordine = rpc.codice_ordine AND rpc.ordine_preso_a_carico = true " +
-                     "LEFT JOIN Utente u ON u.nickname = rpc.nickname_rider " +
-                     "LEFT JOIN Rider rid ON rid.nickname = u.nickname " +
-                     "WHERE o.nickname_cliente = ? " +
-                     "ORDER BY o.stato ASC;";
+        String sql = "SELECT o.*, r.*, u.*, rid.mezzo_trasporto FROM Ordine o " +
+                "JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante AND r.codice_ristorante = ? " +
+                "LEFT JOIN RiderPropostiConsegna rpc ON o.codice_ordine = rpc.codice_ordine AND rpc.ordine_preso_a_carico = true " +
+                "LEFT JOIN Utente u ON u.nickname = rpc.nickname_rider " +
+                "LEFT JOIN Rider rid ON rid.nickname = u.nickname " +
+                "WHERE o.nickname_cliente = ? AND o.stato = 0 " +
+                "ORDER BY o.stato ASC;";
 
         try (PreparedStatement query = connection.prepareStatement(sql)) {
-            query.setString(1, nickname);
+            query.setString(1, codice_ristorante);
+            query.setString(2, nickname);
+
             try (ResultSet result = query.executeQuery()) {
                 while (result.next()) {
                     ordini.add(ResultSetMapper.converti_reuslt_into_ordine(result));
@@ -194,4 +226,50 @@ public class ClienteImpDAO implements ClienteDAO {
             throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
         }
     }
+
+    public ArrayList<Ordine> get_ordini_cliente(String nickname){
+        ArrayList<Ordine> ordini = new ArrayList<>();
+        String sql = "SELECT o.*, r.*, u.*, rid.mezzo_trasporto FROM Ordine o " +
+                     "JOIN Ristorante r ON o.codice_ristorante = r.codice_ristorante " +
+                     "LEFT JOIN RiderPropostiConsegna rpc ON o.codice_ordine = rpc.codice_ordine AND rpc.ordine_preso_a_carico = true " +
+                     "LEFT JOIN Utente u ON u.nickname = rpc.nickname_rider " +
+                     "LEFT JOIN Rider rid ON rid.nickname = u.nickname " +
+                     "WHERE o.nickname_cliente = ? " +
+                     "ORDER BY o.stato ASC;";
+
+        try (PreparedStatement query = connection.prepareStatement(sql)) {
+            query.setString(1, nickname);
+
+
+            try (ResultSet result = query.executeQuery()) {
+                while (result.next()) {
+                    ordini.add(ResultSetMapper.converti_reuslt_into_ordine(result));
+                }
+            }
+            return ordini;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
+    }
+
+    @Override
+    public Integer get_punti_fedelta_cliente(String nickname){
+        String sql = "SELECT punti_fedelta FROM Cliente WHERE nickname = ?;";
+
+        try (PreparedStatement query = connection.prepareStatement(sql)) {
+            query.setString(1, nickname);
+
+            try (ResultSet result = query.executeQuery()) {
+                if(result.next())
+                    return result.getInt("punti_fedelta");
+            }
+            return null;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
+        }
+    }
+
 }

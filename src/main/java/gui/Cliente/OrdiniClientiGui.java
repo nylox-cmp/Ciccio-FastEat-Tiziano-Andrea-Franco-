@@ -51,9 +51,11 @@ public class OrdiniClientiGui extends JPanel {
         add(mainPanel,BorderLayout.CENTER);
 
         ordiniJList.setModel(ordiniListModel);
+
         ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniJList,canvasGui);
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
-        quantitaLabel.setText(String.valueOf(main.get_cliente_controller().get_cliente().get_punti_fedelta()));
+
+        quantitaLabel.setText(String.valueOf(main.get_cliente_controller().get_punti_fedelta()));
 
         aggiorna_ordiniLista();
 
@@ -97,7 +99,9 @@ public class OrdiniClientiGui extends JPanel {
                 }
 
                 quantitaLabel.setText(String.valueOf(main.get_cliente_controller().get_cliente().get_punti_fedelta()));
-                canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label(main.get_cliente_controller().get_cliente().get_punti_fedelta());
+                canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
+
+                canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
 
             }
         });
@@ -142,6 +146,8 @@ public class OrdiniClientiGui extends JPanel {
                 int punti_fedelta  = Integer.parseInt(puntiFedeltaTextField.getText());
                 try {
                     main.get_cliente_controller().applica_sconto(ordine, punti_fedelta);
+                    quantitaLabel.setText(String.valueOf(main.get_cliente_controller().get_punti_fedelta()));
+                    canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
                     aggiorna_ordiniLista();
 
                 }
@@ -162,7 +168,7 @@ public class OrdiniClientiGui extends JPanel {
 
     private void aggiorna_ordiniLista(){
         ordiniListModel.clear();
-        ArrayList<Ordine> ordini = main.get_cliente_controller().get_ordini();
+        ArrayList<Ordine> ordini = main.get_cliente_controller().get_ordini_cliente();
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)

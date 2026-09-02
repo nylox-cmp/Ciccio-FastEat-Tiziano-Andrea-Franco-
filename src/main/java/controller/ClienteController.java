@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public class ClienteController{
     private Cliente cliente;
+
     private ClienteImpDAO clienteDB = new ClienteImpDAO();
 
     private ArrayList<Ordine> ordini = new ArrayList<Ordine>();
@@ -38,12 +39,24 @@ public class ClienteController{
             ordine.set_codice_ordine(Ristorante.genera_codice_univoco());
     }
 
+
     public void crea_ordine(String indirizzo, Ristorante ristorante) {
         Ordine ordine = cliente.crea_ordine(indirizzo, ristorante);
         gestisci_collissioni_codice_ordine(ordine);
 
         clienteDB.crea_ordine(ordine.get_codice_ordine(), ordine.get_costo(),ordine.get_stato_ordine(),ordine.get_indirizzo(),ordine.get_data(),ristorante.get_codice_ristorante());
     }
+
+
+    public void applica_sconto(Ordine ordine, int punti_fedelta) {
+        cliente.applica_sconto(punti_fedelta,ordine);
+        clienteDB.applica_sconto(ordine.get_codice_ordine(),ordine.get_costo());
+        clienteDB.salva_punti_fedelta_cliente(cliente.get_nickname(),cliente.get_punti_fedelta());
+    }
+
+    //________________________________________________________________________________________________________________________________________________
+    // Gestione StatoOrdine
+
 
     public void annulla_ordine(Ordine ordine) {
         cliente.annulla_ordine(ordine);
@@ -52,36 +65,37 @@ public class ClienteController{
 
     public void conferma_creazione_ordine(Ordine ordine) {
         cliente.conferma_creazione_ordine(ordine);
-        System.out.println(ordine);
+        clienteDB.aggiorna_costo_ordine(ordine.get_codice_ordine(),ordine.get_costo());
         OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
     }
 
     public void conferma_consegna_ordine(Ordine ordine) {
         cliente.conferma_consegna_ordine(ordine);
         OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
+        cliente.set_punti_fedelta(clienteDB.get_punti_fedelta_cliente(cliente.get_nickname()));
     }
 
-    public void applica_sconto(Ordine ordine, int punti_fedelta) {
-        cliente.applica_sconto(punti_fedelta,ordine);
-        clienteDB.applica_sconto(ordine.get_codice_ordine(),ordine.get_costo());
-    }
 
     //________________________________________________________________________________________________________________________________________________
     // Gestione RigaOrdine
 
     public void aggiungi_riga(Ordine ordine, Prodotto prodotto) {
-        ordine.aggiungi_riga(prodotto,RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE,ordine);
+        ordine.aggiungi_riga(prodotto,RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE);
         clienteDB.aggiungi_riga(ordine.get_codice_ordine(),id_prodotto.get(prodotto.get_nome()),RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE);
+        clienteDB.aggiorna_costo_ordine(ordine.get_codice_ordine(),ordine.get_costo());
     }
 
     public void rimuovi_riga(Ordine ordine, Prodotto prodotto) {
          ordine.rimuovi_riga(prodotto);
          clienteDB.rimuovi_riga(ordine.get_codice_ordine(),id_prodotto.get(prodotto.get_nome()));
+         clienteDB.aggiorna_costo_ordine(ordine.get_codice_ordine(),ordine.get_costo());
     }
 
     public void aggiorna_quantita_rigaOrdine(Ordine ordine,RigaOrdine riga_ordine,int quantita){
         riga_ordine.aggiorna_quantita(quantita);
         clienteDB.aggiorna_quantita_rigaOrdine(ordine.get_codice_ordine(),id_prodotto.get(riga_ordine.get_prodotto().get_nome()),riga_ordine.get_quantita());
+        ordine.calcola_costo_ordine();
+        clienteDB.aggiorna_costo_ordine(ordine.get_codice_ordine(),ordine.get_costo());
     }
 
     //________________________________________________________________________________________________________________________________________________
@@ -91,8 +105,8 @@ public class ClienteController{
         return cliente;
     }
 
-    public ArrayList<Ordine> get_ordini(){
-        ordini = clienteDB.get_ordini_cliente(cliente.get_nickname());
+    public ArrayList<Ordine> get_ordini_ristorante(Ristorante ristorante){
+        ordini = clienteDB.get_ordini_cliente_ristorante(cliente.get_nickname(),ristorante.get_codice_ristorante());
 
         for(Ordine ordine : ordini){
             ordine.set_righe_ordine(OrdiniImpDAO.get_righeOrdine(ordine.get_codice_ordine()).entitys);
@@ -100,6 +114,11 @@ public class ClienteController{
 
         cliente.set_ordini(ordini);
         return ordini;
+    }
+
+    public ArrayList<Ordine> get_ordini_cliente(){
+        cliente.set_ordini(clienteDB.get_ordini_cliente(cliente.get_nickname()));
+        return cliente.get_ordini();
     }
 
     public ArrayList<Ristorante> get_ristoranti(String search_nome_o_indirizzo){
@@ -129,4 +148,10 @@ public class ClienteController{
         this.prodotti = prodottiMap.entitys;
         return prodotti;
     }
+
+    public int get_punti_fedelta(){
+        cliente.set_punti_fedelta(clienteDB.get_punti_fedelta_cliente(cliente.get_nickname()));
+        return cliente.get_punti_fedelta();
+    }
+
 }

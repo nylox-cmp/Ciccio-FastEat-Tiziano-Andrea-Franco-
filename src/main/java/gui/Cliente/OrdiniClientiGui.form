@@ -63,7 +63,7 @@
                         <properties>
                           <background color="-13881804"/>
                           <foreground color="-262657"/>
-                          <text value="Conferma Creazione Ordine"/>
+                          <text value="Conferma Creazione Ordine "/>
                         </properties>
                       </component>
                       <component id="6324f" class="javax.swing.JButton" binding="confermaConsegnaButton">

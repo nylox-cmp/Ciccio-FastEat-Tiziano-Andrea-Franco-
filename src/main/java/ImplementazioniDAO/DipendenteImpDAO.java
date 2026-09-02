@@ -172,12 +172,15 @@ public class DipendenteImpDAO implements DipendenteDAO {
     @Override
     public ArrayList<Ordine> get_ordini_ristorante(String codice_ristorante){
         ArrayList<Ordine> ordini = new ArrayList<Ordine>();
-        String sql = "SELECT o.*,ris.*,u.*,rid.* FROM Ordine o JOIN Ristorante ris on o.codice_ristorante = ris.codice_ristorante " +
-                     "JOIN RiderPropostiConsegna rpc ON o.codice_ordine = rpc.codice_ordine JOIN Utente u ON u.nickname = rpc.nickname_rider JOIN Rider rid ON rid.nickname = u.nickname " +
-                     "WHERE o.codice_ristorante = ? AND stato in (1,2,3,4,5,6,7) AND rpc.ordine_preso_a_carico = true ORDER BY o.stato ASC;";
+        String sql = "SELECT o.*, ris.*, u.*, rid.mezzo_trasporto FROM Ordine o " +
+                     "JOIN Ristorante ris ON o.codice_ristorante = ris.codice_ristorante " +
+                     "LEFT JOIN RiderPropostiConsegna rpc ON o.codice_ordine = rpc.codice_ordine AND rpc.ordine_preso_a_carico = TRUE " +
+                     "LEFT JOIN Utente u ON u.nickname = rpc.nickname_rider " +
+                     "LEFT JOIN Rider rid ON rid.nickname = u.nickname " +
+                     "WHERE o.codice_ristorante = ? AND o.stato IN (1,2,3,4,5,6,7) ORDER BY o.stato ASC;";
 
         try(PreparedStatement query = connection.prepareStatement(sql)){
-            query.setString(1,codice_ristorante);
+            query.setString(1, codice_ristorante);
 
             try(ResultSet result = query.executeQuery()){
                 while(result.next()){

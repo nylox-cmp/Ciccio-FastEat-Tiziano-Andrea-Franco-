@@ -1,5 +1,6 @@
 package dao;
 
+import ImplementazioniDAO.Utils.EntityWitchId;
 import model.Menu;
 import model.Prodotto;
 import model.Ristorante;
@@ -15,9 +16,7 @@ public interface RistoranteDAO  {
     public void modifica_menu(String nome,int id_menu);
     public void cancella_menu(int id_menu);
 
-
     public void crea_prodotto(String nome,double prezzo_unitario,int id_menu);
     public void modifica_prodotto(String nome,double prezzo_unitario,int id_prodotto);
     public void cancella_prodotto(int id_prodotto);
-
 }

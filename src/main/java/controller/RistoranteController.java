@@ -105,7 +105,7 @@ public class RistoranteController {
     public ArrayList<Menu> get_menu(){
         id_menu = new HashMap<Menu,Integer>();
 
-        EntityWitchId<Menu,Integer> menuMap = ristoranteDB.get_menu(ristorante.get_codice_ristorante());
+        EntityWitchId<Menu,Integer> menuMap = RistoranteImpDAO.get_menu(ristorante.get_codice_ristorante());
 
         menu = menuMap.entitys;
         ristorante.set_menu(menu);
@@ -123,7 +123,7 @@ public class RistoranteController {
     public ArrayList<Prodotto> get_prodotti(Menu menu){
         id_prodotti = new HashMap<Prodotto,Integer>();
 
-        EntityWitchId<Prodotto,Integer> prodottiMap = ristoranteDB.get_prodotti(id_menu.get(menu));
+        EntityWitchId<Prodotto,Integer> prodottiMap = RistoranteImpDAO.get_prodotti(id_menu.get(menu));
 
         prodotti = prodottiMap.entitys;
         menu.set_prodotti(prodotti);

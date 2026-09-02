@@ -45,14 +45,17 @@ public class ResultSetMapper{
     // Operazione Conversione ResultSet into Ordine e RigaOrdine
 
     public static Ordine converti_reuslt_into_ordine(ResultSet result) throws SQLException{
-        Ordine ordine = new Ordine(result.getString("codice_ordine"), result.getDouble("costo"), StatoOrdine.values()[result.getInt("stato")], result.getString("indirizzo_consegna"), result.getDate("data_ordine").toLocalDate(), converti_result_into_ristorante(result));
+        Ordine ordine = null;
 
         try {
-            if (result.getString("nickname") != null) ordine.set_rider(converti_result_into_rider(result));
+            if (result.getString("mezzo_trasporto") != null)
+                ordine =  new Ordine(result.getString("codice_ordine"), result.getDouble("costo"), StatoOrdine.values()[result.getInt("stato")], result.getString("indirizzo_consegna"), result.getDate("data_ordine").toLocalDate(), converti_result_into_ristorante(result),converti_result_into_rider(result));
         }
-        catch (Exception e){
+        catch (Exception e){ }
 
-        }
+        if(ordine == null)
+            ordine = new Ordine(result.getString("codice_ordine"), result.getDouble("costo"), StatoOrdine.values()[result.getInt("stato")], result.getString("indirizzo_consegna"), result.getDate("data_ordine").toLocalDate(), converti_result_into_ristorante(result));
+
         return ordine;
     }
 

@@ -8,13 +8,11 @@ import exception.BusinessError;
 import exception.ErrorType;
 import model.Menu;
 import model.Prodotto;
-import model.Ristorante;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class RistoranteImpDAO implements RistoranteDAO {
-    private Connection connection;
+    public Connection connection;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
@@ -36,11 +34,11 @@ public class RistoranteImpDAO implements RistoranteDAO {
         String sql = "DELETE FROM Ristorante WHERE codice_ristorante = ?;";
 
         try(PreparedStatement query = connection.prepareStatement(sql)){
-          query.setString(1,codice_ristorante);
-          query.executeUpdate();
+            query.setString(1,codice_ristorante);
+            query.executeUpdate();
         }
         catch (SQLException e){
-            if (e.getMessage() != null && e.getMessage().contains("BEC3")) throw new BusinessError(ErrorType.CANCELLAZIONE_RISTORANTE_ANNULATA_ORDINI_IN_CONSEGNA);
+            if (e.getMessage() != null && e.getMessage().contains("BEC2")) throw new BusinessError(ErrorType.CANCELLAZIONE_RISTORANTE_ANNULATA_ORDINI_IN_CONSEGNA);
             throw new BusinessError(ErrorType.IMPOSSIBILE_CONETTERSI_DATABASE);
         }
     }
@@ -70,9 +68,9 @@ public class RistoranteImpDAO implements RistoranteDAO {
         String sql = "INSERT INTO Menu(nome,codice_ristorante) VALUES(?,?);";
 
         try(PreparedStatement query = connection.prepareStatement(sql)){
-           query.setString(1,nome);
-           query.setString(2,codice_ristorante);
-           query.executeUpdate();
+            query.setString(1,nome);
+            query.setString(2,codice_ristorante);
+            query.executeUpdate();
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -168,7 +166,7 @@ public class RistoranteImpDAO implements RistoranteDAO {
 
         Connection con = null;
         try{
-           con = ConnessioneDatabase.getInstance().connection;
+            con = ConnessioneDatabase.getInstance().connection;
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -179,8 +177,8 @@ public class RistoranteImpDAO implements RistoranteDAO {
             query.setString(1,codice_ristorante);
             try(ResultSet result = query.executeQuery()){
                 while(result.next()) {
-                  menuMap.entitys.add(ResultSetMapper.converti_result_into_menu(result));
-                  menuMap.ids.add(result.getInt("id_menu"));
+                    menuMap.entitys.add(ResultSetMapper.converti_result_into_menu(result));
+                    menuMap.ids.add(result.getInt("id_menu"));
                 }
             }
             return menuMap;

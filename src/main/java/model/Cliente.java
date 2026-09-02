@@ -11,7 +11,6 @@ public class Cliente extends Utente{
 
     public static final int PUNTI_FEDELTA_REGISTRAZIONE = 0;
 
-
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
@@ -29,7 +28,7 @@ public class Cliente extends Utente{
     //Gestione Ordini
 
     public Ordine crea_ordine(String indirizzo,Ristorante ristorante){
-        Ordine ordine = new Ordine(indirizzo,ristorante);
+        Ordine ordine = new Ordine(indirizzo,ristorante,this);
         ordine.set_indirizzo(indirizzo);
         this.ordini.add(ordine);
         return ordine;
@@ -50,26 +49,27 @@ public class Cliente extends Utente{
         if(ordine.get_stato_ordine() != StatoOrdine.BOZZA)
             throw new BusinessError(ErrorType.IMPOSSIBBILE_CAMBIARE_STATO_AL_ORDINE);
 
-        if(ordini.contains(ordine))
-            ordine.set_stato_ordine(StatoOrdine.PREPARAZIONE);
+        if(ordine.get_righe_ordine().isEmpty())
+            throw new BusinessError(ErrorType.ORDINE_VUOTO);
+
+        ordine.set_stato_ordine(StatoOrdine.PREPARAZIONE);
     }
 
     public void annulla_ordine(Ordine ordine){
         if(ordine.get_stato_ordine() != StatoOrdine.BOZZA && ordine.get_stato_ordine() != StatoOrdine.PREPARAZIONE)
             throw new BusinessError(ErrorType.IMPOSSIBBILE_CAMBIARE_STATO_AL_ORDINE);
 
-        if (ordini.contains(ordine))
-            ordine.set_stato_ordine(StatoOrdine.ANNULLATO);
+        ordine.set_stato_ordine(StatoOrdine.ANNULLATO);
     }
 
     public void conferma_consegna_ordine(Ordine ordine){
         if(ordine.get_stato_ordine() != StatoOrdine.IN_CONSEGNA && ordine.get_stato_ordine() != StatoOrdine.CONFERMA_CONSEGNA_RIDER)
             throw new BusinessError(ErrorType.IMPOSSIBBILE_CAMBIARE_STATO_AL_ORDINE);
 
-        if (ordine.get_stato_ordine() == StatoOrdine.IN_CONSEGNA && ordini.contains(ordine))
+        if (ordine.get_stato_ordine() == StatoOrdine.IN_CONSEGNA)
             ordine.set_stato_ordine(StatoOrdine.CONFERMA_CONSEGNA_CLIENTE);
 
-        if(ordine.get_stato_ordine() == StatoOrdine.CONFERMA_CONSEGNA_RIDER && ordini.contains(ordine))
+        if(ordine.get_stato_ordine() == StatoOrdine.CONFERMA_CONSEGNA_RIDER)
             ordine.set_stato_ordine(StatoOrdine.CONSEGNATO);
     }
 

@@ -10,9 +10,8 @@
 
 --BEC (Buisness Error Code) errori generati da un trigger da intercettare in java tramite i seguenti codici:
 --BEC0 controlla_ordine_vuoto_stato_preparazione_trigger
---BEC1 controlla_numero_ordini_trasportati_rider_trigger
---BEC2 (gestisci_cancellazione_cliente_trigger,gestisci_cancellazione_rider_trigger)
---BEC3 gestici_cancellazione_ristorante
+--BEC1 (gestisci_cancellazione_cliente_trigger,gestisci_cancellazione_rider_trigger)
+--BEC2 gestici_cancellazione_ristorante
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---Trigger gestione della transazione dello statoOrdine Bozza -> Preparazione, che non permette la transizione allo stato Preparazione se l'ordine non contiene RigheOrdine
@@ -57,7 +56,7 @@ BEGIN
 	AND o.stato IN (1,2,3,4,5);
 
     IF NOrdiniSospesi > 0 THEN
-        RAISE EXCEPTION 'BEC2: non puoi cancellare l''Account mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
+        RAISE EXCEPTION 'BEC1: non puoi cancellare l''Account mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
     END IF;
 
     RETURN OLD;
@@ -87,7 +86,7 @@ BEGIN
     AND o.stato IN (1,2,3,4,5); --PRONTO_RITIRO_RIDER,IN_CONSEGNA
 
     IF NOrdiniSospesi > 0 THEN
-        RAISE EXCEPTION 'BEC2: non puoi cancellare l''Account mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
+        RAISE EXCEPTION 'BEC1: non puoi cancellare l''Account mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
     END IF;
 
 RETURN NEW;
@@ -115,7 +114,7 @@ BEGIN
         WHERE o.codice_ristorante = OLD.codice_ristorante AND o.stato IN (1,2,3,4,5);
 
         IF NOrdiniSospesi > 0 THEN
-                    RAISE EXCEPTION 'BEC3: non puoi cancellare il Ristorante mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
+              RAISE EXCEPTION 'BEC2: non puoi cancellare il Ristorante mentre hai % ordine/i attivo/i in consegna.', NOrdiniSospesi;
         END IF;
 
         DELETE FROM Ristorante WHERE codice_ristorante = OLD.codice_ristorante;
@@ -134,22 +133,20 @@ EXECUTE FUNCTION gestisci_cancellazione_dipendente();
 ---Trigger che aggiunga un punto_fedeltà al cliente, una volta che l'ordine entrato nello StatoOrdine CONSEGNATO
 
 CREATE OR REPLACE FUNCTION aggiungi_punto_fedelta()
-RETURNS TRIGGER LANGUAGE PLPGSQL
+RETURNS TRIGGER LANGUAGE plpgsql
 AS $$
 BEGIN
 
-    IF NEW.stato = 6 AND NEW.costo >= 20 THEN
-        UPDATE Cliente c SET punti_fedelta = punti_fedelta + 1
-        WHERE c.nickname = NEW.nickname_cliente;
+    IF NEW.stato = 6 AND OLD.costo >= 20 THEN
+        UPDATE Cliente SET punti_fedelta = punti_fedelta + 1 WHERE nickname = NEW.nickname_cliente;
     END IF;
-    RETURN NEW;
 	
+    RETURN NEW;
 END;
 $$;
 
-CREATE TRIGGER aggiungi_punto_fedelta_trigger
+
+CREATE TRIGGER trigger_aggiungi_punto_fedelta
 AFTER UPDATE ON Ordine
 FOR EACH ROW
 EXECUTE FUNCTION aggiungi_punto_fedelta();
-
-SELECT * FROM RiderPropostiConsegna;

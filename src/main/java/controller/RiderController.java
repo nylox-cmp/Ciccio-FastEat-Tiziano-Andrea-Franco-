@@ -39,7 +39,7 @@ public class RiderController {
 
     public void cancella_richiesta_approvazione_consegna(Ordine ordine){
         rider.cancella_richiesta_approvazione_consegna(ordine);
-        riderDB.cancella_richiesta_approvazione_consegna(ordine.get_codice_ordine(),rider.get_nickname());
+        riderDB.cancella_richiesta_approvazione_consegna(rider.get_nickname(),ordine.get_codice_ordine());
     }
 
     //________________________________________________________________________________________________________________________________________________

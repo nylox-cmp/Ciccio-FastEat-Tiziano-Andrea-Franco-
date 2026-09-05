@@ -1,8 +1,8 @@
 package gui.Dipedente;
 
-import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
+import gui.FrameManagerGui;
 import gui.customWidget.ContenutoOrdineGui;
 import model.Ordine;
 import model.Rider;
@@ -37,20 +37,25 @@ public class OrdiniDipedenteGui extends JPanel {
     private JList<Rider> riderPropostiLista;
     private JButton annullaOrdineButton;
 
-    private CanvasGui canvasGui;
+    private FrameManagerGui frameManagerGui;
     private main.Main main;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public OrdiniDipedenteGui(CanvasGui canvasGui){
-        this.canvasGui = canvasGui;
-        this.main = canvasGui.main;
+    /**
+     * @author Tiziano
+     *
+     * @param frameManagerGui the canvas gui
+     */
+    public OrdiniDipedenteGui(FrameManagerGui frameManagerGui){
+        this.frameManagerGui = frameManagerGui;
+        this.main = frameManagerGui.main;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniLista,canvasGui);
+        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniLista, frameManagerGui);
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
 
         ordiniLista.setModel(ordiniListModel);
@@ -61,6 +66,9 @@ public class OrdiniDipedenteGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ListSelectionListener che mostra il contenuto dell'ordine e mostra i rider proposti
 
+        /**
+         * @author Tiziano
+         */
         ordiniLista.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -74,6 +82,9 @@ public class OrdiniDipedenteGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Ordini
 
+        /**
+         * @author Tiziano
+         */
         annullaOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,11 +93,14 @@ public class OrdiniDipedenteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                canvasGui.main.get_dipendente_controller().annulla_ordine(ordine);
+                frameManagerGui.main.get_dipendente_controller().annulla_ordine(ordine);
                 aggiorna_ordiniLista();
             }
         });
 
+        /**
+         * @author Tiziano
+         */
         segnalaProntoAlRitiroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,7 +110,7 @@ public class OrdiniDipedenteGui extends JPanel {
                     return;
                 }
                 try {
-                    canvasGui.main.get_dipendente_controller().segnala_ordine_pronto_ritiro(ordine);
+                    frameManagerGui.main.get_dipendente_controller().segnala_ordine_pronto_ritiro(ordine);
                     aggiorna_ordiniLista();
                 }
                 catch (BusinessError error){
@@ -108,6 +122,9 @@ public class OrdiniDipedenteGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Rider
 
+        /**
+         * @author Tiziano
+         */
         accettaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -119,7 +136,7 @@ public class OrdiniDipedenteGui extends JPanel {
                 }
 
                 try{
-                    canvasGui.main.get_dipendente_controller().accetta_rider(ordine,rider);
+                    frameManagerGui.main.get_dipendente_controller().accetta_rider(ordine,rider);
                     aggiorna_riderPropostiLista(ordine);
                     aggiorna_ordiniLista();
                 }
@@ -129,6 +146,9 @@ public class OrdiniDipedenteGui extends JPanel {
             }
         });
 
+        /**
+         * @author Tiziano
+         */
         rifiutaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -140,7 +160,7 @@ public class OrdiniDipedenteGui extends JPanel {
                 }
 
                 try {
-                    canvasGui.main.get_dipendente_controller().rifiuta_rider(ordine, rider);
+                    frameManagerGui.main.get_dipendente_controller().rifiuta_rider(ordine, rider);
                     aggiorna_riderPropostiLista(ordine);
                 }
                 catch (BusinessError error){
@@ -153,18 +173,28 @@ public class OrdiniDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Operazioni sulle JList
 
+    /**
+     * @author Tiziano
+     * Aggiorna rider proposti lista.
+     *
+     * @param ordine the ordine
+     */
     public void aggiorna_riderPropostiLista(Ordine ordine){
         riderPropostiListModel.clear();
-        ArrayList<Rider> rider_proposti = canvasGui.main.get_dipendente_controller().get_rider_proposti_consegna(ordine);
+        ArrayList<Rider> rider_proposti = frameManagerGui.main.get_dipendente_controller().get_rider_proposti_consegna(ordine);
         if(rider_proposti == null) return;
 
         for(Rider rider : rider_proposti)
             riderPropostiListModel.addElement(rider);
     }
 
+    /**
+     * @author Tiziano
+     * Aggiorna ordini lista.
+     */
     public void aggiorna_ordiniLista(){
         ordiniListModel.clear();
-        ArrayList<Ordine> ordini = canvasGui.main.get_dipendente_controller().get_ordini();
+        ArrayList<Ordine> ordini = frameManagerGui.main.get_dipendente_controller().get_ordini();
         if(ordini == null) return;
 
         for(Ordine ordine : ordini)

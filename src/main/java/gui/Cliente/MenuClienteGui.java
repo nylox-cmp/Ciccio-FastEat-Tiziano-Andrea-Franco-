@@ -3,7 +3,7 @@ package gui.Cliente;
 import controller.OrdiniController;
 import exception.BusinessError;
 import exception.ErrorType;
-import gui.CanvasGui;
+import gui.FrameManagerGui;
 import model.*;
 import model.Menu;
 
@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 
 public class MenuClienteGui extends JPanel{
     private JPanel mainPanel;
@@ -39,16 +40,23 @@ public class MenuClienteGui extends JPanel{
     private DefaultComboBoxModel<Ordine> ordiniComboBoxModel = new DefaultComboBoxModel<Ordine>();
     private JComboBox ordiniComboBox;
 
-    private  CanvasGui canvasGui;
+    private FrameManagerGui frameManagerGui;
     private  main.Main main;
 
     private Ristorante ristorante;
     private Menu menu;
     private RigaOrdine riga_ordine;
 
-    public MenuClienteGui(CanvasGui canvasGui, Ristorante ristorante, Menu menu){
-        this.canvasGui = canvasGui;
-        this.main = canvasGui.main;
+    /**
+     * @author Tiziano
+     *
+     * @param frameManagerGui  the canvas gui
+     * @param ristorante the ristorante
+     * @param menu       the menu
+     */
+    public MenuClienteGui(FrameManagerGui frameManagerGui, Ristorante ristorante, Menu menu){
+        this.frameManagerGui = frameManagerGui;
+        this.main = frameManagerGui.main;
         this.main.set_ordine_controller(new OrdiniController());
 
         this.ristorante = ristorante;
@@ -70,6 +78,9 @@ public class MenuClienteGui extends JPanel{
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione quantita Prodotto
 
+        /**
+         * @author Tiziano
+         */
         aumentaQuantitaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,6 +96,9 @@ public class MenuClienteGui extends JPanel{
             }
         });
 
+        /**
+         * @author Tiziano
+         */
         diminuisciQuantitaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -109,6 +123,9 @@ public class MenuClienteGui extends JPanel{
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Ordine
 
+        /**
+         * @author Tiziano
+         */
         creaOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -125,6 +142,9 @@ public class MenuClienteGui extends JPanel{
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione RigheOrdine
 
+        /**
+         * @author Tiziano
+         */
         aggungiAllOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -152,6 +172,9 @@ public class MenuClienteGui extends JPanel{
             }
         });
 
+        /**
+         * @author Tiziano
+         */
         rimuoviDallOridneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -174,10 +197,13 @@ public class MenuClienteGui extends JPanel{
         //________________________________________________________________________________________________________________________________________________
         // ActionListener di navigazione
 
+        /**
+         * @author Tiziano
+         */
         tornaIndietroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                canvasGui.set_pagina(new RistoranteClienteGui(canvasGui,ristorante));
+                frameManagerGui.set_pagina(new RistoranteClienteGui(frameManagerGui,ristorante));
             }
         });
     }
@@ -185,6 +211,11 @@ public class MenuClienteGui extends JPanel{
     //________________________________________________________________________________________________________________________________________________
     // Metodo Aggiornamento Label
 
+    /**
+     * @author Tiziano
+     *
+     * @param quantita the quantita
+     */
     public void aggiorna_quantita_label(int quantita){
         quantitaProdottoLabel.setText(String.valueOf(quantita));
     }
@@ -192,6 +223,9 @@ public class MenuClienteGui extends JPanel{
     //________________________________________________________________________________________________________________________________________________
     // Metodi Aggiornamento Lista
 
+    /**
+     * @author Tiziano
+     */
     private void aggiorna_riga_selezionata() {
         Ordine ordine = (Ordine) ordiniComboBox.getSelectedItem();
         Prodotto prodotto = prodottiJList.getSelectedValue();
@@ -204,6 +238,9 @@ public class MenuClienteGui extends JPanel{
         else aggiorna_quantita_label(riga_ordine.get_quantita());
     }
 
+    /**
+     * @author Tiziano
+     */
     private void aggiorna_lista_prodotti(){
         ArrayList<Prodotto> prodotti_list = main.get_cliente_controller().get_prodotti(menu);
         if(prodotti_list == null) return;
@@ -212,6 +249,9 @@ public class MenuClienteGui extends JPanel{
             prodottoListModel.addElement(prodotto);
     }
 
+    /**
+     * @author Tiziano
+     */
     private void aggiorna_combo_box_ordini(){
         ordiniComboBoxModel.removeAllElements();
         ArrayList<Ordine> ordini = main.get_cliente_controller().get_ordini_ristorante(ristorante);

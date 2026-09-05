@@ -1,8 +1,8 @@
 package gui.Cliente;
 
-import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
+import gui.FrameManagerGui;
 import gui.customWidget.ContenutoOrdineGui;
 import model.Ordine;
 
@@ -37,22 +37,26 @@ public class OrdiniClientiGui extends JPanel {
     private JTextField puntiFedeltaTextField;
     private JScrollPane ordiniJScrollPane;
 
-    private CanvasGui canvasGui;
+    private FrameManagerGui frameManagerGui;
     private main.Main main;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public OrdiniClientiGui(CanvasGui canvasGui){
-        this.canvasGui = canvasGui;
-        this.main = canvasGui.main;
+    /**
+     * @author Tiziano
+     * @param frameManagerGui the canvas gui
+     */
+    public OrdiniClientiGui(FrameManagerGui frameManagerGui){
+        this.frameManagerGui = frameManagerGui;
+        this.main = frameManagerGui.main;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
         ordiniJList.setModel(ordiniListModel);
 
-        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniJList,canvasGui);
+        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniJList, frameManagerGui);
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
 
         quantitaLabel.setText(String.valueOf(main.get_cliente_controller().get_punti_fedelta()));
@@ -62,6 +66,9 @@ public class OrdiniClientiGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListner Gestione StatoOrdine
 
+        /**
+         * @author Tiziano
+         */
         confermaCreazioneOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -81,6 +88,9 @@ public class OrdiniClientiGui extends JPanel {
             }
         });
 
+        /**
+         * @author Tiziano
+         */
         confermaConsegnaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -99,13 +109,16 @@ public class OrdiniClientiGui extends JPanel {
                 }
 
                 quantitaLabel.setText(String.valueOf(main.get_cliente_controller().get_cliente().get_punti_fedelta()));
-                canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
+                frameManagerGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
 
-                canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
+                frameManagerGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
 
             }
         });
 
+        /**
+         * @author Tiziano
+         */
         annulaOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,6 +141,9 @@ public class OrdiniClientiGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListner Gestione Punti Fedelta
 
+        /**
+         * @author Tiziano
+         */
         applicaScontoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -147,7 +163,7 @@ public class OrdiniClientiGui extends JPanel {
                 try {
                     main.get_cliente_controller().applica_sconto(ordine, punti_fedelta);
                     quantitaLabel.setText(String.valueOf(main.get_cliente_controller().get_punti_fedelta()));
-                    canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
+                    frameManagerGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
                     aggiorna_ordiniLista();
 
                 }
@@ -166,6 +182,9 @@ public class OrdiniClientiGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Gestione OrdiniLista
 
+    /**
+     * @author Tiziano
+     */
     private void aggiorna_ordiniLista(){
         ordiniListModel.clear();
         ArrayList<Ordine> ordini = main.get_cliente_controller().get_ordini_cliente();

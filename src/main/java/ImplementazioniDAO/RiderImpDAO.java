@@ -14,12 +14,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 public class RiderImpDAO implements RiderDAO{
     private Connection connection;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
+    /**
+     * @author Franco
+     */
     public RiderImpDAO(){
         try{
             connection = ConnessioneDatabase.getInstance().connection;
@@ -32,6 +36,13 @@ public class RiderImpDAO implements RiderDAO{
     //________________________________________________________________________________________________________________________________________________
     //  Operazione Gestione Ordini
 
+    /**
+     * @author Franco
+     *
+     * @param nickname_rider
+     * @param codice_ordine
+     * @throws BusinessError (RICHIESTA_GIA_EFFETTUATA)
+     */
     @Override
     public void crea_richiesta_approvazione_consegna(String nickname_rider,String codice_ordine){
         String sql = "INSERT INTO RiderPropostiConsegna(nickname_rider,codice_ordine) VALUES(?,?);";
@@ -48,7 +59,12 @@ public class RiderImpDAO implements RiderDAO{
         }
     }
 
-
+    /**
+     * @author Franco
+     *
+     * @param nickname_rider
+     * @param codice_ordine
+     */
     @Override
     public void cancella_richiesta_approvazione_consegna(String nickname_rider,String codice_ordine){
         String sql = "DELETE FROM RiderPropostiConsegna WHERE nickname_rider = ? AND codice_ordine = ?;";
@@ -67,6 +83,14 @@ public class RiderImpDAO implements RiderDAO{
     //________________________________________________________________________________________________________________________________________________
     // Metodi Get
 
+    /**
+     * @author Franco
+     * prende tutti gli ordini che non siano dello stesso rider (nel ruolo cliente) che prende gli ordini,
+     * che non siano in stato Bozza o Consegnato o Annulato
+     *
+     * @param nickname
+     * @return
+     */
     @Override
     public ArrayList<Ordine> get_ordini_proposti(String nickname) {
         ArrayList<Ordine> ordini = new ArrayList<>();
@@ -91,6 +115,13 @@ public class RiderImpDAO implements RiderDAO{
         return ordini;
     }
 
+    /**
+     * @authro Franco
+     * prende tutti gli ordini presi a carico dal rider che non siano in stato Bozza e Preparazione ordinandoli in ordinandoli in base allo stato
+     *
+     * @param nickname
+     * @return
+     */
     @Override
     public ArrayList<Ordine> get_ordini_da_consegnare(String nickname) {
         ArrayList<Ordine> ordini = new ArrayList<>();

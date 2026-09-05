@@ -3,6 +3,7 @@ package model;
 import exception.BusinessError;
 import exception.ErrorType;
 
+
 public class RigaOrdine {
     private Prodotto prodotto;
     private int quantita;
@@ -15,12 +16,27 @@ public class RigaOrdine {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
+    /**
+     * @author Franco
+     * Costruttore utilizzato per costriuire la classe dai dati del database
+     *
+     * @param prodotto
+     * @param quantita
+     */
     public RigaOrdine(Prodotto prodotto,int quantita){
         this.prodotto = prodotto;
         set_quantita(quantita);
         this.prezzo_totale = prodotto.get_prezzo_unitario() * quantita;
     }
 
+    /**
+     * @author Franco
+     * Costruttore utilizzato per la creazione della righa ordine
+     *
+     * @param prodotto  prodotto
+     * @param quantita  quantita
+     * @param ordine    ordine
+     */
     public RigaOrdine(Prodotto prodotto, int quantita,Ordine ordine) {
         this.prodotto = prodotto;
         set_quantita(quantita);
@@ -51,24 +67,40 @@ public class RigaOrdine {
     //________________________________________________________________________________________________________________________________________________
     // Gestione riga Ordine
 
+    /**
+     * @author Franco
+     */
     private void calcola_prezzo_totale(){
         this.prezzo_totale = this.prodotto.get_prezzo_unitario() * this.quantita;
     }
 
+    /**
+     * @author Franco
+     * Aggiorna quantita della riga ordine.
+     *
+     * @param quantita the quantita
+     * @throws BusinessError
+     */
     public void aggiorna_quantita(int quantita){
         if(quantita < 1) throw new BusinessError(ErrorType.INPUT_NUMERICO_NEGATIVO);
         this.quantita = quantita;
         calcola_prezzo_totale();
     }
 
-
-
     //________________________________________________________________________________________________________________________________________________
     // Get and Set
+
 
     public Prodotto get_prodotto() {
         return prodotto;
     }
+
+    /**
+     * @author Franco
+     * Metodo che set un prodotto ne calcola il prezzo tottale
+     *
+     * @param prodotto the prodotto
+     */
     public void set_prodotto(Prodotto prodotto) {
         this.prodotto = prodotto;
         calcola_prezzo_totale();
@@ -77,6 +109,13 @@ public class RigaOrdine {
     public int get_quantita() {
         return quantita;
     }
+
+    /**
+     * @author Franco
+     * Metodo che set le righe ordine e ne calcola il prezzo
+     *
+     * @param quantita the quantita
+     */
     public void set_quantita(int quantita) {
         if (quantita > 0) {
             this.quantita = quantita;
@@ -84,12 +123,15 @@ public class RigaOrdine {
         }
     }
 
+
     public double get_prezzo_totale() {
         return prezzo_totale;
     }
+
     public void set_prezzo_totale(double prezzo_totale) {
         this.prezzo_totale = prezzo_totale;
     }
+
 
     public Ordine get_ordine(){return ordine;}
     public void set_ordine(Ordine ordine){this.ordine = ordine;}

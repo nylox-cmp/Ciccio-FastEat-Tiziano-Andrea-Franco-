@@ -3,9 +3,10 @@ package ImplementazioniDAO;
 import ImplementazioniDAO.Utils.ResultSetMapper;
 import dao.UtenteDAO;
 import database.ConnessioneDatabase;
+import exception.BusinessError;
+import exception.ErrorType;
 import model.*;
 
-import exception.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +18,9 @@ public class UtenteImpDAO implements UtenteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
+    /**
+     * @author Tiziano
+     */
     public UtenteImpDAO(){
         try{
             connection = ConnessioneDatabase.getInstance().connection;
@@ -29,7 +33,16 @@ public class UtenteImpDAO implements UtenteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Operazioni Utente
 
-
+    /**
+     * @author Tiziano
+     *
+     * @param email
+     * @param password
+     * @param nickname
+     * @param nome
+     * @param cognome
+     * @throws BusinessError (INPUT_NON_UNIVOCO,IMPOSSIBILE_CONETTERSI_DATABASE)
+     */
     @Override
     public void sign_in(String email, String password, String nickname, String nome, String cognome) {
         String sql = "INSERT INTO Utente(nickname, email, password, nome, cognome) VALUES (?, ?, ?, ?, ?);";
@@ -49,6 +62,15 @@ public class UtenteImpDAO implements UtenteDAO {
         }
     }
 
+
+    /**
+     * @author Tizinao
+     *
+     * @param email
+     * @param password
+     * @return
+     * @throws BusinessError (CREDENZIALI_NON_VALIDE,IMPOSSIBILE_CONETTERSI_DATABASE)
+     */
     @Override
     public Utente login(String email, String password) {
         String sql = "SELECT * FROM Utente WHERE email = ? AND password = ?;";
@@ -70,6 +92,12 @@ public class UtenteImpDAO implements UtenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param nickname
+     * @throws BusinessError (CANCELLAZIONE_ACCOUNT_ANNULATA_ORDINI_IN_CONSEGNA,CANCELLAZIONE_RISTORANTE_ANNULATA_ORDINI_IN_CONSEGNA)
+     */
     @Override
     public void cancella_account(String nickname) {
         String sql = "DELETE FROM Utente WHERE nickname = ?;";
@@ -89,6 +117,12 @@ public class UtenteImpDAO implements UtenteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Operazione Rider
 
+    /**
+     * @autor Tiziano
+     *
+     * @param nickname
+     * @param mezzo_trasporto
+     */
     @Override
     public void registra_rider(String nickname,String mezzo_trasporto){
         String sql = "INSERT INTO Rider(nickname,mezzo_trasporto) VALUES (?,?);";
@@ -108,6 +142,12 @@ public class UtenteImpDAO implements UtenteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Operazione Cliente
 
+    /**
+     * @author Tiziano
+     *
+     * @param nickname
+     * @param punti_fedelta
+     */
     @Override
     public void registra_cliente(String nickname,int punti_fedelta){
         String sql = "INSERT INTO Cliente(nickname,punti_fedelta) VALUES(?,?);";
@@ -126,6 +166,12 @@ public class UtenteImpDAO implements UtenteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Operazione Dipedente
 
+    /**
+     * @author Tiziano
+     *
+     * @param codice_ristorante
+     * @return
+     */
     @Override
     public boolean codice_ristorante_esiste(String codice_ristorante){
         String sql = "SELECT codice_ristorante FROM Ristorante WHERE codice_ristorante = ?;";
@@ -144,6 +190,13 @@ public class UtenteImpDAO implements UtenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param nome
+     * @param indirizzo
+     * @param codice_ristorante
+     */
     @Override
     public void crea_ristorante(String nome,String indirizzo,String codice_ristorante){
         String sql = " INSERT INTO Ristorante(codice_ristorante,nome,indirizzo) VALUES(?,?,?);";
@@ -160,6 +213,14 @@ public class UtenteImpDAO implements UtenteDAO {
         }
     }
 
+
+    /**
+     * @author Tiziano
+     *
+     * @param nickname
+     * @param ruolo
+     * @param codice_ristorante
+     */
     @Override
     public void registra_dipedente_creatore_ristorante(String nickname,Ruolo ruolo,String codice_ristorante){
         String sql = "INSERT INTO Dipendente(nickname,ruolo,codice_ristorante) values(?,?,?);";
@@ -176,6 +237,13 @@ public class UtenteImpDAO implements UtenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param codice_ristorante
+     * @param nickname
+     * @param ruolo
+     */
     @Override
     public void registra_dipedente_ristorante(String codice_ristorante,String nickname,Ruolo ruolo){
         if(codice_ristorante_esiste(codice_ristorante) == false) throw new BusinessError(ErrorType.CODICE_RISTORANTE_INESISTENTE);
@@ -197,6 +265,12 @@ public class UtenteImpDAO implements UtenteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Metodi Get
 
+    /**
+     * @author Tizinao
+     *
+     * @param nickname
+     * @return
+     */
     @Override
     public Utente get_utente(String nickname){
         String sql = "SELECT * FROM Utente u WHERE u.nickname = ?;";
@@ -216,6 +290,12 @@ public class UtenteImpDAO implements UtenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param nickname
+     * @return
+     */
     @Override
     public Rider get_rider(String nickname){
         String sql = "SELECT * FROM Rider r JOIN Utente u ON u.nickname = r.nickname WHERE r.nickname = ?;";
@@ -236,6 +316,12 @@ public class UtenteImpDAO implements UtenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param nickname
+     * @return
+     */
     @Override
     public Cliente get_cliente(String nickname){
         String sql = "SELECT * FROM cliente c JOIN Utente u ON u.nickname = c.nickname WHERE c.nickname = ?;";
@@ -255,6 +341,12 @@ public class UtenteImpDAO implements UtenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param nickname
+     * @return
+     */
     @Override
     public Dipendente get_dipedente(String nickname){
         String sql = "SELECT * FROM Dipendente d JOIN Utente u ON u.nickname = d.nickname WHERE d.nickname = ?;";

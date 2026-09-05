@@ -1,16 +1,3 @@
 
-
-7.commentare il codice tramite javadoc e fare un controllo grammaticale extra + controllare se abbia separato il codice bene in chunk
-8.finire il class diagramm
 9.finire la documentazione
-16.Verifica che tutti i metodi rispettino l'integrita dei dati
 
-//Da Testare OrdiniCliente,
-//Testate ClienteGui,RiderGui,DipendenteGui,RistoranteCliente,RistoranteDipendnete,MenuCLiente,MenuDipendente,GestioneDipendente,OrdiniDipendente,OrdiniRider
-//test punti fedelta
-
-//PRENERE I PUNTI FEDELTA IN MANIERA SEMPLICE
-//FAR APPLICARE LO SCONTO SOLO PRIMA DELLO STATO CONSEGNATO O ANNULATO
-
-
-//Bozza Preparazione (cliente) -> annulato

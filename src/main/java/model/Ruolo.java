@@ -1,22 +1,26 @@
 package model;
 
-import java.util.ArrayList;
-
 public enum Ruolo{
-    BASE,
-    GESTIONALE,
-    MANAGER;
+    OPERATORE,
+    SUPERVISORE,
+    DIRETTORE;
 
+    /**
+     * @author Tiziano
+     *
+     * @param ruolo
+     * @return
+     */
     public static String converti_ruolo_to_string(Ruolo ruolo){
         String string = "";
         switch (ruolo){
-            case BASE:
+            case OPERATORE:
                 string = "Base";
                 break;
-            case GESTIONALE:
-                string = "Gestionale";
+            case SUPERVISORE:
+                string = "Supervisore";
                 break;
-            case MANAGER:
+            case DIRETTORE:
                 string = "Manager";
                 break;
         }

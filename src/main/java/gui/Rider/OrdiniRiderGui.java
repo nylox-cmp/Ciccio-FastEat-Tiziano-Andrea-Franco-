@@ -1,8 +1,8 @@
 package gui.Rider;
 
-import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
+import gui.FrameManagerGui;
 import gui.customWidget.ContenutoOrdineGui;
 import model.Ordine;
 
@@ -33,20 +33,25 @@ public class OrdiniRiderGui extends JPanel{
     private JButton cancellaRichiestaOrdineButton;
     private JButton segnalaOrdineInConsegnaButton;
 
-    private CanvasGui canvasGui;
+    private FrameManagerGui frameManagerGui;
     private main.Main main;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public OrdiniRiderGui(CanvasGui canvasGui){
-        this.canvasGui = canvasGui;
-        this.main = canvasGui.main;
+    /**
+     * @author Tiziano
+     *
+     * @param frameManagerGui the canvas gui
+     */
+    public OrdiniRiderGui(FrameManagerGui frameManagerGui){
+        this.frameManagerGui = frameManagerGui;
+        this.main = frameManagerGui.main;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniDaConsegnareLista,canvasGui);
+        ContenutoOrdineGui contenutoOrdine = new ContenutoOrdineGui(ordiniDaConsegnareLista, frameManagerGui);
         contenutoOrdinePanel.add(contenutoOrdine,BorderLayout.CENTER);
 
         ordiniDaConsegnareLista.setModel(ordiniDaConsegnareListModel);
@@ -58,6 +63,9 @@ public class OrdiniRiderGui extends JPanel{
         //________________________________________________________________________________________________________________________________________________
         // ListSelectionListener per poter visualizzare il cotenuto del OrdineProposto
 
+        /**
+         * @author Tiziano
+         */
         ordiniPropostiLista.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -70,6 +78,9 @@ public class OrdiniRiderGui extends JPanel{
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Richieste Consegna
 
+        /**
+         * @author Tiziano
+         */
         creaRichiestaOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,6 +100,9 @@ public class OrdiniRiderGui extends JPanel{
             }
         });
 
+        /**
+         * @author Tiziano
+         */
         cancellaRichiestaOrdineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,6 +125,9 @@ public class OrdiniRiderGui extends JPanel{
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione StatoOrdine OrdiniDaConsegnare
 
+        /**
+         * @author Tiziano
+         */
         segnalaOrdineInConsegnaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,6 +147,9 @@ public class OrdiniRiderGui extends JPanel{
             }
         });
 
+        /**
+         * @author Tiziano
+         */
         confermaConsegnaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -154,6 +174,10 @@ public class OrdiniRiderGui extends JPanel{
     //________________________________________________________________________________________________________________________________________________
     // Gestione ListeOrdini
 
+    /**
+     * @author Tiziano
+     * Aggiorna ordini proposti.
+     */
     public void aggiorna_OrdiniProposti(){
         ordiniPropostiListModel.clear();
         ArrayList<Ordine> ordini = main.get_rider_controller().get_ordini_proposti();
@@ -163,6 +187,10 @@ public class OrdiniRiderGui extends JPanel{
             ordiniPropostiListModel.addElement(ordine);
     }
 
+    /**
+     * @łauthor Tiziano
+     * Aggiorna ordini da consegnare.
+     */
     public void aggiorna_OrdiniDaConsegnare(){
         ordiniDaConsegnareListModel.clear();
         ArrayList<Ordine> ordini = main.get_rider_controller().get_ordini_da_consegnare();

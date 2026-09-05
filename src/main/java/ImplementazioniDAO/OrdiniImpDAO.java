@@ -7,7 +7,6 @@ import exception.BusinessError;
 import exception.ErrorType;
 import model.RigaOrdine;
 import model.StatoOrdine;
-import org.postgresql.core.SqlCommand;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,9 +14,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 public class OrdiniImpDAO {
     private Connection connection;
 
+    //________________________________________________________________________________________________________________________________________________
+    // Costruttore
+
+    /**
+     * @author Tiziano
+     */
     public OrdiniImpDAO(){
         try{
             connection = ConnessioneDatabase.getInstance().connection;
@@ -27,9 +33,19 @@ public class OrdiniImpDAO {
         }
     }
 
-    public static EntityWitchId<RigaOrdine,ArrayList<String>> get_righeOrdine(String codice_ordine){
-        EntityWitchId<RigaOrdine,ArrayList<String>> righeOrdineMap = new EntityWitchId<RigaOrdine,ArrayList<String>>();
-        String sql = "SELECT * FROM RigaOrdine r JOIN Prodotto p ON r.id_prodotto = p.id_prodotto WHERE r.codice_ordine = ?;";
+    //________________________________________________________________________________________________________________________________________________
+    // Operazioni Ordine
+
+    /**
+     * @author Tiziano
+     *
+     * @param codice_ordine the codice ordine
+     * @return
+     */
+    public static EntityWitchId<RigaOrdine,Integer> get_righeOrdine(String codice_ordine){
+        EntityWitchId<RigaOrdine,Integer> righeOrdineMap = new EntityWitchId<RigaOrdine,Integer>();
+        String sql = "SELECT * FROM RigaOrdine r JOIN Prodotto p ON r.id_prodotto = p.id_prodotto " +
+                     "WHERE r.codice_ordine = ?;";
 
         Connection con = null;
         try{
@@ -45,13 +61,8 @@ public class OrdiniImpDAO {
 
             try(ResultSet result = query.executeQuery()){
                 while(result.next()){
-                    ArrayList<String> id_riga = new ArrayList<>();
                     righeOrdineMap.entitys.add(ResultSetMapper.converti_result_into_rigaOrdine(result));
-
-                    id_riga.add(result.getString("codice_ordine"));
-                    id_riga.add(String.valueOf(result.getInt("id_prodotto")));
-
-                    righeOrdineMap.ids.add(id_riga);
+                    righeOrdineMap.ids.add(Integer.valueOf(result.getInt("id_prodotto")));
                 }
             }
             return righeOrdineMap;
@@ -62,6 +73,13 @@ public class OrdiniImpDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     * Metodo dell'aggiornameto dello stato dell'ordine
+     *
+     * @param codice_ordine the codice ordine
+     * @param stato         the stato
+     */
     public static  void aggiorna_stato_ordine(String codice_ordine, StatoOrdine stato){
         Connection con = null;
         String sql = "UPDATE Ordine SET stato = ? WHERE codice_ordine = ?;";

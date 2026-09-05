@@ -1,8 +1,8 @@
 package gui.Rider;
 
-import gui.CanvasGui;
 import controller.RiderController;
 import exception.ErrorType;
+import gui.FrameManagerGui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,11 +25,19 @@ public class RiderGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public RiderGui(CanvasGui canvasGui) {
-        this.main = canvasGui.main;
+    /**
+     * @author Franco
+     *
+     * @param frameManagerGui the canvas gui
+     */
+    public RiderGui(FrameManagerGui frameManagerGui) {
+        this.main = frameManagerGui.main;
         setLayout(new BorderLayout());
         add(mainPanel, BorderLayout.CENTER);
 
+        /**
+         * @author Franco
+         */
         registratiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,7 +48,7 @@ public class RiderGui extends JPanel {
                 }
                 main.get_utente_controller().registra_rider(mezzo_trasporto);
                 main.set_rider_controller(new RiderController());
-                canvasGui.set_pagina(new OrdiniRiderGui(canvasGui));
+                frameManagerGui.set_pagina(new OrdiniRiderGui(frameManagerGui));
             }
         });
     }

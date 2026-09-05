@@ -1,7 +1,7 @@
 package gui.Cliente;
 
 import exception.ErrorType;
-import gui.CanvasGui;
+import gui.FrameManagerGui;
 import model.Menu;
 import model.Ristorante;
 
@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 
 public class RistoranteClienteGui extends JPanel {
     private JPanel mainPanel;
@@ -25,14 +26,20 @@ public class RistoranteClienteGui extends JPanel {
     private JScrollPane menuScrollPane;
     private JPanel topPanelClienti;
 
-    private CanvasGui canvasGui;
+    private FrameManagerGui frameManagerGui;
     private Ristorante ristorante;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public RistoranteClienteGui(CanvasGui canvasGui, Ristorante ristorante){
-        this.canvasGui = canvasGui;
+    /**
+     * @author Tiziano
+     *
+     * @param frameManagerGui  the canvas gui
+     * @param ristorante the ristorante
+     */
+    public RistoranteClienteGui(FrameManagerGui frameManagerGui, Ristorante ristorante){
+        this.frameManagerGui = frameManagerGui;
         this.ristorante = ristorante;
 
         setLayout(new BorderLayout());
@@ -45,13 +52,19 @@ public class RistoranteClienteGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener di navigazione
 
+        /**
+         * @author Tiziano
+         */
         tornaIndietroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                canvasGui.set_pagina(new ClienteGui(canvasGui));
+                frameManagerGui.set_pagina(new ClienteGui(frameManagerGui));
             }
         });
 
+        /**
+         * @author Tiziano
+         */
         apriButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,7 +73,7 @@ public class RistoranteClienteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                canvasGui.set_pagina(new MenuClienteGui(canvasGui,ristorante,menu));
+                frameManagerGui.set_pagina(new MenuClienteGui(frameManagerGui,ristorante,menu));
             }
         });
 
@@ -69,9 +82,13 @@ public class RistoranteClienteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Metodo Aggiornamento Lista
 
+    /**
+     * @author Tiziano
+     * Aggiorna menu lista.
+     */
     public void aggiorna_menu_lista(){
         menuListModel.clear();
-        ArrayList<model.Menu> menu_list = canvasGui.main.get_cliente_controller().get_menu(ristorante);
+        ArrayList<model.Menu> menu_list = frameManagerGui.main.get_cliente_controller().get_menu(ristorante);
         if(menu_list == null) return;
 
         for(Menu menu : menu_list)

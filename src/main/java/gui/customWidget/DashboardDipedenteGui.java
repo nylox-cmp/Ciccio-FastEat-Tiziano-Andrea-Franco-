@@ -1,12 +1,12 @@
 package gui.customWidget;
 
-import gui.CanvasGui;
 import exception.BusinessError;
-import exception.ErrorType;
 import gui.Cliente.ClienteGui;
-import gui.Dipedente.*;
+import gui.Dipedente.GestioneDipedenteGui;
+import gui.Dipedente.OrdiniDipedenteGui;
+import gui.Dipedente.RistoranteDipedenteGui;
+import gui.FrameManagerGui;
 import model.Dipendente;
-import model.RigaOrdine;
 import model.Ristorante;
 import model.Ruolo;
 
@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 
 public class DashboardDipedenteGui extends JPanel {
     private JPanel mainPanel;
@@ -31,7 +32,13 @@ public class DashboardDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public DashboardDipedenteGui(CanvasGui canvasGui, Dipendente dipendente) {
+    /**
+     * @author Tiziano
+     *
+     * @param frameManagerGui  the canvas gui
+     * @param dipendente the dipendente
+     */
+    public DashboardDipedenteGui(FrameManagerGui frameManagerGui, Dipendente dipendente) {
         setLayout(new BorderLayout());
         add(mainPanel, BorderLayout.CENTER);
 
@@ -43,6 +50,9 @@ public class DashboardDipedenteGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Selettore Gui
 
+        /**
+         * @author Tiziano
+         */
         areaGestioneComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,13 +60,13 @@ public class DashboardDipedenteGui extends JPanel {
                 String area = (String) item;
                 switch (area) {
                     case "Ordini":
-                        canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
+                        frameManagerGui.set_pagina(new OrdiniDipedenteGui(frameManagerGui));
                         break;
                     case "Ristorante":
-                        canvasGui.set_pagina(new RistoranteDipedenteGui(canvasGui, DashboardDipedenteGui.this.ristorante));
+                        frameManagerGui.set_pagina(new RistoranteDipedenteGui(frameManagerGui, DashboardDipedenteGui.this.ristorante));
                         break;
                     case "Dipendenti":
-                        canvasGui.set_pagina(new GestioneDipedenteGui(canvasGui));
+                        frameManagerGui.set_pagina(new GestioneDipedenteGui(frameManagerGui));
                         break;
                 }
                 aggiorna_ruolo_label();
@@ -66,15 +76,18 @@ public class DashboardDipedenteGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Dipendente
 
+        /**
+         * @author Tiziano
+         */
         licenziatiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int scelta = JOptionPane.showConfirmDialog(canvasGui.get_pagina(), "Sei sicuro di volerti licenziare? , il licenziamneto nel ruolo di Manager comportera anche alla cancellazione del ristorante","FoodDelivery", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                int scelta = JOptionPane.showConfirmDialog(frameManagerGui.get_pagina(), "Sei sicuro di volerti licenziare? , il licenziamneto nel ruolo di Manager comportera anche alla cancellazione del ristorante","FoodDelivery", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if(scelta == JOptionPane.YES_OPTION) {
                     try {
-                        canvasGui.main.get_dipendente_controller().licenziati();
-                        canvasGui.nascondi_dashbaord(canvasGui.get_dashboardDipedenteGui());
-                        canvasGui.set_pagina(new ClienteGui(canvasGui));
+                        frameManagerGui.main.get_dipendente_controller().licenziati();
+                        frameManagerGui.nascondi_dashbaord(frameManagerGui.get_dashboardDipedenteGui());
+                        frameManagerGui.set_pagina(new ClienteGui(frameManagerGui));
                     }
                     catch(BusinessError error){
                         JOptionPane.showMessageDialog(mainPanel, error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -88,6 +101,10 @@ public class DashboardDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Metodo Aggiornamento Label
 
+    /**
+     * @author Tiziano
+     * Aggiorna ruolo label.
+     */
     public void aggiorna_ruolo_label( ){
         infoDipendente.setText(Ruolo.converti_ruolo_to_string(dipendente.get_ruolo()));
     }

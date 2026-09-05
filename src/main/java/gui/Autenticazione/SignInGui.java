@@ -1,15 +1,16 @@
 package gui.Autenticazione;
 
-import gui.CanvasGui;
 import controller.UtenteController;
 import exception.BusinessError;
 import exception.ErrorType;
 import gui.Cliente.ClienteGui;
+import gui.FrameManagerGui;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 
 public class SignInGui extends JPanel{
     private JPanel mainPanel;
@@ -35,11 +36,18 @@ public class SignInGui extends JPanel{
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public SignInGui(CanvasGui canvasGui){
+    /**
+     * @author Andrea
+     * @param frameManagerGui
+     */
+    public SignInGui(FrameManagerGui frameManagerGui){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
 
+        /**
+         * @author Andrea
+         */
         registratiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -55,9 +63,9 @@ public class SignInGui extends JPanel{
                 }
 
                 try {
-                    canvasGui.main.set_utente_controller(new UtenteController());
-                    canvasGui.main.get_utente_controller().sign_in(email, password, nickname, nome, cognome);
-                    canvasGui.set_pagina(new ClienteGui(canvasGui));
+                    frameManagerGui.main.set_utente_controller(new UtenteController());
+                    frameManagerGui.main.get_utente_controller().sign_in(email, password, nickname, nome, cognome);
+                    frameManagerGui.set_pagina(new ClienteGui(frameManagerGui));
                 }
                 catch(BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel,error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -67,10 +75,13 @@ public class SignInGui extends JPanel{
             }
         });
 
+        /**
+         * @author Andrea
+         */
         accediButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                canvasGui.set_pagina(new LoginGui(canvasGui));
+                frameManagerGui.set_pagina(new LoginGui(frameManagerGui));
             }
         });
     }

@@ -26,6 +26,13 @@ public enum ErrorType {
     CANCELLAZIONE_RISTORANTE_ANNULATA_ORDINI_IN_CONSEGNA,
     CANCELLAZIONE_ACCOUNT_ANNULATA_ORDINI_IN_CONSEGNA;
 
+
+    /**
+     * @author Tiziano
+     *
+     * @param error
+     * @return
+     */
     public static String converti_error_to_message(ErrorType error) {
         String messaggio = "";
 
@@ -70,7 +77,7 @@ public enum ErrorType {
                 messaggio = "Impossibile rifiutare un rider dopo averlo già accetato";
                 break;
             case ORDINE_NON_PUO_ESSERE_MODIFICATO_IN_QUESTO_STATO:
-                messaggio = "Impossibile modificare l'ordine nello stato attuale. Le modifiche sono consentite solo quando l'ordine è in 'BOZZA'.";
+                messaggio = "Impossibile eseguire la operazione selezionata su questo ordine in questo StatoOrdine.";
                 break;
             case IMPOSSIBBILE_CAMBIARE_STATO_AL_ORDINE:
                 messaggio = "Impossibile modificare lo stato dell'ordine in questo stato";

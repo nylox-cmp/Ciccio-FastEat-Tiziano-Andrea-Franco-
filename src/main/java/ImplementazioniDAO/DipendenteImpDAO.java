@@ -7,8 +7,12 @@ import exception.BusinessError;
 import exception.ErrorType;
 import model.*;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
 
 public class DipendenteImpDAO implements DipendenteDAO {
     private Connection connection;
@@ -16,6 +20,9 @@ public class DipendenteImpDAO implements DipendenteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
+    /**
+     * @author Tiziano
+     */
     public DipendenteImpDAO(){
         try{
             connection = ConnessioneDatabase.getInstance().connection;
@@ -28,6 +35,11 @@ public class DipendenteImpDAO implements DipendenteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Operazione Dipendente
 
+    /**
+     * @author Tiziano
+     *
+     * @param nickname
+     */
     @Override
     public void licenziati(String nickname){
         String sql = "DELETE FROM Dipendente WHERE nickname = ?;";
@@ -45,6 +57,12 @@ public class DipendenteImpDAO implements DipendenteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Gestione RiderPropostiOrdine
 
+    /**
+     * @author Tiziano
+     *
+     * @param codice_ordine
+     * @param nickname_rider
+     */
     @Override
     public void accetta_rider(String codice_ordine,String nickname_rider){
         String sql = "UPDATE RiderPropostiConsegna SET ordine_preso_a_carico = ? WHERE codice_ordine = ? AND nickname_rider = ?;";
@@ -61,6 +79,12 @@ public class DipendenteImpDAO implements DipendenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param codice_ordine
+     * @param nickname_rider
+     */
     @Override
     public void rifiuta_rider(String codice_ordine,String nickname_rider){
         String sql = "DELETE FROM RiderPropostiConsegna WHERE codice_ordine = ? AND nickname_rider = ?;";
@@ -111,6 +135,12 @@ public class DipendenteImpDAO implements DipendenteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Metodi Get
 
+    /**
+     * @author Tiziano
+     *
+     * @param nickname the nickname
+     * @return the ristorante
+     */
     public Ristorante get_ristorante(String nickname){
         String codice_ristorante = get_codice_ristorante(nickname);
         String sql = "SELECT * FROM Ristorante WHERE codice_ristorante = ?;";
@@ -129,6 +159,12 @@ public class DipendenteImpDAO implements DipendenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param nickname the nickname
+     * @return the string
+     */
     public String get_codice_ristorante(String nickname){
         String sql = "SELECT codice_ristorante FROM Dipendente d WHERE d.nickname = ?;";
 
@@ -147,6 +183,13 @@ public class DipendenteImpDAO implements DipendenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param codice_ristorante
+     * @param ruolo
+     * @return
+     */
     @Override
     public ArrayList<Dipendente> get_subordinati(String codice_ristorante,Ruolo ruolo){
         ArrayList<Dipendente> subordinati = new ArrayList<Dipendente>();
@@ -169,6 +212,12 @@ public class DipendenteImpDAO implements DipendenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param codice_ristorante
+     * @return
+     */
     @Override
     public ArrayList<Ordine> get_ordini_ristorante(String codice_ristorante){
         ArrayList<Ordine> ordini = new ArrayList<Ordine>();
@@ -195,6 +244,12 @@ public class DipendenteImpDAO implements DipendenteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param codice_ordine
+     * @return
+     */
     @Override
     public ArrayList<Rider> get_rider_proposti_consegna(String codice_ordine){
         ArrayList<Rider> rider_proposti = new ArrayList<Rider>();

@@ -1,10 +1,10 @@
 package gui.Dipedente;
 
-import controller.RistoranteController;
-import gui.CanvasGui;
 import controller.DipendenteController;
+import controller.RistoranteController;
 import exception.BusinessError;
 import exception.ErrorType;
+import gui.FrameManagerGui;
 import gui.customWidget.DashboardDipedenteGui;
 import main.Main;
 
@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 
 public class DipedenteGui extends JPanel {
     private JPanel mainPanel;
@@ -37,8 +38,13 @@ public class DipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public DipedenteGui(CanvasGui canvasGui){
-        this.main = canvasGui.main;
+    /**
+     * @author Andrea
+     *
+     * @param frameManagerGui the canvas gui
+     */
+    public DipedenteGui(FrameManagerGui frameManagerGui){
+        this.main = frameManagerGui.main;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
@@ -46,6 +52,9 @@ public class DipedenteGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Registrazione e Richiesta Assunzione Dipendente
 
+        /**
+         * @author Andrea
+         */
         registraButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,11 +70,14 @@ public class DipedenteGui extends JPanel {
                 main.set_dipendente_controller(new DipendenteController());
                 main.set_ristorante_controller(new RistoranteController(main.get_dipendente_controller()));
 
-                canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente()));
-                canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
+                frameManagerGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(frameManagerGui,main.get_dipendente_controller().get_dipendente()));
+                frameManagerGui.set_pagina(new OrdiniDipedenteGui(frameManagerGui));
             }
         });
 
+        /**
+         * @author Andrea
+         */
         richiestaDipedenteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -81,8 +93,8 @@ public class DipedenteGui extends JPanel {
                     main.set_dipendente_controller(new DipendenteController());
                     main.set_ristorante_controller(new RistoranteController(main.get_dipendente_controller()));
 
-                    canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente()));
-                    canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
+                    frameManagerGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(frameManagerGui,main.get_dipendente_controller().get_dipendente()));
+                    frameManagerGui.set_pagina(new OrdiniDipedenteGui(frameManagerGui));
                 }
                 catch (BusinessError error){
                     JOptionPane.showMessageDialog(mainPanel, error.get_error_message(),"Error", JOptionPane.ERROR_MESSAGE);

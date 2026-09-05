@@ -1,10 +1,10 @@
 package gui.Autenticazione;
 
-import gui.CanvasGui;
 import controller.UtenteController;
 import exception.BusinessError;
 import exception.ErrorType;
 import gui.Cliente.ClienteGui;
+import gui.FrameManagerGui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,10 +29,14 @@ public class LoginGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public LoginGui(CanvasGui canvasGui){
+
+    public LoginGui(FrameManagerGui frameManagerGui){
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
+        /**
+         * @author Andrea
+         */
         accediButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -45,9 +49,9 @@ public class LoginGui extends JPanel {
                 }
 
                 try {
-                    canvasGui.main.set_utente_controller(new UtenteController());
-                    canvasGui.main.get_utente_controller().login(email, password);
-                    canvasGui.set_pagina(new ClienteGui(canvasGui));
+                    frameManagerGui.main.set_utente_controller(new UtenteController());
+                    frameManagerGui.main.get_utente_controller().login(email, password);
+                    frameManagerGui.set_pagina(new ClienteGui(frameManagerGui));
                 }
                 catch (BusinessError error) {
                     JOptionPane.showMessageDialog(mainPanel, error.get_error_message(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -55,10 +59,13 @@ public class LoginGui extends JPanel {
             }
         });
 
+        /**
+         * @author Andrea
+         */
         registratiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                canvasGui.set_pagina(new SignInGui(canvasGui));
+                frameManagerGui.set_pagina(new SignInGui(frameManagerGui));
             }
         });
     }

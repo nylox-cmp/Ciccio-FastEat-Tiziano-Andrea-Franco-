@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
 public class ConnessioneDatabase {
     private static ConnessioneDatabase instance;
     public Connection connection = null;
@@ -27,6 +28,13 @@ public class ConnessioneDatabase {
 
     }
 
+    /**
+     * @author Proffessore (che mette 30 a tutto il gruppo)
+     * Gets instance.
+     *
+     * @return the instance
+     * @throws SQLException the sql exception
+     */
     public static ConnessioneDatabase getInstance() throws SQLException {
         if (instance == null) {
             instance = new ConnessioneDatabase();

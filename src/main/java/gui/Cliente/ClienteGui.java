@@ -2,7 +2,7 @@ package gui.Cliente;
 
 import controller.ClienteController;
 import exception.ErrorType;
-import gui.CanvasGui;
+import gui.FrameManagerGui;
 import gui.customWidget.DashboardClienteGui;
 import gui.customWidget.DashboardGui;
 import model.Ristorante;
@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 
 public class ClienteGui extends JPanel {
     private JPanel mainPanel;
@@ -27,15 +28,19 @@ public class ClienteGui extends JPanel {
     private JButton searchButton;
     private JLabel nomeIndrizzoLabel;
 
-    private CanvasGui canvasGui;
+    private FrameManagerGui frameManagerGui;
     private main.Main main;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public ClienteGui(CanvasGui canvasGui){
-        this.canvasGui = canvasGui;
-        this.main = canvasGui.main;
+    /**
+     * @author Tiziano
+     * @param frameManagerGui
+     */
+    public ClienteGui(FrameManagerGui frameManagerGui){
+        this.frameManagerGui = frameManagerGui;
+        this.main = frameManagerGui.main;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
@@ -47,11 +52,11 @@ public class ClienteGui extends JPanel {
         }
         main.set_cliente_controller(new ClienteController());
 
-        canvasGui.set_dashboardGui(new DashboardGui(canvasGui));
-        canvasGui.set_dashboardClienteGui(new DashboardClienteGui(canvasGui));
+        frameManagerGui.set_dashboardGui(new DashboardGui(frameManagerGui));
+        frameManagerGui.set_dashboardClienteGui(new DashboardClienteGui(frameManagerGui));
 
-        canvasGui.get_dashboardGui().aggiorna_nickname_label(canvasGui);
-        canvasGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
+        frameManagerGui.get_dashboardGui().aggiorna_nickname_label(frameManagerGui);
+        frameManagerGui.get_dashboardClienteGui().aggiorna_punti_fedelta_label();
 
         ristorantiLista.setModel(ristoranteListModel);
         aggiorna_lista_ristoranti(get_search_text());
@@ -59,6 +64,9 @@ public class ClienteGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener di navigazione
 
+        /**
+         * @author Tiziano
+         */
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,6 +74,9 @@ public class ClienteGui extends JPanel {
             }
         });
 
+        /**
+         * @author Tiziano
+         */
         apriButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,7 +85,7 @@ public class ClienteGui extends JPanel {
                     JOptionPane.showMessageDialog(mainPanel, ErrorType.converti_error_to_message(ErrorType.ELEMENTO_SELEZIONATO_NULL),"Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                canvasGui.set_pagina(new RistoranteClienteGui(canvasGui,ristorante));
+                frameManagerGui.set_pagina(new RistoranteClienteGui(frameManagerGui,ristorante));
             }
         });
 
@@ -82,6 +93,10 @@ public class ClienteGui extends JPanel {
 
     //________________________________________________________________________________________________________________________________________________
 
+    /**
+     * @author Tiziano
+     * @param search
+     */
     private void aggiorna_lista_ristoranti(String search){
         ristoranteListModel.clear();
         ArrayList<Ristorante> ristoranti = main.get_cliente_controller().get_ristoranti(search);
@@ -91,6 +106,10 @@ public class ClienteGui extends JPanel {
             ristoranteListModel.addElement(ristorante);
     }
 
+    /**
+     * @author Tiziano
+     * @return
+     */
     private String get_search_text(){
         String search = searchTextField.getText();
         if(search.isEmpty()) search = "";

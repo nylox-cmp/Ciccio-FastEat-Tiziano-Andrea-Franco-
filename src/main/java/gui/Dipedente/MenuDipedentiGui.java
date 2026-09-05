@@ -1,8 +1,8 @@
 package gui.Dipedente;
 
-import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
+import gui.FrameManagerGui;
 import model.Menu;
 import model.Prodotto;
 import model.Ristorante;
@@ -41,15 +41,22 @@ public class MenuDipedentiGui extends JPanel {
     private JButton modificaButton;
     private DefaultListModel<Prodotto> prodottiListModel = new DefaultListModel<Prodotto>();
 
-    private CanvasGui canvasGui;
+    private FrameManagerGui frameManagerGui;
     private Ristorante ristorante;
     private Menu menu;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public MenuDipedentiGui(CanvasGui canvasGui, Ristorante ristorante, Menu menu) {
-        this.canvasGui = canvasGui;
+    /**
+     * @author Andrea
+     *
+     * @param frameManagerGui  the canvas gui
+     * @param ristorante the ristorante
+     * @param menu       the menu
+     */
+    public MenuDipedentiGui(FrameManagerGui frameManagerGui, Ristorante ristorante, Menu menu) {
+        this.frameManagerGui = frameManagerGui;
         this.ristorante = ristorante;
         this.menu = menu;
 
@@ -64,6 +71,9 @@ public class MenuDipedentiGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Menu
 
+        /**
+         * @author Andrea
+         */
         modificaMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,7 +84,7 @@ public class MenuDipedentiGui extends JPanel {
                 }
 
                 try {
-                    canvasGui.main.get_ristorante_controller().modifica_menu(menu,nuovoNome);
+                    frameManagerGui.main.get_ristorante_controller().modifica_menu(menu,nuovoNome);
                     nomeMenuLabel.setText(nuovoNome);
                 }
                 catch (BusinessError error) {
@@ -86,6 +96,9 @@ public class MenuDipedentiGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Prodotto
 
+        /**
+         * @author Andrea
+         */
         creaProdottoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -100,7 +113,7 @@ public class MenuDipedentiGui extends JPanel {
                 try {
                     double prezzo = Double.parseDouble(prezzo_string);
                     try {
-                        canvasGui.main.get_ristorante_controller().crea_prodotto(menu,nome, prezzo);
+                        frameManagerGui.main.get_ristorante_controller().crea_prodotto(menu,nome, prezzo);
                         aggiorna_lista_prodotti(menu);
                     }
                     catch (BusinessError error) {
@@ -113,6 +126,9 @@ public class MenuDipedentiGui extends JPanel {
             }
         });
 
+        /**
+         * @author Andrea
+         */
         cancellaProdottoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -123,7 +139,7 @@ public class MenuDipedentiGui extends JPanel {
                 }
 
                 try {
-                    canvasGui.main.get_ristorante_controller().cancella_prodotto(menu,prodotto);
+                    frameManagerGui.main.get_ristorante_controller().cancella_prodotto(menu,prodotto);
                     aggiorna_lista_prodotti(menu);
                 }
                 catch (BusinessError error){
@@ -132,6 +148,9 @@ public class MenuDipedentiGui extends JPanel {
             }
         });
 
+        /**
+         * @author Andrea
+         */
         modificaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -151,7 +170,7 @@ public class MenuDipedentiGui extends JPanel {
                 try {
                     double prezzo = Double.parseDouble(prezzo_string);
                     try {
-                        canvasGui.main.get_ristorante_controller().modifica_prodotto(prodotto,nome, prezzo);
+                        frameManagerGui.main.get_ristorante_controller().modifica_prodotto(prodotto,nome, prezzo);
                         aggiorna_lista_prodotti(menu);
                     }
                     catch (BusinessError error) {
@@ -168,10 +187,13 @@ public class MenuDipedentiGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener di navigazione
 
+        /**
+         * @author Andrea
+         */
         tornaIndietroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                canvasGui.set_pagina(new RistoranteDipedenteGui(canvasGui, ristorante));
+                frameManagerGui.set_pagina(new RistoranteDipedenteGui(frameManagerGui, ristorante));
             }
         });
 
@@ -180,9 +202,15 @@ public class MenuDipedentiGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Metodi Aggiornamento Lista
 
+    /**
+     * @author Andrea
+     * Aggiorna lista prodotti.
+     *
+     * @param menu the menu
+     */
     public void aggiorna_lista_prodotti(Menu menu){
         prodottiListModel.clear();
-        ArrayList<Prodotto> prodotti = canvasGui.main.get_ristorante_controller().get_prodotti(menu);
+        ArrayList<Prodotto> prodotti = frameManagerGui.main.get_ristorante_controller().get_prodotti(menu);
         if(prodotti == null) return;
 
         for(Prodotto prodotto : prodotti)

@@ -1,6 +1,5 @@
 package ImplementazioniDAO;
 
-import ImplementazioniDAO.Utils.EntityWitchId;
 import ImplementazioniDAO.Utils.ResultSetMapper;
 import controller.Utils.SessionManager;
 import dao.ClienteDAO;
@@ -8,7 +7,6 @@ import database.ConnessioneDatabase;
 import exception.BusinessError;
 import exception.ErrorType;
 import model.Ordine;
-import model.RigaOrdine;
 import model.Ristorante;
 import model.StatoOrdine;
 
@@ -19,12 +17,16 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+
 public class ClienteImpDAO implements ClienteDAO {
     private Connection connection;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
+    /**
+     * @author Tiziano
+     */
     public ClienteImpDAO(){
         try{
             connection = ConnessioneDatabase.getInstance().connection;
@@ -38,6 +40,13 @@ public class ClienteImpDAO implements ClienteDAO {
     //  Operazione Gestione Ordini
 
 
+    /**
+     * @author Tiziano
+     * Codice ordine esiste boolean.
+     *
+     * @param codice_ordine the codice ordine
+     * @return the boolean
+     */
     public boolean codice_ordine_esiste(String codice_ordine){
         String sql = "SELECT * FROM Ordine WHERE codice_ordine = ?;";
 
@@ -55,6 +64,16 @@ public class ClienteImpDAO implements ClienteDAO {
         }
     }
 
+    /**
+     * @author Andrea
+     *
+     * @param codice_ordine
+     * @param costo
+     * @param stato_ordine
+     * @param indirizzo
+     * @param date
+     * @param codice_ristorante
+     */
     @Override
     public void crea_ordine(String codice_ordine, double costo, StatoOrdine stato_ordine, String indirizzo, LocalDate date, String codice_ristorante){
         String sql = "INSERT INTO Ordine(codice_ordine,costo,stato,indirizzo_consegna,data_ordine,nickname_cliente,codice_ristorante) VALUES(?,?,?,?,?,?,?);";
@@ -75,6 +94,12 @@ public class ClienteImpDAO implements ClienteDAO {
         }
     }
 
+    /**
+     * @author Andrea
+     *
+     * @param codice_ordine
+     * @param costo
+     */
     @Override
     public void aggiorna_costo_ordine(String codice_ordine, double costo){
         String sql = "UPDATE Ordine SET costo = ? WHERE codice_ordine = ?;";
@@ -90,6 +115,12 @@ public class ClienteImpDAO implements ClienteDAO {
         }
     }
 
+    /**
+     * @author Andrea
+     *
+     * @param codice_ordine
+     * @param costo
+     */
     @Override
     public void applica_sconto(String codice_ordine,double costo){
         String sql = "UPDATE Ordine SET costo = ? WHERE codice_ordine = ?;";
@@ -105,6 +136,12 @@ public class ClienteImpDAO implements ClienteDAO {
         }
     }
 
+    /**
+     * @author Andrea
+     *
+     * @param nickname
+     * @param punti_fedelta
+     */
     public void salva_punti_fedelta_cliente(String nickname,int punti_fedelta){
         String sql = "UPDATE Cliente SET punti_fedelta = ? WHERE nickname = ?;";
 
@@ -123,6 +160,14 @@ public class ClienteImpDAO implements ClienteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Operazione Gestione RigheOrdine
 
+    /**
+     * @author Andrea
+     *
+     * @param codice_ordine
+     * @param id_prodotto
+     * @param quantita
+     * @throws BusinessError (PRODOTTO_PRESENTE_ORDINE)
+     */
     @Override
     public void aggiungi_riga(String codice_ordine,int id_prodotto,int quantita){
         String sql = "INSERT INTO RigaOrdine(id_prodotto,codice_ordine,quantita) VALUES(?,?,?);";
@@ -140,6 +185,13 @@ public class ClienteImpDAO implements ClienteDAO {
         }
     }
 
+
+    /**
+     * @author Andrea
+     *
+     * @param codice_ordine
+     * @param id_prodotto
+     */
     @Override
     public void rimuovi_riga(String codice_ordine,int id_prodotto){
         String sql = "DELETE FROM RigaOrdine WHERE codice_ordine = ? AND id_prodotto = ?;";
@@ -155,6 +207,14 @@ public class ClienteImpDAO implements ClienteDAO {
         }
     }
 
+
+    /**
+     * @author Andrea
+     *
+     * @param codice_ordine
+     * @param id_prodotto
+     * @param quantita
+     */
     @Override
     public void aggiorna_quantita_rigaOrdine(String codice_ordine,int id_prodotto,int quantita){
         String sql = "UPDATE RigaOrdine SET quantita = ? WHERE codice_ordine = ? AND id_prodotto = ?;";
@@ -174,6 +234,15 @@ public class ClienteImpDAO implements ClienteDAO {
     //________________________________________________________________________________________________________________________________________________
     // Metodi Get
 
+    /**
+     * @author Andrea
+     * prende solo i ristoranti che non appartengano al cliente contententi almeno un prodotto
+     * con una ricerca con il like nel campo nome o indirizzo del ristorante
+     *
+     * @param nickname
+     * @param search_nome_o_indirizzo
+     * @return
+     */
     @Override
     public ArrayList<Ristorante> get_ristoranti(String nickname,String search_nome_o_indirizzo){
         ArrayList<Ristorante> ristoranti = new ArrayList<Ristorante>();
@@ -200,6 +269,15 @@ public class ClienteImpDAO implements ClienteDAO {
         }
     }
 
+
+    /**
+     * @author Andrea
+     * prende gli ordini effettuati in quel ristorante in stato bozza
+     *
+     * @param nickname
+     * @param codice_ristorante
+     * @return
+     */
     @Override
     public ArrayList<Ordine> get_ordini_cliente_ristorante(String nickname, String codice_ristorante){
         ArrayList<Ordine> ordini = new ArrayList<>();
@@ -227,6 +305,13 @@ public class ClienteImpDAO implements ClienteDAO {
         }
     }
 
+    /**
+     * @author Andrea
+     * prende tutti gli ordini del cliente e li ordina in basse allo stato dell'ordine
+     *
+     * @param nickname
+     * @return
+     */
     public ArrayList<Ordine> get_ordini_cliente(String nickname){
         ArrayList<Ordine> ordini = new ArrayList<>();
         String sql = "SELECT o.*, r.*, u.*, rid.mezzo_trasporto FROM Ordine o " +
@@ -253,6 +338,12 @@ public class ClienteImpDAO implements ClienteDAO {
         }
     }
 
+    /**
+     * @author Tiziano
+     *
+     * @param nickname
+     * @return
+     */
     @Override
     public Integer get_punti_fedelta_cliente(String nickname){
         String sql = "SELECT punti_fedelta FROM Cliente WHERE nickname = ?;";

@@ -1,8 +1,8 @@
 package gui.Dipedente;
 
-import gui.CanvasGui;
 import exception.BusinessError;
 import exception.ErrorType;
+import gui.FrameManagerGui;
 import model.Dipendente;
 import model.Ruolo;
 import model.Utente;
@@ -33,15 +33,20 @@ public class GestioneDipedenteGui extends JPanel {
     private JScrollPane subordinatiJscrollPane;
     private DefaultListModel<Dipendente> subordinatiListModel = new DefaultListModel<Dipendente>();
 
-    private CanvasGui canvasGui;
+    private FrameManagerGui frameManagerGui;
     private main.Main main;
 
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public GestioneDipedenteGui(CanvasGui canvasGui){
-        this.canvasGui = canvasGui;
-        this.main = canvasGui.main;
+    /**
+     * @author Franco
+     *
+     * @param frameManagerGui the canvas gui
+     */
+    public GestioneDipedenteGui(FrameManagerGui frameManagerGui){
+        this.frameManagerGui = frameManagerGui;
+        this.main = frameManagerGui.main;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
@@ -55,6 +60,9 @@ public class GestioneDipedenteGui extends JPanel {
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione (Dipendenti) Subordinati
 
+        /**
+         * @author Franco
+         */
         licenziaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,6 +82,9 @@ public class GestioneDipedenteGui extends JPanel {
             }
         });
 
+        /**
+         * @author Franco
+         */
         seletoreRuoloCombox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,6 +109,9 @@ public class GestioneDipedenteGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
 
 
+    /**
+     * @author Franco
+     */
     private void aggiorna_subordinati_lista(){
         subordinatiListModel.clear();
         ArrayList<Dipendente> subordinati = main.get_dipendente_controller().get_subordinati();
@@ -107,6 +121,9 @@ public class GestioneDipedenteGui extends JPanel {
             subordinatiListModel.addElement(subordinato);
     }
 
+    /**
+     * @author Franco
+     */
     private void popola_ruoli_combobox(Dipendente dipendente_corrente) {
         String[] ruoli_assegnabili = Arrays.stream(Ruolo.values())
                 .filter(ruolo -> ruolo.ordinal() < dipendente_corrente.get_ruolo().ordinal())

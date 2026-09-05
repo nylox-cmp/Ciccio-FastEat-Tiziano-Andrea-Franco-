@@ -4,13 +4,11 @@ import controller.DipendenteController;
 import controller.RiderController;
 import controller.RistoranteController;
 import exception.BusinessError;
-import exception.ErrorType;
-import gui.CanvasGui;
 import gui.Autenticazione.LoginGui;
 import gui.Cliente.ClienteGui;
-import gui.Cliente.OrdiniClientiGui;
 import gui.Dipedente.DipedenteGui;
 import gui.Dipedente.OrdiniDipedenteGui;
+import gui.FrameManagerGui;
 import gui.Rider.OrdiniRiderGui;
 import gui.Rider.RiderGui;
 import main.Main;
@@ -20,6 +18,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The type Dashboard gui.
+ */
 public class DashboardGui extends JPanel {
     private JPanel mainPanel;
     private JPanel dashboardPanel;
@@ -37,13 +38,18 @@ public class DashboardGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
-    public DashboardGui(CanvasGui canvasGui){
-        this.main = canvasGui.main;
+    /**
+     * Instantiates a new Dashboard gui.
+     *
+     * @param frameManagerGui the canvas gui
+     */
+    public DashboardGui(FrameManagerGui frameManagerGui){
+        this.main = frameManagerGui.main;
 
         setLayout(new BorderLayout());
         add(mainPanel,BorderLayout.CENTER);
 
-        aggiorna_nickname_label(canvasGui);
+        aggiorna_nickname_label(frameManagerGui);
 
         //________________________________________________________________________________________________________________________________________________
         // ActionListener Gestione Transazione Gui
@@ -51,23 +57,23 @@ public class DashboardGui extends JPanel {
         areaClientiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                canvasGui.nascondi_dashbaord(canvasGui.get_dashboardDipedenteGui());
-                canvasGui.mostra_dahsboard(canvasGui.get_dashboardClienteGui());
-                canvasGui.set_pagina(new ClienteGui(canvasGui));
+                frameManagerGui.nascondi_dashbaord(frameManagerGui.get_dashboardDipedenteGui());
+                frameManagerGui.mostra_dahsboard(frameManagerGui.get_dashboardClienteGui());
+                frameManagerGui.set_pagina(new ClienteGui(frameManagerGui));
             }
         });
 
        areaRiderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                canvasGui.nascondi_dashbaord(canvasGui.get_dashboardDipedenteGui());
-                canvasGui.nascondi_dashbaord(canvasGui.get_dashboardClienteGui());
+                frameManagerGui.nascondi_dashbaord(frameManagerGui.get_dashboardDipedenteGui());
+                frameManagerGui.nascondi_dashbaord(frameManagerGui.get_dashboardClienteGui());
 
                 if(main.get_utente_controller().utente_is_rider() == false){
                     main.get_utente_controller().load_dati_rider();
 
                     if(main.get_utente_controller().utente_is_rider() == false) {
-                        canvasGui.set_pagina(new RiderGui(canvasGui));
+                        frameManagerGui.set_pagina(new RiderGui(frameManagerGui));
                         return;
                     }
                     else{
@@ -75,31 +81,31 @@ public class DashboardGui extends JPanel {
                     }
                 }
 
-                canvasGui.set_pagina(new OrdiniRiderGui(canvasGui));
+                frameManagerGui.set_pagina(new OrdiniRiderGui(frameManagerGui));
             }
         });
 
         areaDipendentiButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                canvasGui.nascondi_dashbaord(canvasGui.get_dashboardClienteGui());
+                frameManagerGui.nascondi_dashbaord(frameManagerGui.get_dashboardClienteGui());
 
                 if(main.get_utente_controller().utente_is_dipendente() == false){
                     main.get_utente_controller().load_dati_dipedente();
 
                     if(main.get_utente_controller().utente_is_dipendente() == false) {
-                        canvasGui.set_pagina(new DipedenteGui(canvasGui));
+                        frameManagerGui.set_pagina(new DipedenteGui(frameManagerGui));
                         return;
                     }
                     else{
                         main.set_dipendente_controller(new DipendenteController());
                         main.set_ristorante_controller(new RistoranteController(main.get_dipendente_controller()));
-                        canvasGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(canvasGui,main.get_dipendente_controller().get_dipendente()));
+                        frameManagerGui.set_dashboardDipedenteGui(new DashboardDipedenteGui(frameManagerGui,main.get_dipendente_controller().get_dipendente()));
                     }
                 }
 
-                canvasGui.mostra_dahsboard(canvasGui.get_dashboardDipedenteGui());
-                canvasGui.set_pagina(new OrdiniDipedenteGui(canvasGui));
+                frameManagerGui.mostra_dahsboard(frameManagerGui.get_dashboardDipedenteGui());
+                frameManagerGui.set_pagina(new OrdiniDipedenteGui(frameManagerGui));
             }
         });
 
@@ -112,8 +118,8 @@ public class DashboardGui extends JPanel {
                 main.get_utente_controller().logout();
                 main.distruggi_controller();
 
-                canvasGui.distruggi_all_dashbaord();
-                canvasGui.set_pagina(new LoginGui(canvasGui));
+                frameManagerGui.distruggi_all_dashbaord();
+                frameManagerGui.set_pagina(new LoginGui(frameManagerGui));
             }
         });
 
@@ -131,8 +137,8 @@ public class DashboardGui extends JPanel {
                     }
 
                     main.distruggi_controller();
-                    canvasGui.distruggi_all_dashbaord();
-                    canvasGui.set_pagina(new LoginGui(canvasGui));
+                    frameManagerGui.distruggi_all_dashbaord();
+                    frameManagerGui.set_pagina(new LoginGui(frameManagerGui));
                 }
             }
         });
@@ -141,7 +147,12 @@ public class DashboardGui extends JPanel {
     //________________________________________________________________________________________________________________________________________________
     // Gestione Label
 
-    public void aggiorna_nickname_label(CanvasGui canvasGui){
+    /**
+     * Aggiorna nickname label.
+     *
+     * @param frameManagerGui the canvas gui
+     */
+    public void aggiorna_nickname_label(FrameManagerGui frameManagerGui){
         infoUtenteLabel.setText(main.get_utente_controller().get_utente().toString());
     }
 

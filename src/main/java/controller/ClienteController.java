@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
+/**
+ * The type Cliente controller.
+ */
 public class ClienteController{
     private Cliente cliente;
 
@@ -25,6 +28,9 @@ public class ClienteController{
     //________________________________________________________________________________________________________________________________________________
     // Costruttore
 
+    /**
+     * @author Tiziano
+     */
     public ClienteController( ){
         Optional<Cliente> optionalCliente = SessionManager.instance.get_utente().get_ruolo_utente(Cliente.class);
         if(optionalCliente.isPresent())
@@ -34,12 +40,24 @@ public class ClienteController{
     //________________________________________________________________________________________________________________________________________________
     // Gestione Ordine
 
+    /**
+     * @author Tiziano
+     * Metodo che gestisce la collisione del codice_ordine rigenerando il codice nel caso di una collisione
+     *
+     * @param ordine
+     */
     private void gestisci_collissioni_codice_ordine(Ordine ordine){
         while(clienteDB.codice_ordine_esiste(ordine.get_codice_ordine()))
             ordine.set_codice_ordine(Ristorante.genera_codice_univoco());
     }
 
-
+    /**
+     * @author Tiziano
+     * Crea ordine.
+     *
+     * @param indirizzo  the indirizzo
+     * @param ristorante the ristorante
+     */
     public void crea_ordine(String indirizzo, Ristorante ristorante) {
         Ordine ordine = cliente.crea_ordine(indirizzo, ristorante);
         gestisci_collissioni_codice_ordine(ordine);
@@ -48,6 +66,13 @@ public class ClienteController{
     }
 
 
+    /**
+     * @author Tiziano
+     * Applica sconto.
+     *
+     * @param ordine        the ordine
+     * @param punti_fedelta the punti fedelta
+     */
     public void applica_sconto(Ordine ordine, int punti_fedelta) {
         cliente.applica_sconto(punti_fedelta,ordine);
         clienteDB.applica_sconto(ordine.get_codice_ordine(),ordine.get_costo());
@@ -58,17 +83,35 @@ public class ClienteController{
     // Gestione StatoOrdine
 
 
+    /**
+     * @author Tiziano
+     * Annulla ordine.
+     *
+     * @param ordine the ordine
+     */
     public void annulla_ordine(Ordine ordine) {
         cliente.annulla_ordine(ordine);
         OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
     }
 
+    /**
+     * @author Tiziano
+     * Conferma creazione ordine.
+     *
+     * @param ordine the ordine
+     */
     public void conferma_creazione_ordine(Ordine ordine) {
         cliente.conferma_creazione_ordine(ordine);
         clienteDB.aggiorna_costo_ordine(ordine.get_codice_ordine(),ordine.get_costo());
         OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
     }
 
+    /**
+     * @author Tiziano
+     * Conferma consegna ordine.
+     *
+     * @param ordine the ordine
+     */
     public void conferma_consegna_ordine(Ordine ordine) {
         cliente.conferma_consegna_ordine(ordine);
         OrdiniImpDAO.aggiorna_stato_ordine(ordine.get_codice_ordine(),ordine.get_stato_ordine());
@@ -79,18 +122,40 @@ public class ClienteController{
     //________________________________________________________________________________________________________________________________________________
     // Gestione RigaOrdine
 
+    /**
+     * @author Tiziano
+     * Aggiungi riga.
+     *
+     * @param ordine   the ordine
+     * @param prodotto the prodotto
+     */
     public void aggiungi_riga(Ordine ordine, Prodotto prodotto) {
         ordine.aggiungi_riga(prodotto,RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE);
         clienteDB.aggiungi_riga(ordine.get_codice_ordine(),id_prodotto.get(prodotto.get_nome()),RigaOrdine.QUANTITA_CREAZIONE_RIGA_ORDINE);
         clienteDB.aggiorna_costo_ordine(ordine.get_codice_ordine(),ordine.get_costo());
     }
 
+    /**
+     * @author Tiziano
+     * Rimuovi riga.
+     *
+     * @param ordine   the ordine
+     * @param prodotto the prodotto
+     */
     public void rimuovi_riga(Ordine ordine, Prodotto prodotto) {
          ordine.rimuovi_riga(prodotto);
          clienteDB.rimuovi_riga(ordine.get_codice_ordine(),id_prodotto.get(prodotto.get_nome()));
          clienteDB.aggiorna_costo_ordine(ordine.get_codice_ordine(),ordine.get_costo());
     }
 
+    /**
+     * @author Tiziano
+     * Aggiorna quantita riga ordine.
+     *
+     * @param ordine      the ordine
+     * @param riga_ordine the riga ordine
+     * @param quantita    the quantita
+     */
     public void aggiorna_quantita_rigaOrdine(Ordine ordine,RigaOrdine riga_ordine,int quantita){
         riga_ordine.aggiorna_quantita(quantita);
         clienteDB.aggiorna_quantita_rigaOrdine(ordine.get_codice_ordine(),id_prodotto.get(riga_ordine.get_prodotto().get_nome()),riga_ordine.get_quantita());
@@ -101,10 +166,18 @@ public class ClienteController{
     //________________________________________________________________________________________________________________________________________________
     //Get and Set
 
+
     public Cliente get_cliente() {
         return cliente;
     }
 
+    /**
+     * @author Tiziano
+     * Get ordini ristorante array list.
+     *
+     * @param ristorante the ristorante
+     * @return the array list
+     */
     public ArrayList<Ordine> get_ordini_ristorante(Ristorante ristorante){
         ordini = clienteDB.get_ordini_cliente_ristorante(cliente.get_nickname(),ristorante.get_codice_ristorante());
 
@@ -116,15 +189,35 @@ public class ClienteController{
         return ordini;
     }
 
+    /**
+     * @author Tiziano
+     * Get ordini cliente array list.
+     *
+     * @return the array list
+     */
     public ArrayList<Ordine> get_ordini_cliente(){
         cliente.set_ordini(clienteDB.get_ordini_cliente(cliente.get_nickname()));
         return cliente.get_ordini();
     }
 
+    /**
+     * @author Tiziano
+     * Get ristoranti array list.
+     *
+     * @param search_nome_o_indirizzo the search nome o indirizzo
+     * @return the array list
+     */
     public ArrayList<Ristorante> get_ristoranti(String search_nome_o_indirizzo){
         return clienteDB.get_ristoranti(cliente.get_nickname(),search_nome_o_indirizzo);
     }
 
+    /**
+     * @author Tiziano
+     * Get menu array list.
+     *
+     * @param ristorante the ristorante
+     * @return the array list
+     */
     public ArrayList<Menu> get_menu(Ristorante ristorante){
         id_menu = new HashMap<Menu,Integer>();
         EntityWitchId<Menu,Integer> menuMap = RistoranteImpDAO.get_menu(ristorante.get_codice_ristorante());
@@ -137,6 +230,13 @@ public class ClienteController{
         return menuMap.entitys;
     }
 
+    /**
+     * @author Tiziano
+     * Get prodotti array list.
+     *
+     * @param menu the menu
+     * @return the array list
+     */
     public ArrayList<Prodotto> get_prodotti(Menu menu){
         EntityWitchId<Prodotto,Integer> prodottiMap =  RistoranteImpDAO.get_prodotti(id_menu.get(menu));
         if(prodottiMap == null) return null;
@@ -149,6 +249,12 @@ public class ClienteController{
         return prodotti;
     }
 
+    /**
+     * @author Tiziano
+     * Get punti fedelta int.
+     *
+     * @return the int
+     */
     public int get_punti_fedelta(){
         cliente.set_punti_fedelta(clienteDB.get_punti_fedelta_cliente(cliente.get_nickname()));
         return cliente.get_punti_fedelta();

@@ -10,36 +10,43 @@ public enum StatoOrdine{
     CONSEGNATO,
     ANNULLATO;
 
-    public String converti_statoOrdine_to_string(StatoOrdine statoOrdine){
-        String stato_ordine = " ";
+    /**
+     * @author Tiziano
+     *
+     * @param stato
+     * @return
+     */
+    public static String converti_stato_to_string(StatoOrdine stato){
+        String string = "";
 
-        switch (statoOrdine){
+        switch (stato){
             case BOZZA:
-                stato_ordine = "Bozza";
+                string = "BOZZA";
                 break;
             case PREPARAZIONE:
-                stato_ordine = "Preparazione";
+                string = "PREPARAZIONE";
                 break;
             case PRONTO_RITIRO_RIDER:
-                stato_ordine = "Pronto Ritiro Rider";
+                string = "PRONTO-RITIRO-RIDER";
                 break;
             case IN_CONSEGNA:
-                stato_ordine = "In Consegna";
+                string = "IN-CONSEGNA";
                 break;
             case CONFERMA_CONSEGNA_RIDER:
-                stato_ordine = "Segnalato come Consegnato Rider";
+                string = "CONFERMA-CONSEGNA-RIDER";
                 break;
             case CONFERMA_CONSEGNA_CLIENTE:
-                stato_ordine = "Segnalato come Consegnato Cliente";
+                string = "CONFERMA-CONSEGNA-CLIENTE";
                 break;
             case CONSEGNATO:
-                stato_ordine = "Consegnato";
+                string = "CONSEGNATO";
                 break;
             case ANNULLATO:
-                stato_ordine = "Annulato";
+                string = "ANNULATO";
                 break;
         }
 
-        return stato_ordine;
+        return string;
     }
+
 }

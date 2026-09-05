@@ -1,8 +1,8 @@
 package main;
 
 import controller.*;
-import gui.*;
 import gui.Autenticazione.SignInGui;
+import gui.FrameManagerGui;
 
 public class Main {
     private UtenteController utente_controller = null;
@@ -28,23 +28,29 @@ public class Main {
     // Metodi Get Set
 
     public UtenteController get_utente_controller(){ return utente_controller;}
+
     public void set_utente_controller(UtenteController utente_controller){this.utente_controller = utente_controller;}
 
     public ClienteController get_cliente_controller(){ return cliente_controller;}
+
     public void set_cliente_controller(ClienteController cliente_controller){this.cliente_controller = cliente_controller;}
 
     public RiderController get_rider_controller(){ return  rider_controller;}
+
     public void set_rider_controller(RiderController rider_controller){
         this.rider_controller = rider_controller;
     }
 
     public DipendenteController get_dipendente_controller(){ return dipendente_controller;}
+
     public void set_dipendente_controller(DipendenteController dipendente_controller){this.dipendente_controller = dipendente_controller;}
 
     public RistoranteController get_ristorante_controller(){ return ristorante_controller; }
+
     public void set_ristorante_controller(RistoranteController ristorante_controller){this.ristorante_controller = ristorante_controller;}
 
     public OrdiniController get_ordini_controller(){ return ordini_controller;}
+
     public void set_ordine_controller(OrdiniController ordini_controller){this.ordini_controller = ordini_controller;}
 
     //________________________________________________________________________________________________________________________________________________
@@ -52,7 +58,7 @@ public class Main {
 
     public static void main(String args[]){
         Main main = new Main();
-        CanvasGui canvas = new CanvasGui(main);
+        FrameManagerGui canvas = new FrameManagerGui(main);
         canvas.set_pagina(new SignInGui(canvas));
     }
 
